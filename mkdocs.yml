@@ -1,0 +1,26 @@
+site_name: zoho SDK
+site_description: Async-first Zoho Python SDK
+repo_url: https://github.com/SparkAIUR/zoho-sdk
+theme:
+  name: material
+  features:
+    - navigation.sections
+    - navigation.top
+    - content.code.copy
+nav:
+  - Home: index.md
+  - Getting Started: getting-started.md
+  - Authentication: authentication.md
+  - CRM:
+    - Records: crm/records.md
+    - Modules: crm/modules.md
+  - Errors: errors.md
+  - Performance & Caching: performance-caching.md
+  - Code Generation: codegen.md
+  - Changelog: changelog.md
+  - Contributing: contributing.md
+markdown_extensions:
+  - admonition
+  - codehilite
+  - toc:
+      permalink: true
