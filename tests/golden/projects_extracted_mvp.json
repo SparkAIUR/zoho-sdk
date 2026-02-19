@@ -1,0 +1,41 @@
+{
+  "endpoint_count": 5,
+  "endpoints": [
+    {
+      "group": "portal",
+      "id": "projects.portal.portal_get_portal",
+      "method": "GET",
+      "operation_id": "portal_get_portal",
+      "path": "/api/v3/portal/{portalid}"
+    },
+    {
+      "group": "projects",
+      "id": "projects.projects.projects_get_all_projects",
+      "method": "GET",
+      "operation_id": "projects_get_all_projects",
+      "path": "/api/v3/portal/{portalid}/projects"
+    },
+    {
+      "group": "projects",
+      "id": "projects.projects.projects_create_a_project",
+      "method": "POST",
+      "operation_id": "projects_create_a_project",
+      "path": "/api/v3/portal/{portalid}/projects"
+    },
+    {
+      "group": "tasks",
+      "id": "projects.tasks.tasks_get_all_tasks",
+      "method": "GET",
+      "operation_id": "tasks_get_all_tasks",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/tasks"
+    },
+    {
+      "group": "tasks",
+      "id": "projects.tasks.tasks_close_task",
+      "method": "POST",
+      "operation_id": "tasks_close_task",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/tasks/{taskid}/close"
+    }
+  ],
+  "source_url": "tests/fixtures/projects/api_docs_sample.html"
+}

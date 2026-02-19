@@ -1,0 +1,12 @@
+{
+  "endpoint_count": 3,
+  "group_counts": {
+    "data": 1,
+    "meta": 1,
+    "publish": 1
+  },
+  "method_counts": {
+    "GET": 2,
+    "POST": 1
+  }
+}

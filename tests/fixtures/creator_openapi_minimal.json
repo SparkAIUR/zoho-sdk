@@ -1,0 +1,23 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/meta/{account_owner_name}/{app_link_name}/sections": {
+      "get": {
+        "operationId": "getSections",
+        "tags": ["meta"]
+      }
+    },
+    "/data/{account_owner_name}/{app_link_name}/form/{form_link_name}": {
+      "post": {
+        "operationId": "addRecords",
+        "tags": ["data"]
+      }
+    },
+    "/publish/{account_owner_name}/{app_link_name}/report/{report_link_name}": {
+      "get": {
+        "operationId": "getPublishRecords",
+        "tags": ["publish"]
+      }
+    }
+  }
+}

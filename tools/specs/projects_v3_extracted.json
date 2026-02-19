@@ -1,0 +1,944 @@
+{
+  "endpoint_count": 134,
+  "endpoints": [
+    {
+      "group": "portals",
+      "id": "projects.portals.portals_get_portal_details",
+      "method": "GET",
+      "operation_id": "portals_get_portal_details",
+      "path": "/api/v3/portal/{portalid}"
+    },
+    {
+      "group": "projects",
+      "id": "projects.projects.projects_get_all_projects",
+      "method": "GET",
+      "operation_id": "projects_get_all_projects",
+      "path": "/api/v3/portal/{portalid}/projects"
+    },
+    {
+      "group": "projects",
+      "id": "projects.projects.projects_create_a_project",
+      "method": "POST",
+      "operation_id": "projects_create_a_project",
+      "path": "/api/v3/portal/{portalid}/projects"
+    },
+    {
+      "group": "project",
+      "id": "projects.project.project_custom_view_update_project_s_default_view",
+      "method": "POST",
+      "operation_id": "project_custom_view_update_project_s_default_view",
+      "path": "/api/v3/portal/{portalid}/projects/customview/{customviewid}/markanchored"
+    },
+    {
+      "group": "project",
+      "id": "projects.project.project_custom_view_update_project_s_favorite_view",
+      "method": "POST",
+      "operation_id": "project_custom_view_update_project_s_favorite_view",
+      "path": "/api/v3/portal/{portalid}/projects/customview/{customviewid}/markfavourite"
+    },
+    {
+      "group": "projects",
+      "id": "projects.projects.projects_delete_a_project",
+      "method": "DELETE",
+      "operation_id": "projects_delete_a_project",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}"
+    },
+    {
+      "group": "projects",
+      "id": "projects.projects.projects_get_project_details",
+      "method": "GET",
+      "operation_id": "projects_get_project_details",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}"
+    },
+    {
+      "group": "projects",
+      "id": "projects.projects.projects_update_a_project",
+      "method": "PATCH",
+      "operation_id": "projects_update_a_project",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}"
+    },
+    {
+      "group": "timers",
+      "id": "projects.timers.timers_get_timer_details_by_log_id",
+      "method": "GET",
+      "operation_id": "timers_get_timer_details_by_log_id",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/(task|issue)/(timesheet|timelogs)/[(TIMESHEET|TIMELOGS)ID]/timers"
+    },
+    {
+      "group": "timers",
+      "id": "projects.timers.timers_edit_timer_notes_by_log_id",
+      "method": "POST",
+      "operation_id": "timers_edit_timer_notes_by_log_id",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/(task|issue)/(timesheet|timelogs)/[(TIMESHEET|TIMELOGS)ID]/timers"
+    },
+    {
+      "group": "bulk",
+      "id": "projects.bulk.bulk_time_logs_get_all_project_time_logs",
+      "method": "GET",
+      "operation_id": "bulk_time_logs_get_all_project_time_logs",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/(timesheet|timelogs)"
+    },
+    {
+      "group": "approvers",
+      "id": "projects.approvers.approvers_get_default_approver",
+      "method": "GET",
+      "operation_id": "approvers_get_default_approver",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/(timesheet|timelogs)/approver"
+    },
+    {
+      "group": "approvers",
+      "id": "projects.approvers.approvers_update_default_approver",
+      "method": "PATCH",
+      "operation_id": "approvers_update_default_approver",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/(timesheet|timelogs)/approver"
+    },
+    {
+      "group": "pins",
+      "id": "projects.pins.pins_get_pinned_time_logs_for_a_project",
+      "method": "GET",
+      "operation_id": "pins_get_pinned_time_logs_for_a_project",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/(timesheet|timelogs)/pin"
+    },
+    {
+      "group": "timesheet",
+      "id": "projects.timesheet.timesheet_reports_get_time_log_report_for_project",
+      "method": "GET",
+      "operation_id": "timesheet_reports_get_time_log_report_for_project",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/(timesheet|timelogs)/report"
+    },
+    {
+      "group": "clients",
+      "id": "projects.clients.clients_and_customers_associate_customers_to_project",
+      "method": "POST",
+      "operation_id": "clients_and_customers_associate_customers_to_project",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/associate-client"
+    },
+    {
+      "group": "teams",
+      "id": "projects.teams.teams_add_team_in_a_project",
+      "method": "POST",
+      "operation_id": "teams_add_team_in_a_project",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/associate-teams"
+    },
+    {
+      "group": "attachments",
+      "id": "projects.attachments.attachments_get_project_attachments",
+      "method": "GET",
+      "operation_id": "attachments_get_project_attachments",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/attachments"
+    },
+    {
+      "group": "attachments",
+      "id": "projects.attachments.attachments_disassociate_attachment",
+      "method": "DELETE",
+      "operation_id": "attachments_disassociate_attachment",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/attachments/{attachmentid}"
+    },
+    {
+      "group": "attachments",
+      "id": "projects.attachments.attachments_get_attachment_details",
+      "method": "GET",
+      "operation_id": "attachments_get_attachment_details",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/attachments/{attachmentid}"
+    },
+    {
+      "group": "attachments",
+      "id": "projects.attachments.attachments_associate_attachment",
+      "method": "POST",
+      "operation_id": "attachments_associate_attachment",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/attachments/{attachmentid}"
+    },
+    {
+      "group": "status",
+      "id": "projects.status.status_timeline_get_task_details_from_baseline",
+      "method": "GET",
+      "operation_id": "status_timeline_get_task_details_from_baseline",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/baselinedetails"
+    },
+    {
+      "group": "status",
+      "id": "projects.status.status_timeline_get_baselines",
+      "method": "GET",
+      "operation_id": "status_timeline_get_baselines",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/baselines"
+    },
+    {
+      "group": "forum",
+      "id": "projects.forum.forum_categories_get_categories",
+      "method": "GET",
+      "operation_id": "forum_categories_get_categories",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/categories"
+    },
+    {
+      "group": "forum",
+      "id": "projects.forum.forum_categories_add_new_category",
+      "method": "POST",
+      "operation_id": "forum_categories_add_new_category",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/categories"
+    },
+    {
+      "group": "forum",
+      "id": "projects.forum.forum_categories_delete_category",
+      "method": "DELETE",
+      "operation_id": "forum_categories_delete_category",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/categories/{categorieid}"
+    },
+    {
+      "group": "forum",
+      "id": "projects.forum.forum_categories_update_category",
+      "method": "PATCH",
+      "operation_id": "forum_categories_update_category",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/categories/{categorieid}"
+    },
+    {
+      "group": "contacts",
+      "id": "projects.contacts.contacts_get_customer_contacts_by_project",
+      "method": "GET",
+      "operation_id": "contacts_get_customer_contacts_by_project",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/client/{clientid}/contacts"
+    },
+    {
+      "group": "project",
+      "id": "projects.project.project_customers_get_project_customer",
+      "method": "GET",
+      "operation_id": "project_customers_get_project_customer",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/clients"
+    },
+    {
+      "group": "project",
+      "id": "projects.project.project_customers_add_customers",
+      "method": "POST",
+      "operation_id": "project_customers_add_customers",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/clients"
+    },
+    {
+      "group": "project",
+      "id": "projects.project.project_customers_get_project_users_by_customer",
+      "method": "GET",
+      "operation_id": "project_customers_get_project_users_by_customer",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/clients/users"
+    },
+    {
+      "group": "project",
+      "id": "projects.project.project_customers_delete_client_user_from_project",
+      "method": "DELETE",
+      "operation_id": "project_customers_delete_client_user_from_project",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/clients/users/[ZPUID | EMAILID]"
+    },
+    {
+      "group": "project",
+      "id": "projects.project.project_customers_delete_customer_from_project",
+      "method": "DELETE",
+      "operation_id": "project_customers_delete_customer_from_project",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/clients/{clientid}"
+    },
+    {
+      "group": "project",
+      "id": "projects.project.project_users_add_client_user_to_project",
+      "method": "POST",
+      "operation_id": "project_users_add_client_user_to_project",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/clientuser"
+    },
+    {
+      "group": "contacts",
+      "id": "projects.contacts.contacts_delete_multiple_contacts",
+      "method": "DELETE",
+      "operation_id": "contacts_delete_multiple_contacts",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/contacts"
+    },
+    {
+      "group": "contacts",
+      "id": "projects.contacts.contacts_associate_existing_contacts",
+      "method": "POST",
+      "operation_id": "contacts_associate_existing_contacts",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/contacts"
+    },
+    {
+      "group": "contacts",
+      "id": "projects.contacts.contacts_disassociate_contact",
+      "method": "DELETE",
+      "operation_id": "contacts_disassociate_contact",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/contacts/{contactid}"
+    },
+    {
+      "group": "project",
+      "id": "projects.project.project_customers_get_crm_accounts_of_a_project",
+      "method": "GET",
+      "operation_id": "project_customers_get_crm_accounts_of_a_project",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/crm/accounts"
+    },
+    {
+      "group": "project",
+      "id": "projects.project.project_customers_get_crm_contacts_of_a_project",
+      "method": "GET",
+      "operation_id": "project_customers_get_crm_contacts_of_a_project",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/crm/contacts"
+    },
+    {
+      "group": "project",
+      "id": "projects.project.project_customers_get_crm_deals_associated_with_a_project",
+      "method": "GET",
+      "operation_id": "project_customers_get_crm_deals_associated_with_a_project",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/crm/deals"
+    },
+    {
+      "group": "task",
+      "id": "projects.task.task_lists_create_default_tasklist",
+      "method": "POST",
+      "operation_id": "task_lists_create_default_tasklist",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/default-tasklists"
+    },
+    {
+      "group": "teams",
+      "id": "projects.teams.teams_remove_team_from_a_project",
+      "method": "DELETE",
+      "operation_id": "teams_remove_team_from_a_project",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/dissociate-teams/[DISSOCIATE-TEAMID]"
+    },
+    {
+      "group": "documents",
+      "id": "projects.documents.documents_get_project_team_folder_folder_setting",
+      "method": "GET",
+      "operation_id": "documents_get_project_team_folder_folder_setting",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/documents"
+    },
+    {
+      "group": "folder",
+      "id": "projects.folder.folder_create_project_folder_s",
+      "method": "POST",
+      "operation_id": "folder_create_project_folder_s",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/documents/folders"
+    },
+    {
+      "group": "folder",
+      "id": "projects.folder.folder_associate_folder_s_to_the_project",
+      "method": "POST",
+      "operation_id": "folder_associate_folder_s_to_the_project",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/documents/folders/associate"
+    },
+    {
+      "group": "folder",
+      "id": "projects.folder.folder_get_project_folder_settings",
+      "method": "GET",
+      "operation_id": "folder_get_project_folder_settings",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/documents/folders/{folderid}"
+    },
+    {
+      "group": "folder",
+      "id": "projects.folder.folder_update_project_folder_settings",
+      "method": "PATCH",
+      "operation_id": "folder_update_project_folder_settings",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/documents/folders/{folderid}"
+    },
+    {
+      "group": "folder",
+      "id": "projects.folder.folder_disassociate_folder_s",
+      "method": "DELETE",
+      "operation_id": "folder_disassociate_folder_s",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/documents/folders/{folderid}/disassociate"
+    },
+    {
+      "group": "team",
+      "id": "projects.team.team_folder_create_project_team_folder",
+      "method": "POST",
+      "operation_id": "team_folder_create_project_team_folder",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/documents/teamfolder"
+    },
+    {
+      "group": "team",
+      "id": "projects.team.team_folder_associate_team_folder_s_to_the_project",
+      "method": "PUT",
+      "operation_id": "team_folder_associate_team_folder_s_to_the_project",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/documents/teamfolder/associate"
+    },
+    {
+      "group": "team",
+      "id": "projects.team.team_folder_delete_a_team_folder",
+      "method": "DELETE",
+      "operation_id": "team_folder_delete_a_team_folder",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/documents/teamfolder/{teamfolderid}"
+    },
+    {
+      "group": "team",
+      "id": "projects.team.team_folder_get_project_team_folder_settings",
+      "method": "GET",
+      "operation_id": "team_folder_get_project_team_folder_settings",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/documents/teamfolder/{teamfolderid}"
+    },
+    {
+      "group": "team",
+      "id": "projects.team.team_folder_update_project_team_folder_settings",
+      "method": "PUT",
+      "operation_id": "team_folder_update_project_team_folder_settings",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/documents/teamfolder/{teamfolderid}"
+    },
+    {
+      "group": "team",
+      "id": "projects.team.team_folder_disassociate_team_folder",
+      "method": "DELETE",
+      "operation_id": "team_folder_disassociate_team_folder",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/documents/teamfolder/{teamfolderid}/disassociate"
+    },
+    {
+      "group": "event",
+      "id": "projects.event.event_comments_get_event_comment_by_id",
+      "method": "GET",
+      "operation_id": "event_comments_get_event_comment_by_id",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/eventcomments/{eventcommentid}"
+    },
+    {
+      "group": "events",
+      "id": "projects.events.events_get_project_events",
+      "method": "GET",
+      "operation_id": "events_get_project_events",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/events"
+    },
+    {
+      "group": "events",
+      "id": "projects.events.events_add_new_event",
+      "method": "POST",
+      "operation_id": "events_add_new_event",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/events"
+    },
+    {
+      "group": "events",
+      "id": "projects.events.events_delete_project_event",
+      "method": "DELETE",
+      "operation_id": "events_delete_project_event",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/events/{eventid}"
+    },
+    {
+      "group": "events",
+      "id": "projects.events.events_get_event_details",
+      "method": "GET",
+      "operation_id": "events_get_event_details",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/events/{eventid}"
+    },
+    {
+      "group": "events",
+      "id": "projects.events.events_update_event",
+      "method": "PATCH",
+      "operation_id": "events_update_event",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/events/{eventid}"
+    },
+    {
+      "group": "forum",
+      "id": "projects.forum.forum_comments_get_forum_comments_without_forum_id",
+      "method": "GET",
+      "operation_id": "forum_comments_get_forum_comments_without_forum_id",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/forumcomments/{forumcommentid}"
+    },
+    {
+      "group": "forums",
+      "id": "projects.forums.forums_get_forums_in_a_project",
+      "method": "GET",
+      "operation_id": "forums_get_forums_in_a_project",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/forums"
+    },
+    {
+      "group": "forums",
+      "id": "projects.forums.forums_add_new_forum",
+      "method": "POST",
+      "operation_id": "forums_add_new_forum",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/forums"
+    },
+    {
+      "group": "forums",
+      "id": "projects.forums.forums_delete_forum",
+      "method": "DELETE",
+      "operation_id": "forums_delete_forum",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/forums/{forumid}"
+    },
+    {
+      "group": "forums",
+      "id": "projects.forums.forums_view_forum_details",
+      "method": "GET",
+      "operation_id": "forums_view_forum_details",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/forums/{forumid}"
+    },
+    {
+      "group": "forums",
+      "id": "projects.forums.forums_update_forum",
+      "method": "PATCH",
+      "operation_id": "forums_update_forum",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/forums/{forumid}"
+    },
+    {
+      "group": "forum",
+      "id": "projects.forum.forum_followers_follow_forum",
+      "method": "POST",
+      "operation_id": "forum_followers_follow_forum",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/forums/{forumid}/follow"
+    },
+    {
+      "group": "forum",
+      "id": "projects.forum.forum_followers_get_followers_of_a_forum",
+      "method": "GET",
+      "operation_id": "forum_followers_get_followers_of_a_forum",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/forums/{forumid}/followers"
+    },
+    {
+      "group": "forums",
+      "id": "projects.forums.forums_get_tasks_of_a_forum",
+      "method": "GET",
+      "operation_id": "forums_get_tasks_of_a_forum",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/forums/{forumid}/tasks"
+    },
+    {
+      "group": "forum",
+      "id": "projects.forum.forum_followers_unfollow_forum",
+      "method": "POST",
+      "operation_id": "forum_followers_unfollow_forum",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/forums/{forumid}/unfollow"
+    },
+    {
+      "group": "time",
+      "id": "projects.time.time_log_operations_add_time_log",
+      "method": "POST",
+      "operation_id": "time_log_operations_add_time_log",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/log"
+    },
+    {
+      "group": "time",
+      "id": "projects.time.time_log_operations_delete_time_log",
+      "method": "DELETE",
+      "operation_id": "time_log_operations_delete_time_log",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/logs/{logid}"
+    },
+    {
+      "group": "time",
+      "id": "projects.time.time_log_operations_get_particular_time_logs_details",
+      "method": "GET",
+      "operation_id": "time_log_operations_get_particular_time_logs_details",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/logs/{logid}"
+    },
+    {
+      "group": "time",
+      "id": "projects.time.time_log_operations_update_time_log",
+      "method": "PATCH",
+      "operation_id": "time_log_operations_update_time_log",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/logs/{logid}"
+    },
+    {
+      "group": "project",
+      "id": "projects.project.project_customers_update_primary_customer",
+      "method": "POST",
+      "operation_id": "project_customers_update_primary_customer",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/primary-client/[PRIMARY-CLIENTID]"
+    },
+    {
+      "group": "project",
+      "id": "projects.project.project_users_add_user_to_project",
+      "method": "POST",
+      "operation_id": "project_users_add_user_to_project",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/projectusers"
+    },
+    {
+      "group": "projects",
+      "id": "projects.projects.projects_restore_a_project",
+      "method": "POST",
+      "operation_id": "projects_restore_a_project",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/restore"
+    },
+    {
+      "group": "search",
+      "id": "projects.search.search_get_search_results_in_a_project",
+      "method": "GET",
+      "operation_id": "search_get_search_results_in_a_project",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/search"
+    },
+    {
+      "group": "feed",
+      "id": "projects.feed.feed_status_project_status",
+      "method": "GET",
+      "operation_id": "feed_status_project_status",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/status"
+    },
+    {
+      "group": "feed",
+      "id": "projects.feed.feed_status_post_project_status",
+      "method": "POST",
+      "operation_id": "feed_status_post_project_status",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/status"
+    },
+    {
+      "group": "tags",
+      "id": "projects.tags.tags_get_project_tags",
+      "method": "GET",
+      "operation_id": "tags_get_project_tags",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/tags"
+    },
+    {
+      "group": "tags",
+      "id": "projects.tags.tags_associate_tags_to_entity",
+      "method": "POST",
+      "operation_id": "tags_associate_tags_to_entity",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/tags/associate"
+    },
+    {
+      "group": "tags",
+      "id": "projects.tags.tags_disassociate_tags_from_entity",
+      "method": "POST",
+      "operation_id": "tags_disassociate_tags_from_entity",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/tags/dissociate"
+    },
+    {
+      "group": "task",
+      "id": "projects.task.task_lists_get_all_project_task_lists",
+      "method": "GET",
+      "operation_id": "task_lists_get_all_project_task_lists",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/tasklists"
+    },
+    {
+      "group": "task",
+      "id": "projects.task.task_lists_create_task_list",
+      "method": "POST",
+      "operation_id": "task_lists_create_task_list",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/tasklists"
+    },
+    {
+      "group": "task",
+      "id": "projects.task.task_lists_delete_task_list",
+      "method": "DELETE",
+      "operation_id": "task_lists_delete_task_list",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/tasklists/{tasklistid}"
+    },
+    {
+      "group": "task",
+      "id": "projects.task.task_lists_get_task_list_details",
+      "method": "GET",
+      "operation_id": "task_lists_get_task_list_details",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/tasklists/{tasklistid}"
+    },
+    {
+      "group": "task",
+      "id": "projects.task.task_lists_update_task_list",
+      "method": "PATCH",
+      "operation_id": "task_lists_update_task_list",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/tasklists/{tasklistid}"
+    },
+    {
+      "group": "task",
+      "id": "projects.task.task_list_followers_follow_task_list",
+      "method": "POST",
+      "operation_id": "task_list_followers_follow_task_list",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/tasklists/{tasklistid}/follow"
+    },
+    {
+      "group": "task",
+      "id": "projects.task.task_list_followers_get_task_list_followers",
+      "method": "GET",
+      "operation_id": "task_list_followers_get_task_list_followers",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/tasklists/{tasklistid}/followers"
+    },
+    {
+      "group": "task",
+      "id": "projects.task.task_list_templates_make_as_task_template",
+      "method": "POST",
+      "operation_id": "task_list_templates_make_as_task_template",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/tasklists/{tasklistid}/make-as-template"
+    },
+    {
+      "group": "task",
+      "id": "projects.task.task_list_followers_unfollow_task_list",
+      "method": "POST",
+      "operation_id": "task_list_followers_unfollow_task_list",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/tasklists/{tasklistid}/unfollow"
+    },
+    {
+      "group": "tasks",
+      "id": "projects.tasks.tasks_get_tasks_by_project",
+      "method": "GET",
+      "operation_id": "tasks_get_tasks_by_project",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/tasks"
+    },
+    {
+      "group": "tasks",
+      "id": "projects.tasks.tasks_create_a_task",
+      "method": "POST",
+      "operation_id": "tasks_create_a_task",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/tasks"
+    },
+    {
+      "group": "task",
+      "id": "projects.task.task_custom_view_get_task_custom_views_in_project",
+      "method": "GET",
+      "operation_id": "task_custom_view_get_task_custom_views_in_project",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/tasks/customviews"
+    },
+    {
+      "group": "task",
+      "id": "projects.task.task_custom_view_mark_view_as_favourite_project",
+      "method": "POST",
+      "operation_id": "task_custom_view_mark_view_as_favourite_project",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/tasks/customviews/{customviewid}/markfavourite"
+    },
+    {
+      "group": "task",
+      "id": "projects.task.task_custom_view_set_view_as_default_project",
+      "method": "POST",
+      "operation_id": "task_custom_view_set_view_as_default_project",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/tasks/customviews/{customviewid}/setdefaultview"
+    },
+    {
+      "group": "task",
+      "id": "projects.task.task_custom_view_unmark_view_as_favourite_project",
+      "method": "POST",
+      "operation_id": "task_custom_view_unmark_view_as_favourite_project",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/tasks/customviews/{customviewid}/unmarkfavourite"
+    },
+    {
+      "group": "tasks",
+      "id": "projects.tasks.tasks_delete_a_task",
+      "method": "DELETE",
+      "operation_id": "tasks_delete_a_task",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/tasks/{taskid}"
+    },
+    {
+      "group": "tasks",
+      "id": "projects.tasks.tasks_get_task_details",
+      "method": "GET",
+      "operation_id": "tasks_get_task_details",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/tasks/{taskid}"
+    },
+    {
+      "group": "tasks",
+      "id": "projects.tasks.tasks_update_a_task",
+      "method": "PATCH",
+      "operation_id": "tasks_update_a_task",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/tasks/{taskid}"
+    },
+    {
+      "group": "tasks",
+      "id": "projects.tasks.tasks_associate_bugs",
+      "method": "POST",
+      "operation_id": "tasks_associate_bugs",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/tasks/{taskid}/associate-bugs"
+    },
+    {
+      "group": "task",
+      "id": "projects.task.task_forum_disassociate_forums_from_a_task",
+      "method": "DELETE",
+      "operation_id": "task_forum_disassociate_forums_from_a_task",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/tasks/{taskid}/associate-forums"
+    },
+    {
+      "group": "task",
+      "id": "projects.task.task_forum_associate_forums_to_task",
+      "method": "POST",
+      "operation_id": "task_forum_associate_forums_to_task",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/tasks/{taskid}/associate-forums"
+    },
+    {
+      "group": "tasks",
+      "id": "projects.tasks.tasks_get_associated_bugs",
+      "method": "GET",
+      "operation_id": "tasks_get_associated_bugs",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/tasks/{taskid}/associated-bugs"
+    },
+    {
+      "group": "meta",
+      "id": "projects.meta.meta_get_blocking_waiting_tasks",
+      "method": "GET",
+      "operation_id": "meta_get_blocking_waiting_tasks",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/tasks/{taskid}/blocking-waiting-tasks"
+    },
+    {
+      "group": "tasks",
+      "id": "projects.tasks.tasks_disassociate_bug",
+      "method": "DELETE",
+      "operation_id": "tasks_disassociate_bug",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/tasks/{taskid}/bug/{bugid}"
+    },
+    {
+      "group": "tasks",
+      "id": "projects.tasks.tasks_clone_a_task",
+      "method": "POST",
+      "operation_id": "tasks_clone_a_task",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/tasks/{taskid}/clone"
+    },
+    {
+      "group": "task",
+      "id": "projects.task.task_followers_self_follow_a_task",
+      "method": "POST",
+      "operation_id": "task_followers_self_follow_a_task",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/tasks/{taskid}/follow"
+    },
+    {
+      "group": "task",
+      "id": "projects.task.task_followers_get_task_followers",
+      "method": "GET",
+      "operation_id": "task_followers_get_task_followers",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/tasks/{taskid}/followers"
+    },
+    {
+      "group": "task",
+      "id": "projects.task.task_followers_add_task_followers",
+      "method": "POST",
+      "operation_id": "task_followers_add_task_followers",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/tasks/{taskid}/followers"
+    },
+    {
+      "group": "task",
+      "id": "projects.task.task_forum_get_forums",
+      "method": "GET",
+      "operation_id": "task_forum_get_forums",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/tasks/{taskid}/forums"
+    },
+    {
+      "group": "tasks",
+      "id": "projects.tasks.tasks_move_task",
+      "method": "POST",
+      "operation_id": "tasks_move_task",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/tasks/{taskid}/move"
+    },
+    {
+      "group": "status",
+      "id": "projects.status.status_timeline_get_task_status_timeline",
+      "method": "GET",
+      "operation_id": "status_timeline_get_task_status_timeline",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/tasks/{taskid}/status-timeline"
+    },
+    {
+      "group": "task",
+      "id": "projects.task.task_followers_unfollow_a_task",
+      "method": "POST",
+      "operation_id": "task_followers_unfollow_a_task",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/tasks/{taskid}/unfollow"
+    },
+    {
+      "group": "status",
+      "id": "projects.status.status_timeline_get_status_history_of_tasks_project",
+      "method": "GET",
+      "operation_id": "status_timeline_get_status_history_of_tasks_project",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/taskstatushistory"
+    },
+    {
+      "group": "teams",
+      "id": "projects.teams.teams_get_project_s_teams",
+      "method": "GET",
+      "operation_id": "teams_get_project_s_teams",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/teams"
+    },
+    {
+      "group": "custom",
+      "id": "projects.custom.custom_views_mark_view_as_favorite_project",
+      "method": "POST",
+      "operation_id": "custom_views_mark_view_as_favorite_project",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/timesheet/customviews/{customviewid}/mark-favourite"
+    },
+    {
+      "group": "custom",
+      "id": "projects.custom.custom_views_set_view_as_default_project",
+      "method": "POST",
+      "operation_id": "custom_views_set_view_as_default_project",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/timesheet/customviews/{customviewid}/set-default-view"
+    },
+    {
+      "group": "projects",
+      "id": "projects.projects.projects_trash_a_project",
+      "method": "POST",
+      "operation_id": "projects_trash_a_project",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/trash"
+    },
+    {
+      "group": "project",
+      "id": "projects.project.project_users_get_all_users",
+      "method": "GET",
+      "operation_id": "project_users_get_all_users",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/users"
+    },
+    {
+      "group": "user",
+      "id": "projects.user.user_permissions_get_permissions_for_users_in_project",
+      "method": "GET",
+      "operation_id": "user_permissions_get_permissions_for_users_in_project",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/users/[ records | others | portal | settings | integrations | custom | any ]/permissions"
+    },
+    {
+      "group": "project",
+      "id": "projects.project.project_users_delete_user_from_portal",
+      "method": "DELETE",
+      "operation_id": "project_users_delete_user_from_portal",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/users/[ZPUID | EMAILID]"
+    },
+    {
+      "group": "project",
+      "id": "projects.project.project_users_get_project_user_details",
+      "method": "GET",
+      "operation_id": "project_users_get_project_user_details",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/users/[ZPUID | EMAILID]"
+    },
+    {
+      "group": "project",
+      "id": "projects.project.project_users_update_user_details_in_project",
+      "method": "POST",
+      "operation_id": "project_users_update_user_details_in_project",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/users/[ZPUID | EMAILID]"
+    },
+    {
+      "group": "user",
+      "id": "projects.user.user_permissions_get_permissions_for_user_in_project",
+      "method": "GET",
+      "operation_id": "user_permissions_get_permissions_for_user_in_project",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/users/[ZPUID | EMAILID]/[ records | others | portal | settings | integrations | custom | any ]/permissions"
+    },
+    {
+      "group": "user",
+      "id": "projects.user.user_permissions_get_field_permissions_for_a_user_in_project",
+      "method": "GET",
+      "operation_id": "user_permissions_get_field_permissions_for_a_user_in_project",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/users/[ZPUID | EMAILID]/fields/permissions"
+    },
+    {
+      "group": "user",
+      "id": "projects.user.user_permissions_edit_permissions_for_a_user_in_project",
+      "method": "PATCH",
+      "operation_id": "user_permissions_edit_permissions_for_a_user_in_project",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/users/[ZPUID | EMAILID]/permissions"
+    },
+    {
+      "group": "user",
+      "id": "projects.user.user_exports_get_project_user_export_history",
+      "method": "GET",
+      "operation_id": "user_exports_get_project_user_export_history",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/users/export"
+    },
+    {
+      "group": "user",
+      "id": "projects.user.user_exports_initiate_project_user_export",
+      "method": "POST",
+      "operation_id": "user_exports_initiate_project_user_export",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/users/export"
+    },
+    {
+      "group": "user",
+      "id": "projects.user.user_exports_get_project_user_export_details_by_export_id",
+      "method": "GET",
+      "operation_id": "user_exports_get_project_user_export_details_by_export_id",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/users/export/{exportid}"
+    },
+    {
+      "group": "user",
+      "id": "projects.user.user_permissions_get_field_permissions_for_users_in_project",
+      "method": "GET",
+      "operation_id": "user_permissions_get_field_permissions_for_users_in_project",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/users/fields/permissions"
+    },
+    {
+      "group": "my",
+      "id": "projects.my.my_permissions_get_current_user_permissions_in_project",
+      "method": "GET",
+      "operation_id": "my_permissions_get_current_user_permissions_in_project",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/users/me/[ records | others | portal | settings | integrations | custom | any ]/permissions"
+    },
+    {
+      "group": "my",
+      "id": "projects.my.my_permissions_get_current_user_field_permissions_in_project",
+      "method": "GET",
+      "operation_id": "my_permissions_get_current_user_field_permissions_in_project",
+      "path": "/api/v3/portal/{portalid}/projects/{projectid}/users/me/fields/permissions"
+    }
+  ],
+  "source_url": "https://projects.zoho.com/api-docs"
+}
