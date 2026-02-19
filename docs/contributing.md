@@ -13,6 +13,7 @@ uv run ruff format .
 uv run ruff check .
 uv run mypy
 uv run pytest
+uv run pytest tests/docs/test_snippet_references.py
 uv run mkdocs build --strict
 ```
 
@@ -58,6 +59,7 @@ Use conventional commits, for example:
 When public behavior changes:
 - update `README.md`
 - update or add pages under `docs/`
+- update canonical use-case snippets under `examples/` (docs pull from these files)
 - include usage examples for high-usage APIs
 
 ## Admin Credential Validation
