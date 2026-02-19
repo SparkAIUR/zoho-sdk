@@ -1,11 +1,15 @@
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
 import httpx
 import respx
+from typer.testing import CliRunner
 
-from zoho.scripts.auth_cli import main
+from zoho.scripts.auth_cli import app
+
+runner = CliRunner()
 
 
 def _write_credentials(tmp_path: Path, content: str) -> Path:
@@ -14,7 +18,7 @@ def _write_credentials(tmp_path: Path, content: str) -> Path:
     return file_path
 
 
-def test_exchange_token_redacts_sensitive_response(monkeypatch, tmp_path: Path, capsys) -> None:
+def test_exchange_token_redacts_sensitive_response(monkeypatch, tmp_path: Path) -> None:
     env_file = _write_credentials(
         tmp_path,
         "\n".join(
@@ -39,20 +43,19 @@ def test_exchange_token_redacts_sensitive_response(monkeypatch, tmp_path: Path, 
             )
         )
 
-        exit_code = main(["exchange-token", "--grant-code", "grant_123"])
-        output = capsys.readouterr().out
+        result = runner.invoke(app, ["exchange-token", "--grant-code", "grant_123"])
 
-    assert exit_code == 0
-    assert _strip(output).find("***REDACTED***") >= 0
-    assert "access_token_value" not in output
-    assert "refresh_token_value" not in output
+    assert result.exit_code == 0
+    assert "***REDACTED***" in result.stdout
+    assert "access_token_value" not in result.stdout
+    assert "refresh_token_value" not in result.stdout
     assert route.calls
     request_body = route.calls[0].request.content.decode()
     assert "grant_type=authorization_code" in request_body
     assert "code=grant_123" in request_body
 
 
-def test_exchange_token_can_show_secrets(monkeypatch, tmp_path: Path, capsys) -> None:
+def test_exchange_token_can_show_secrets(monkeypatch, tmp_path: Path) -> None:
     env_file = _write_credentials(
         tmp_path,
         "\n".join(
@@ -75,39 +78,41 @@ def test_exchange_token_can_show_secrets(monkeypatch, tmp_path: Path, capsys) ->
             )
         )
 
-        exit_code = main(["exchange-token", "--grant-code", "grant_123", "--show-secrets"])
-        output = capsys.readouterr().out
+        result = runner.invoke(
+            app, ["exchange-token", "--grant-code", "grant_123", "--show-secrets"]
+        )
 
-    assert exit_code == 0
-    assert "access_token_value" in output
+    assert result.exit_code == 0
+    assert "access_token_value" in result.stdout
 
 
-def test_grant_code_template_mode(monkeypatch, tmp_path: Path, capsys) -> None:
+def test_grant_code_template_mode(monkeypatch, tmp_path: Path) -> None:
     env_file = _write_credentials(tmp_path, "ZOHO_CLIENT_ID=test_client_id")
     monkeypatch.setenv("ZOHO_CREDENTIALS_FILE", str(env_file))
 
-    exit_code = main(
+    result = runner.invoke(
+        app,
         [
             "grant-code",
             "--self-client-id",
             "1000",
             "--scopes",
             "ZohoCRM.modules.ALL,ZohoCRM.users.READ",
-        ]
+        ],
     )
-    output = capsys.readouterr().out
 
-    assert exit_code == 0
-    assert '"mode": "template"' in output
-    assert "curl_template" in output
-    assert "ZohoCRM.modules.ALL" in output
+    assert result.exit_code == 0
+    assert '"mode": "template"' in result.stdout
+    assert "curl_template" in result.stdout
+    assert "ZohoCRM.modules.ALL" in result.stdout
 
 
-def test_grant_code_execute_requires_cookie(monkeypatch, tmp_path: Path, capsys) -> None:
+def test_grant_code_execute_requires_cookie(monkeypatch, tmp_path: Path) -> None:
     env_file = _write_credentials(tmp_path, "ZOHO_CLIENT_ID=test_client_id")
     monkeypatch.setenv("ZOHO_CREDENTIALS_FILE", str(env_file))
 
-    exit_code = main(
+    result = runner.invoke(
+        app,
         [
             "grant-code",
             "--self-client-id",
@@ -115,15 +120,13 @@ def test_grant_code_execute_requires_cookie(monkeypatch, tmp_path: Path, capsys)
             "--scope",
             "ZohoCRM.modules.ALL",
             "--execute",
-        ]
+        ],
     )
-    stderr = capsys.readouterr().err
-
-    assert exit_code == 2
-    assert "--session-cookie is required" in stderr
+    assert result.exit_code == 2
+    assert "--session-cookie is required" in result.stderr
 
 
-def test_grant_code_execute_posts_when_cookie_provided(monkeypatch, tmp_path: Path, capsys) -> None:
+def test_grant_code_execute_posts_when_cookie_provided(monkeypatch, tmp_path: Path) -> None:
     env_file = _write_credentials(tmp_path, "ZOHO_CLIENT_ID=test_client_id")
     monkeypatch.setenv("ZOHO_CREDENTIALS_FILE", str(env_file))
 
@@ -139,7 +142,8 @@ def test_grant_code_execute_posts_when_cookie_provided(monkeypatch, tmp_path: Pa
                 },
             )
         )
-        exit_code = main(
+        result = runner.invoke(
+            app,
             [
                 "grant-code",
                 "--self-client-id",
@@ -149,16 +153,60 @@ def test_grant_code_execute_posts_when_cookie_provided(monkeypatch, tmp_path: Pa
                 "--execute",
                 "--session-cookie",
                 "ZD_CSRF_TOKEN=abc;iamcsr=def",
-            ]
+            ],
         )
-        output = capsys.readouterr().out
 
-    assert exit_code == 0
+    assert result.exit_code == 0
     assert route.calls
     assert route.calls[0].request.headers["Cookie"] == "ZD_CSRF_TOKEN=abc;iamcsr=def"
-    assert "sensitive_grant_token" not in output
-    assert "***REDACTED***" in output
+    assert "sensitive_grant_token" not in result.stdout
+    assert "***REDACTED***" in result.stdout
 
 
-def _strip(value: str) -> str:
-    return value.replace("\n", " ")
+def test_scope_builder_non_interactive_json_output() -> None:
+    result = runner.invoke(
+        app,
+        [
+            "scope-builder",
+            "--product",
+            "CRM",
+            "--product",
+            "People",
+            "--access",
+            "read",
+            "--no-interactive",
+        ],
+    )
+
+    assert result.exit_code == 0
+    payload = json.loads(result.stdout)
+    assert payload["products"] == ["CRM", "People"]
+    assert payload["access_profile"] == "read"
+    assert "ZohoCRM.modules.READ" in payload["scopes"]
+    assert "ZOHOPEOPLE.forms.READ" in payload["scopes"]
+
+
+def test_scope_builder_interactive_prompts_with_presets() -> None:
+    result = runner.invoke(
+        app,
+        [
+            "scope-builder",
+            "--product",
+            "CRM",
+            "--format",
+            "env",
+        ],
+        input="admin\ny\nZohoCRM.apis.READ\n",
+    )
+
+    assert result.exit_code == 0
+    assert "export ZOHO_SCOPES=" in result.stdout
+    assert "ZohoCRM.modules.ALL" in result.stdout
+    assert "ZohoCRM.apis.READ" in result.stdout
+
+
+def test_scope_builder_requires_product_or_interactive() -> None:
+    result = runner.invoke(app, ["scope-builder", "--no-interactive", "--access", "read"])
+
+    assert result.exit_code == 2
+    assert "At least one --product is required" in result.stderr

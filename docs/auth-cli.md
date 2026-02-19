@@ -2,7 +2,38 @@
 
 Use `zoho-auth` for admin-friendly OAuth helper workflows.
 
-The command always expects a credentials file from `ZOHO_CREDENTIALS_FILE` (or `--credentials-file`) and loads it with `dotenv`.
+`exchange-token` and `grant-code` expect a credentials file from `ZOHO_CREDENTIALS_FILE` (or `--credentials-file`) and load it with `dotenv`.
+
+## Interactive Scope Builder
+
+Build a scope set interactively:
+
+```bash
+uv run zoho-auth scope-builder
+```
+
+Pre-set options with flags (prompts fill the rest):
+
+```bash
+uv run zoho-auth scope-builder \
+  --product CRM \
+  --product WorkDrive \
+  --access read \
+  --include-common \
+  --format env
+```
+
+For fully scripted usage:
+
+```bash
+uv run zoho-auth scope-builder \
+  --product CRM \
+  --product People \
+  --access write \
+  --no-interactive \
+  --format json \
+  --output-file /tmp/zoho_scopes.json
+```
 
 ## Exchange Grant Code For Tokens
 

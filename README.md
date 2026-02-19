@@ -196,6 +196,12 @@ uv run zoho-auth exchange-token --grant-code "<grant-code>"
 uv run zoho-auth grant-code \
   --self-client-id "1000..." \
   --scopes "ZohoCRM.modules.ALL,ZohoCRM.settings.ALL,ZohoCRM.users.ALL,ZohoCRM.org.ALL"
+
+uv run zoho-auth scope-builder \
+  --product CRM \
+  --product WorkDrive \
+  --access read \
+  --format env
 ```
 
 See `docs/auth-cli.md` for execute mode and header/cookie options.

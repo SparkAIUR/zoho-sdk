@@ -162,3 +162,12 @@ References:
 ```bash
 uv run python tools/scopes_sync.py
 ```
+
+## Build Scope Sets Interactively
+
+Use the CLI scope builder when planning app permissions:
+
+```bash
+uv run zoho-auth scope-builder
+uv run zoho-auth scope-builder --product CRM --product People --access read --format env
+```
