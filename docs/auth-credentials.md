@@ -25,13 +25,19 @@ Reference:
 
 ## 2. Choose CRM Scopes
 
-For the current v0.0.1 CRM feature set (records/modules/org/users), a practical starting scope set is:
+For CRM features in v0.1.0 (`records`, `modules`, `org`, `users`), a practical starting scope set is:
 
 ```text
 ZohoCRM.modules.ALL,ZohoCRM.settings.ALL,ZohoCRM.users.ALL,ZohoCRM.org.ALL
 ```
 
 Adjust scopes down if your app needs less access.
+
+For Creator and Projects features, add product scopes according to your exact endpoints.
+Start from the official scope docs and request least privilege:
+
+- Creator: https://www.zoho.com/creator/help/api/v2/oauth-overview.html
+- Projects: https://www.zoho.com/projects/help/rest-api/zohoprojectsapi.html
 
 Reference:
 - https://www.zoho.com/crm/developer/docs/api/v8/scopes.html

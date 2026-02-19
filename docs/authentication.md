@@ -10,6 +10,13 @@ The SDK uses Zoho OAuth refresh-token flow and requires:
 - `dc` (`US`, `EU`, `IN`, `AU`, `JP`, `CA`, `SA`, `CN`)
 - `environment` (`production`, `sandbox`, `developer`)
 
+Optional product-specific settings:
+
+- `creator_environment_header` (`development`, `stage`, `production`)
+- `creator_base_url` (override Creator API host)
+- `projects_default_portal_id` (omit repeated `portal_id` args for Projects calls)
+- `projects_base_url` (override Projects API host)
+
 ## Credential Setup Guide
 
 Use the dedicated step-by-step guide to obtain credentials correctly:
@@ -34,6 +41,8 @@ client = Zoho.from_credentials(
     refresh_token="...",
     dc="US",
     environment="production",
+    creator_environment_header="development",
+    projects_default_portal_id="12345678",
 )
 ```
 

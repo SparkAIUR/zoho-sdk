@@ -16,6 +16,16 @@ nav:
   - CRM:
     - Records: crm/records.md
     - Modules: crm/modules.md
+  - Creator:
+    - Overview: creator/overview.md
+    - Meta API: creator/meta.md
+    - Data API: creator/data.md
+    - Publish API: creator/publish.md
+  - Projects:
+    - Overview: projects/overview.md
+    - Portals API: projects/portals.md
+    - Projects API: projects/projects.md
+    - Tasks API: projects/tasks.md
   - Errors: errors.md
   - Performance & Caching: performance-caching.md
   - Code Generation: codegen.md

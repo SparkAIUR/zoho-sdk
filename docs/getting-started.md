@@ -21,6 +21,8 @@ client = Zoho.from_credentials(
     refresh_token="...",
     dc="US",
     environment="production",
+    creator_environment_header="development",  # optional
+    projects_default_portal_id="12345678",     # optional
 )
 ```
 
@@ -30,6 +32,21 @@ client = Zoho.from_credentials(
 async with client:
     org = await client.crm.org.get()
     print(org)
+```
+
+## Creator and Projects Quick Calls
+
+```python
+async with client:
+    forms = await client.creator.meta.get_forms(
+        account_owner_name="owner",
+        app_link_name="inventory_app",
+    )
+    print(forms.code, len(forms.data))
+
+    projects = await client.projects.projects.list()
+    if projects:
+        print(projects[0].id, projects[0].name)
 ```
 
 ## Local Development

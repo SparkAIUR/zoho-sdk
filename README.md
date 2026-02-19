@@ -9,8 +9,10 @@ Async-first Python SDK for Zoho, designed for developer experience and performan
 - Strong typing with `pydantic` / `pydantic-settings`
 - Pluggable token stores (memory, SQLite, Redis)
 - Structlog-powered logging (`pretty` or `json`)
-- CRM foundation APIs (records, modules, org, users)
-- Codegen scaffolding with golden tests for spec drift
+- CRM APIs (`records`, `modules`, `org`, `users`)
+- Creator APIs (`meta`, `data`, `publish`)
+- Projects V3 APIs (`portals`, `projects`, `tasks`)
+- Codegen tooling + golden tests for spec drift
 
 ## Installation
 
@@ -43,6 +45,37 @@ async def main() -> None:
         print(lead.id, lead.get("Last_Name"))
 ```
 
+## Product Usage Examples
+
+### CRM
+
+```python
+async for record in client.crm.records.iter(
+    module="Leads",
+    per_page=200,
+    fields=["Email", "Last_Name"],
+):
+    print(record.get("Email"))
+```
+
+### Creator
+
+```python
+forms = await client.creator.meta.get_forms(
+    account_owner_name="owner",
+    app_link_name="inventory_app",
+)
+print(forms.code, len(forms.data))
+```
+
+### Projects
+
+```python
+projects = await client.projects.projects.list(portal_id="12345678")
+if projects:
+    print(projects[0].id, projects[0].name)
+```
+
 ## Getting Zoho Credentials (client_id/client_secret/refresh_token)
 
 If you still need OAuth credentials, follow:
@@ -73,20 +106,9 @@ async with Zoho.from_env() as client:
     print(org)
 ```
 
-## CRM Usage Examples
+## High-Usage Workflows
 
-### Iterate records efficiently
-
-```python
-async for record in client.crm.records.iter(
-    module="Leads",
-    per_page=200,
-    fields=["Email", "Last_Name"],
-):
-    print(record.get("Email"))
-```
-
-### Create and update records
+### Create and update CRM records
 
 ```python
 created = await client.crm.records.create(
@@ -101,11 +123,23 @@ await client.crm.records.update(
 )
 ```
 
-### Cache module metadata lookups
+### Cache CRM module metadata lookups
 
 ```python
 modules = await client.crm.modules.list(use_cache=True, cache_ttl_seconds=3600)
 lead_module = await client.crm.modules.get("Leads", use_cache=True)
+```
+
+### Use Creator environment header + Projects default portal
+
+```python
+client = Zoho.from_credentials(
+    client_id="...",
+    client_secret="...",
+    refresh_token="...",
+    creator_environment_header="development",
+    projects_default_portal_id="12345678",
+)
 ```
 
 ## Logging Modes
@@ -130,13 +164,37 @@ uv run pytest
 uv run mkdocs build --strict
 ```
 
-## Codegen (v0.0.1 scaffolding)
+## Codegen Workflows
+
+### CRM summary
 
 ```bash
 uv run python tools/codegen/main.py \
   --json-details tests/fixtures/json_details_minimal.json \
   --openapi tests/fixtures/openapi_minimal.json \
   --output /tmp/zoho_ir_summary.json
+```
+
+### Creator endpoint summary
+
+```bash
+uv run python tools/codegen/creator_summary.py \
+  --openapi tests/fixtures/creator_openapi_minimal.json \
+  --output /tmp/creator_summary.json
+```
+
+### Projects docs extraction (fixture or live docs)
+
+```bash
+# from fixture
+uv run python tools/codegen/projects_extract.py \
+  --html tests/fixtures/projects/api_docs_sample.html \
+  --output /tmp/projects_mvp.json
+
+# from live docs (network)
+uv run python tools/codegen/projects_extract.py \
+  --all \
+  --output tools/specs/projects_v3_extracted.json
 ```
 
 ## Repository Docs
