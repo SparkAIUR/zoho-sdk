@@ -17,7 +17,7 @@ __all__ = ["Zoho", "ZohoSettings", "__version__"]
 try:
     __version__ = version("zoho")
 except PackageNotFoundError:  # pragma: no cover - local editable installs before metadata exists
-    __version__ = "0.0.1"
+    __version__ = "0.1.0"
 
 
 def __getattr__(name: str) -> Any:

@@ -13,6 +13,7 @@ from zoho.core.token_store import TokenStore, build_token_store
 from zoho.core.transport import HttpxTransport
 from zoho.settings import (
     CacheSettings,
+    CreatorEnvironmentHeader,
     DataCenter,
     EnvironmentName,
     LogFormat,
@@ -23,7 +24,20 @@ from zoho.settings import (
 )
 
 if TYPE_CHECKING:
+    from zoho.creator.client import CreatorClient
     from zoho.crm.client import CRMClient
+    from zoho.projects.client import ProjectsClient
+
+_PROJECTS_API_DOMAIN_BY_DC: dict[str, str] = {
+    "US": "https://projectsapi.zoho.com",
+    "EU": "https://projectsapi.zoho.eu",
+    "IN": "https://projectsapi.zoho.in",
+    "AU": "https://projectsapi.zoho.com.au",
+    "JP": "https://projectsapi.zoho.jp",
+    "CA": "https://projectsapi.zohocloud.ca",
+    "SA": "https://projectsapi.zoho.sa",
+    "CN": "https://projectsapi.zoho.com.cn",
+}
 
 
 class Zoho:
@@ -83,6 +97,8 @@ class Zoho:
             self._metadata_cache = AsyncTTLCache()
 
         self._crm: CRMClient | None = None
+        self._creator: CreatorClient | None = None
+        self._projects: ProjectsClient | None = None
         self._closed = False
 
     @classmethod
@@ -106,12 +122,16 @@ class Zoho:
         environment: EnvironmentName = "production",
         accounts_domain: str | None = None,
         api_domain: str | None = None,
+        creator_base_url: str | None = None,
+        creator_environment_header: CreatorEnvironmentHeader | None = None,
+        projects_base_url: str | None = None,
+        projects_default_portal_id: str | None = None,
         token_store_backend: TokenStoreBackend = "sqlite",
         token_store_path: Path = Path("~/.cache/zoho/cache.sqlite3"),
         redis_url: str | None = None,
         log_format: LogFormat = "pretty",
         log_level: str = "INFO",
-        user_agent: str = "zoho-sdk/0.0.1",
+        user_agent: str = "zoho-sdk/0.1.0",
         timeout_seconds: float = 30.0,
         max_connections: int = 100,
         max_keepalive_connections: int = 20,
@@ -135,6 +155,10 @@ class Zoho:
             environment=environment,
             accounts_domain=accounts_domain,
             api_domain=api_domain,
+            creator_base_url=creator_base_url,
+            creator_environment_header=creator_environment_header,
+            projects_base_url=projects_base_url,
+            projects_default_portal_id=projects_default_portal_id,
             token_store_backend=token_store_backend,
             token_store_path=token_store_path.expanduser(),
             redis_url=redis_url,
@@ -173,6 +197,29 @@ class Zoho:
             )
         return self._crm
 
+    @property
+    def creator(self) -> CreatorClient:
+        """Access Zoho Creator operations."""
+
+        if self._creator is None:
+            from zoho.creator.client import CreatorClient
+
+            self._creator = CreatorClient(request=self._request_creator)
+        return self._creator
+
+    @property
+    def projects(self) -> ProjectsClient:
+        """Access Zoho Projects operations."""
+
+        if self._projects is None:
+            from zoho.projects.client import ProjectsClient
+
+            self._projects = ProjectsClient(
+                request=self._request_projects,
+                default_portal_id=self.settings.projects_default_portal_id,
+            )
+        return self._projects
+
     async def _request_crm(
         self,
         method: str,
@@ -208,7 +255,96 @@ class Zoho:
             files=files,
             timeout=timeout,
         )
+        return self._parse_response(response)
 
+    async def _request_creator(
+        self,
+        method: str,
+        path: str,
+        *,
+        headers: Mapping[str, str] | None = None,
+        params: Mapping[str, Any] | None = None,
+        json: Any | None = None,
+        data: Any | None = None,
+        files: Any | None = None,
+        timeout: float | None = None,
+    ) -> dict[str, Any]:
+        clean_path = path if path.startswith("/") else f"/{path}"
+
+        base_domain = (self.settings.creator_base_url or await self._auth.get_api_domain()).rstrip(
+            "/"
+        )
+        if clean_path.startswith("/creator/"):
+            url = f"{base_domain}{clean_path}"
+        else:
+            url = f"{base_domain}/creator/v2.1{clean_path}"
+
+        auth_headers = await self._auth.get_auth_headers()
+        request_headers: dict[str, str] = {
+            "Accept": "application/json",
+            "User-Agent": self.settings.user_agent,
+            **auth_headers,
+        }
+        if self.settings.creator_environment_header is not None:
+            request_headers["environment"] = self.settings.creator_environment_header
+        request_headers.update(dict(headers or {}))
+
+        response = await self._transport.request(
+            method,
+            url,
+            headers=request_headers,
+            params=params,
+            json=json,
+            data=data,
+            files=files,
+            timeout=timeout,
+        )
+        return self._parse_response(response)
+
+    async def _request_projects(
+        self,
+        method: str,
+        path: str,
+        *,
+        headers: Mapping[str, str] | None = None,
+        params: Mapping[str, Any] | None = None,
+        json: Any | None = None,
+        data: Any | None = None,
+        files: Any | None = None,
+        timeout: float | None = None,
+    ) -> dict[str, Any]:
+        clean_path = path if path.startswith("/") else f"/{path}"
+
+        base_domain = (
+            self.settings.projects_base_url or _PROJECTS_API_DOMAIN_BY_DC[self.settings.dc]
+        ).rstrip("/")
+        if clean_path.startswith("/api/v3/"):
+            url = f"{base_domain}{clean_path}"
+        else:
+            url = f"{base_domain}/api/v3{clean_path}"
+
+        auth_headers = await self._auth.get_auth_headers()
+        request_headers = {
+            "Accept": "application/json",
+            "User-Agent": self.settings.user_agent,
+            **auth_headers,
+            **dict(headers or {}),
+        }
+
+        response = await self._transport.request(
+            method,
+            url,
+            headers=request_headers,
+            params=params,
+            json=json,
+            data=data,
+            files=files,
+            timeout=timeout,
+        )
+        return self._parse_response(response)
+
+    @staticmethod
+    def _parse_response(response: Any) -> dict[str, Any]:
         if response.status_code == 204 or not response.content:
             return {}
 

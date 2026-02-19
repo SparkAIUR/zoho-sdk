@@ -49,7 +49,7 @@ class OAuth2RefreshAuthProvider:
         token_store: TokenStore,
         accounts_domain: str | None = None,
         api_domain: str | None = None,
-        user_agent: str = "zoho-sdk/0.0.1",
+        user_agent: str = "zoho-sdk/0.1.0",
         http_client: httpx.AsyncClient | None = None,
     ) -> None:
         self._client_id = client_id

@@ -16,6 +16,7 @@ DataCenter = Literal["US", "EU", "IN", "AU", "JP", "CA", "SA", "CN"]
 EnvironmentName = Literal["production", "sandbox", "developer"]
 TokenStoreBackend = Literal["memory", "sqlite", "redis"]
 LogFormat = Literal["pretty", "json"]
+CreatorEnvironmentHeader = Literal["production", "development", "stage"]
 
 
 class TransportSettings(BaseModel):
@@ -65,8 +66,12 @@ class ZohoSettings(BaseSettings):
 
     accounts_domain: str | None = None
     api_domain: str | None = None
+    creator_base_url: str | None = None
+    creator_environment_header: CreatorEnvironmentHeader | None = None
+    projects_base_url: str | None = None
+    projects_default_portal_id: str | None = None
 
-    user_agent: str = "zoho-sdk/0.0.1"
+    user_agent: str = "zoho-sdk/0.1.0"
 
     token_store_backend: TokenStoreBackend = "sqlite"
     token_store_path: Path = Field(
