@@ -41,6 +41,8 @@ uv run python tools/codegen/curated_summary.py \
   --spec tools/specs/workdrive_v1_curated.json \
   --output /tmp/curated_summary.json
 diff -u tests/golden/curated_summary.json /tmp/curated_summary.json
+
+uv run python tools/scopes_sync.py
 ```
 
 ## Commit Style

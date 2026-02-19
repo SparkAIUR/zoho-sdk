@@ -177,6 +177,7 @@ Additional iterators:
 
 If you still need OAuth credentials, follow:
 - `docs/auth-credentials.md`
+- `docs/scopes.md`
 
 At a high level:
 1. Create a client in Zoho API Console.

@@ -1,0 +1,214 @@
+{
+  "schema_version": 1,
+  "title": "Zoho OAuth Scope Catalog",
+  "description": "Curated scope catalog for products currently supported by this SDK.",
+  "products": [
+    {
+      "product": "CRM",
+      "service_name": "ZohoCRM",
+      "scope_syntax": "ZohoCRM.<scope_name>.<operation>",
+      "operations": [
+        "READ",
+        "CREATE",
+        "UPDATE",
+        "DELETE",
+        "ALL"
+      ],
+      "official_docs": [
+        "https://www.zoho.com/crm/developer/docs/api/v8/scopes.html",
+        "https://www.zoho.com/crm/developer/docs/api/v8/modules-api.html"
+      ],
+      "common_scopes": [
+        "ZohoCRM.modules.READ",
+        "ZohoCRM.modules.ALL",
+        "ZohoCRM.modules.{module}.READ",
+        "ZohoCRM.settings.READ",
+        "ZohoCRM.settings.ALL",
+        "ZohoCRM.users.READ",
+        "ZohoCRM.org.READ",
+        "ZohoCRM.coql.READ",
+        "ZohoCRM.apis.READ"
+      ],
+      "recommended_read_bundle": [
+        "ZohoCRM.modules.READ",
+        "ZohoCRM.settings.READ",
+        "ZohoCRM.users.READ",
+        "ZohoCRM.org.READ"
+      ],
+      "recommended_write_bundle": [
+        "ZohoCRM.modules.ALL",
+        "ZohoCRM.settings.ALL",
+        "ZohoCRM.users.READ",
+        "ZohoCRM.org.READ"
+      ],
+      "notes": "Use module-specific scopes for least privilege when possible."
+    },
+    {
+      "product": "Creator",
+      "service_name": "ZohoCreator",
+      "scope_syntax": "ZohoCreator.<scope_name>.<operation>",
+      "operations": [
+        "READ",
+        "CREATE",
+        "UPDATE",
+        "DELETE",
+        "ALL"
+      ],
+      "official_docs": [
+        "https://www.zoho.com/creator/help/api/v2/oauth-overview.html",
+        "https://www.zoho.com/creator/help/api/v2.1/get-records.html",
+        "https://www.zoho.com/creator/help/api/v2.1/get-fields.html"
+      ],
+      "common_scopes": [
+        "ZohoCreator.report.READ",
+        "ZohoCreator.report.CREATE",
+        "ZohoCreator.report.UPDATE",
+        "ZohoCreator.report.DELETE",
+        "ZohoCreator.form.CREATE",
+        "ZohoCreator.meta.form.READ",
+        "ZohoCreator.meta.application.READ",
+        "ZohoCreator.dashboard.READ"
+      ],
+      "recommended_read_bundle": [
+        "ZohoCreator.report.READ",
+        "ZohoCreator.meta.form.READ",
+        "ZohoCreator.meta.application.READ"
+      ],
+      "recommended_write_bundle": [
+        "ZohoCreator.report.ALL",
+        "ZohoCreator.form.CREATE",
+        "ZohoCreator.meta.application.READ"
+      ],
+      "notes": "Creator APIs often split data and metadata scopes."
+    },
+    {
+      "product": "Projects",
+      "service_name": "ZohoProjects",
+      "scope_syntax": "ZohoProjects.<module>.<operation>",
+      "operations": [
+        "READ",
+        "CREATE",
+        "UPDATE",
+        "DELETE",
+        "ALL"
+      ],
+      "official_docs": [
+        "https://projects.zoho.com/api-docs",
+        "https://projectsapi.zoho.com/api-docs"
+      ],
+      "common_scopes": [
+        "ZohoProjects.portals.READ",
+        "ZohoProjects.projects.READ",
+        "ZohoProjects.projects.ALL",
+        "ZohoProjects.tasklists.READ",
+        "ZohoProjects.tasks.READ",
+        "ZohoProjects.tasks.UPDATE",
+        "ZohoProjects.users.READ",
+        "ZohoProjects.search.READ",
+        "ZohoPC.files.CREATE"
+      ],
+      "recommended_read_bundle": [
+        "ZohoProjects.portals.READ",
+        "ZohoProjects.projects.READ",
+        "ZohoProjects.tasks.READ"
+      ],
+      "recommended_write_bundle": [
+        "ZohoProjects.projects.ALL",
+        "ZohoProjects.tasks.ALL",
+        "ZohoProjects.tasklists.ALL"
+      ],
+      "notes": "File attachments may require ZohoPC.files.* and, for WorkDrive-backed portals, WorkDrive.files.*."
+    },
+    {
+      "product": "People",
+      "service_name": "ZOHOPEOPLE",
+      "scope_syntax": "ZOHOPEOPLE.<scope_name>.<operation>",
+      "operations": [
+        "READ",
+        "CREATE",
+        "UPDATE",
+        "DELETE",
+        "ALL"
+      ],
+      "official_docs": [
+        "https://www.zoho.com/people/api/scopes.html",
+        "https://www.zoho.com/people/api/forms-api/fetch-forms.html"
+      ],
+      "common_scopes": [
+        "ZOHOPEOPLE.forms.READ",
+        "ZOHOPEOPLE.forms.ALL",
+        "ZOHOPEOPLE.employee.ALL",
+        "ZOHOPEOPLE.attendance.ALL",
+        "ZOHOPEOPLE.leave.READ",
+        "ZOHOPEOPLE.timetracker.ALL"
+      ],
+      "recommended_read_bundle": [
+        "ZOHOPEOPLE.forms.READ",
+        "ZOHOPEOPLE.employee.ALL"
+      ],
+      "recommended_write_bundle": [
+        "ZOHOPEOPLE.forms.ALL",
+        "ZOHOPEOPLE.employee.ALL"
+      ],
+      "notes": "People scope names are upper-case service prefix and module-specific scope names."
+    },
+    {
+      "product": "Sheet",
+      "service_name": "ZohoSheet",
+      "scope_syntax": "ZohoSheet.<scope_name>.<operation>",
+      "operations": [
+        "READ",
+        "CREATE",
+        "UPDATE",
+        "DELETE",
+        "ALL"
+      ],
+      "official_docs": [
+        "https://sheet.zoho.com/help/api/v2/"
+      ],
+      "common_scopes": [
+        "ZohoSheet.dataAPI.READ",
+        "ZohoSheet.dataAPI.UPDATE"
+      ],
+      "recommended_read_bundle": [
+        "ZohoSheet.dataAPI.READ"
+      ],
+      "recommended_write_bundle": [
+        "ZohoSheet.dataAPI.READ",
+        "ZohoSheet.dataAPI.UPDATE"
+      ],
+      "notes": "Sheet docs show dataAPI READ/UPDATE examples; use least privilege per operation."
+    },
+    {
+      "product": "WorkDrive",
+      "service_name": "WorkDrive",
+      "scope_syntax": "WorkDrive.<scope_name>.<operation>",
+      "operations": [
+        "READ",
+        "CREATE",
+        "UPDATE",
+        "DELETE",
+        "ALL"
+      ],
+      "official_docs": [
+        "https://workdrive.zoho.com/apidocs/v1/overview"
+      ],
+      "common_scopes": [
+        "WorkDrive.team.ALL",
+        "WorkDrive.files.READ",
+        "WorkDrive.files.CREATE",
+        "WorkDrive.files.UPDATE",
+        "WorkDrive.files.DELETE"
+      ],
+      "recommended_read_bundle": [
+        "WorkDrive.team.READ",
+        "WorkDrive.files.READ"
+      ],
+      "recommended_write_bundle": [
+        "WorkDrive.team.ALL",
+        "WorkDrive.files.ALL"
+      ],
+      "notes": "WorkDrive scopes are endpoint-specific; admin/team APIs usually require team scopes."
+    }
+  ]
+}

@@ -27,6 +27,10 @@ References:
 
 Start with least privilege and only add scopes needed by your endpoints.
 
+Use the generated scope matrix for SDK-supported products:
+
+- [Zoho OAuth Scope Catalog](scopes.md)
+
 ### CRM (current core + existing modules)
 
 ```text
