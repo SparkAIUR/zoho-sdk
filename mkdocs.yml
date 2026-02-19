@@ -30,6 +30,7 @@ nav:
   - CRM:
     - Records: crm/records.md
     - Modules: crm/modules.md
+    - Dynamic Discovery: crm/discovery.md
   - Creator:
     - Overview: creator/overview.md
     - Meta API: creator/meta.md

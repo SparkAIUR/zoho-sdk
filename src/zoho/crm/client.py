@@ -8,6 +8,7 @@ from typing import TYPE_CHECKING, Any, Protocol
 from zoho.core.cache import AsyncTTLCache
 
 if TYPE_CHECKING:
+    from zoho.crm.discovery import CRMDynamicNamespace
     from zoho.crm.modules import ModulesClient
     from zoho.crm.org import OrgClient
     from zoho.crm.records import RecordsClient
@@ -47,6 +48,7 @@ class CRMClient:
         self._modules: ModulesClient | None = None
         self._org: OrgClient | None = None
         self._users: UsersClient | None = None
+        self._dynamic: CRMDynamicNamespace | None = None
 
     @property
     def records(self) -> RecordsClient:
@@ -79,6 +81,16 @@ class CRMClient:
 
             self._users = UsersClient(self)
         return self._users
+
+    @property
+    def dynamic(self) -> CRMDynamicNamespace:
+        """Access runtime module discovery and dynamic module clients."""
+
+        if self._dynamic is None:
+            from zoho.crm.discovery import CRMDynamicNamespace
+
+            self._dynamic = CRMDynamicNamespace(self)
+        return self._dynamic
 
     async def request(
         self,

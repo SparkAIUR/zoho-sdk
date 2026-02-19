@@ -11,7 +11,7 @@ Async-first Python SDK for Zoho, designed for developer experience and performan
 - Structlog-powered logging (`pretty` or `json`)
 - Multi-account connection manager (`client.connections`)
 - Product clients:
-  - CRM (`records`, `modules`, `org`, `users`)
+  - CRM (`records`, `modules`, `org`, `users`, `dynamic`)
   - Creator (`meta`, `data`, `publish`)
   - Projects V3 (`portals`, `projects`, `tasks`)
   - People (`forms`, `employees`, `files`)
@@ -140,6 +140,15 @@ changes = await client.workdrive.changes.list_recent(
     limit=200,
 )
 print(changes.resources)
+```
+
+### CRM Dynamic Discovery
+
+```python
+if await client.crm.dynamic.has_module("Leads"):
+    leads = client.crm.dynamic.Leads
+    rows = await leads.list(page=1, per_page=200)
+    print(rows.data)
 ```
 
 ## Ingestion Helpers (`pipeshub-ai`-friendly)

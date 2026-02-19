@@ -19,3 +19,5 @@ lead_module = await client.crm.modules.get("Leads", use_cache=True)
 - Cache is in-memory per client process.
 - `cache_ttl_seconds` lets callers override default TTL for targeted calls.
 - Set `use_cache=False` for forced fresh reads.
+
+Module metadata also powers runtime discovery via `client.crm.dynamic`.
