@@ -1051,6 +1051,7 @@ dev = [
     { name = "pytest" },
     { name = "pytest-asyncio" },
     { name = "pytest-cov" },
+    { name = "python-dotenv" },
     { name = "respx" },
     { name = "ruff" },
 ]
@@ -1074,6 +1075,7 @@ dev = [
     { name = "pytest", specifier = ">=8.4.0" },
     { name = "pytest-asyncio", specifier = ">=1.1.0" },
     { name = "pytest-cov", specifier = ">=6.2.0" },
+    { name = "python-dotenv", specifier = ">=1.2.1" },
     { name = "respx", specifier = ">=0.22.0" },
     { name = "ruff", specifier = ">=0.12.0" },
 ]

@@ -191,6 +191,19 @@ async with Zoho.from_env() as client:
     print(org)
 ```
 
+## Live Credential Validation (Admin)
+
+Use the read-only validator before production rollout:
+
+```bash
+export ZOHO_CREDENTIALS_FILE=refs/notes/zoho-live.env
+uv sync --group dev
+uv run python tools/admin_validate_live.py
+```
+
+The script only runs read-oriented product checks and prints non-sensitive summaries
+(counts/status only). See `docs/admin-live-validation.md` for required/optional vars.
+
 ## Development
 
 ```bash

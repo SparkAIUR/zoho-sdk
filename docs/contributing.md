@@ -56,3 +56,12 @@ When public behavior changes:
 - update `README.md`
 - update or add pages under `docs/`
 - include usage examples for high-usage APIs
+
+## Admin Credential Validation
+
+Use the live validator before sharing credential onboarding changes:
+
+```bash
+export ZOHO_CREDENTIALS_FILE=refs/notes/zoho-live.env
+uv run python tools/admin_validate_live.py
+```
