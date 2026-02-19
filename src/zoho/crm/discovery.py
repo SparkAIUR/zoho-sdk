@@ -6,6 +6,7 @@ import re
 from collections.abc import Mapping, Sequence
 from typing import TYPE_CHECKING, Any, cast
 
+from zoho.core.discovery_cache import DiscoveryDiskCache
 from zoho.crm.models import ActionResponse, Record, RecordListResponse
 
 if TYPE_CHECKING:
@@ -127,12 +128,21 @@ def _dynamic_module_class_name(module_name: str) -> str:
 class CRMDynamicNamespace:
     """Dynamic CRM namespace with runtime module discovery."""
 
-    def __init__(self, crm_client: CRMClient) -> None:
+    def __init__(
+        self,
+        crm_client: CRMClient,
+        *,
+        discovery_cache: DiscoveryDiskCache | None = None,
+        discovery_cache_scope: str = "default:US:production",
+    ) -> None:
         self._crm = crm_client
         self._clients: dict[str, CRMDynamicModuleClient] = {}
         self._dynamic_classes: dict[str, type[CRMDynamicModuleClient]] = {}
         self._module_metadata_by_name: dict[str, dict[str, Any]] = {}
         self._module_name_aliases: dict[str, str] = {}
+        self._module_names: list[str] = []
+        self._discovery_cache = discovery_cache
+        self._discovery_cache_scope = discovery_cache_scope
 
     async def list_modules(
         self,
@@ -140,25 +150,34 @@ class CRMDynamicNamespace:
         use_cache: bool = True,
         cache_ttl_seconds: int | None = None,
     ) -> list[str]:
+        if use_cache and self._module_names:
+            return list(self._module_names)
+
+        if use_cache and self._discovery_cache is not None:
+            cached_modules = self._discovery_cache.load(
+                product="crm",
+                resource="modules",
+                scope=self._discovery_cache_scope,
+            )
+            if cached_modules:
+                self._ingest_module_metadata(cached_modules)
+                return list(self._module_names)
+
         modules = await self._crm.modules.list(
             use_cache=use_cache,
             cache_ttl_seconds=cache_ttl_seconds,
         )
-        names: list[str] = []
-        metadata_map: dict[str, dict[str, Any]] = {}
-        aliases: dict[str, str] = {}
+        self._ingest_module_metadata(modules)
 
-        for module in modules:
-            name_raw = module.get("api_name")
-            if not isinstance(name_raw, str) or not name_raw:
-                continue
-            names.append(name_raw)
-            metadata_map[name_raw] = dict(module)
-            aliases[name_raw.lower()] = name_raw
+        if self._discovery_cache is not None and modules:
+            self._discovery_cache.save(
+                product="crm",
+                resource="modules",
+                scope=self._discovery_cache_scope,
+                entries=modules,
+            )
 
-        self._module_metadata_by_name = metadata_map
-        self._module_name_aliases = aliases
-        return names
+        return list(self._module_names)
 
     async def has_module(
         self,
@@ -186,6 +205,15 @@ class CRMDynamicNamespace:
                 message = f"{message}. Known modules include: {sample}"
             raise KeyError(message)
         return self._client_for_module(canonical_name)
+
+    async def precompile_modules(
+        self,
+        *,
+        cache_ttl_seconds: int | None = None,
+    ) -> list[str]:
+        """Force-refresh CRM module metadata and write it to disk cache."""
+
+        return await self.list_modules(use_cache=False, cache_ttl_seconds=cache_ttl_seconds)
 
     def _client_for_module(self, module_name: str) -> CRMDynamicModuleClient:
         existing = self._clients.get(module_name)
@@ -223,3 +251,20 @@ class CRMDynamicNamespace:
             raise AttributeError(f"{self.__class__.__name__} has no attribute {name!r}")
         canonical_name = self._module_name_aliases.get(name.lower(), name)
         return self._client_for_module(canonical_name)
+
+    def _ingest_module_metadata(self, modules: Sequence[Mapping[str, Any]]) -> None:
+        names: list[str] = []
+        metadata_map: dict[str, dict[str, Any]] = {}
+        aliases: dict[str, str] = {}
+
+        for module in modules:
+            name_raw = module.get("api_name")
+            if not isinstance(name_raw, str) or not name_raw:
+                continue
+            names.append(name_raw)
+            metadata_map[name_raw] = dict(module)
+            aliases[name_raw.lower()] = name_raw
+
+        self._module_names = names
+        self._module_metadata_by_name = metadata_map
+        self._module_name_aliases = aliases

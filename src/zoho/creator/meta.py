@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 from zoho.creator.models import CreatorResponse, parse_creator_response
 
@@ -39,6 +39,41 @@ class CreatorMetaClient:
             headers=headers,
         )
         return parse_creator_response(payload)
+
+    async def list_applications(
+        self,
+        *,
+        headers: Mapping[str, str] | None = None,
+    ) -> list[dict[str, Any]]:
+        payload = await self._creator.request(
+            "GET",
+            "/creator/v2/meta/applications",
+            headers=headers,
+        )
+        applications = payload.get("applications")
+        return (
+            [item for item in applications if isinstance(item, dict)]
+            if isinstance(applications, list)
+            else []
+        )
+
+    async def list_applications_by_workspace(
+        self,
+        *,
+        account_owner_name: str,
+        headers: Mapping[str, str] | None = None,
+    ) -> list[dict[str, Any]]:
+        payload = await self._creator.request(
+            "GET",
+            f"/creator/v2/meta/{account_owner_name}/applications",
+            headers=headers,
+        )
+        applications = payload.get("applications")
+        return (
+            [item for item in applications if isinstance(item, dict)]
+            if isinstance(applications, list)
+            else []
+        )
 
     async def get_forms(
         self,

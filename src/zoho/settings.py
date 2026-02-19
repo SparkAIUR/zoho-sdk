@@ -6,6 +6,7 @@ The SDK prefers explicit credential inputs, but this settings model also support
 
 from __future__ import annotations
 
+import os
 from pathlib import Path
 from typing import Literal
 
@@ -17,6 +18,24 @@ EnvironmentName = Literal["production", "sandbox", "developer"]
 TokenStoreBackend = Literal["memory", "sqlite", "redis"]
 LogFormat = Literal["pretty", "json"]
 CreatorEnvironmentHeader = Literal["production", "development", "stage"]
+
+
+def _default_token_store_path() -> Path:
+    if os.name == "nt":
+        local_app_data = os.getenv("LOCALAPPDATA") or os.getenv("APPDATA")
+        if local_app_data:
+            return Path(local_app_data) / "zoho" / "cache.sqlite3"
+        return Path.home() / "AppData" / "Local" / "zoho" / "cache.sqlite3"
+    return Path("~/.cache/zoho/cache.sqlite3").expanduser()
+
+
+def _default_discovery_cache_dir() -> Path:
+    if os.name == "nt":
+        local_app_data = os.getenv("LOCALAPPDATA") or os.getenv("APPDATA")
+        if local_app_data:
+            return Path(local_app_data) / "zohosdk"
+        return Path.home() / "AppData" / "Local" / "zohosdk"
+    return Path("~/.cache/zohosdk").expanduser()
 
 
 class TransportSettings(BaseModel):
@@ -42,6 +61,9 @@ class CacheSettings(BaseModel):
 
     enable_metadata_cache: bool = True
     metadata_cache_ttl_seconds: int = Field(default=24 * 60 * 60, ge=0)
+    enable_discovery_cache: bool = True
+    discovery_cache_ttl_seconds: int = Field(default=24 * 60 * 60, ge=0)
+    discovery_cache_dir: Path = Field(default_factory=_default_discovery_cache_dir)
 
 
 class ZohoSettings(BaseSettings):
@@ -78,9 +100,7 @@ class ZohoSettings(BaseSettings):
     user_agent: str = "zoho-sdk/0.1.1"
 
     token_store_backend: TokenStoreBackend = "sqlite"
-    token_store_path: Path = Field(
-        default_factory=lambda: Path("~/.cache/zoho/cache.sqlite3").expanduser()
-    )
+    token_store_path: Path = Field(default_factory=_default_token_store_path)
     redis_url: str | None = None
 
     log_format: LogFormat = "pretty"

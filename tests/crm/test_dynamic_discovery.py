@@ -1,21 +1,26 @@
 from __future__ import annotations
 
+from pathlib import Path
 from typing import Any
 
 import pytest
 
 from zoho.core.cache import AsyncTTLCache
+from zoho.core.discovery_cache import DiscoveryDiskCache
 from zoho.crm.client import CRMClient
 
 
 class _Requester:
-    def __init__(self) -> None:
+    def __init__(self, *, raise_on_module_list: bool = False) -> None:
         self.calls: list[tuple[str, str]] = []
+        self._raise_on_module_list = raise_on_module_list
 
     async def __call__(self, method: str, path: str, **_: Any) -> dict[str, Any]:
         self.calls.append((method, path))
 
         if method == "GET" and path == "/settings/modules":
+            if self._raise_on_module_list:
+                raise RuntimeError("network should not be called")
             return {"modules": [{"api_name": "Leads"}, {"api_name": "Contacts"}]}
         if method == "GET" and path == "/Leads":
             return {
@@ -30,11 +35,18 @@ class _Requester:
         return {}
 
 
-def _build_crm_client(requester: _Requester) -> CRMClient:
+def _build_crm_client(
+    requester: _Requester,
+    *,
+    discovery_cache: DiscoveryDiskCache | None = None,
+    discovery_cache_scope: str = "default:US:production",
+) -> CRMClient:
     return CRMClient(
         request=requester,
         metadata_cache=AsyncTTLCache(),
         default_metadata_ttl_seconds=60,
+        discovery_cache=discovery_cache,
+        discovery_cache_scope=discovery_cache_scope,
     )
 
 
@@ -85,3 +97,27 @@ async def test_dynamic_module_class_created_at_runtime() -> None:
     dynamic_leads = crm.dynamic.Leads
 
     assert type(dynamic_leads).__name__ == "CRMLeadsModuleClient"
+
+
+async def test_dynamic_discovery_uses_disk_cache_between_processes(tmp_path: Path) -> None:
+    cache = DiscoveryDiskCache(base_dir=tmp_path / "cache", ttl_seconds=3600)
+    requester_a = _Requester()
+    crm_a = _build_crm_client(
+        requester_a,
+        discovery_cache=cache,
+        discovery_cache_scope="tenant_a:US:production",
+    )
+
+    modules_a = await crm_a.dynamic.list_modules(use_cache=True)
+    assert modules_a == ["Leads", "Contacts"]
+    assert requester_a.calls.count(("GET", "/settings/modules")) == 1
+
+    requester_b = _Requester(raise_on_module_list=True)
+    crm_b = _build_crm_client(
+        requester_b,
+        discovery_cache=cache,
+        discovery_cache_scope="tenant_a:US:production",
+    )
+    modules_b = await crm_b.dynamic.list_modules(use_cache=True)
+    assert modules_b == ["Leads", "Contacts"]
+    assert ("GET", "/settings/modules") not in requester_b.calls

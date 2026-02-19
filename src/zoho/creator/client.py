@@ -5,8 +5,11 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import TYPE_CHECKING, Any, Protocol
 
+from zoho.core.discovery_cache import DiscoveryDiskCache
+
 if TYPE_CHECKING:
     from zoho.creator.data import CreatorDataClient
+    from zoho.creator.discovery import CreatorDynamicNamespace
     from zoho.creator.meta import CreatorMetaClient
     from zoho.creator.publish import CreatorPublishClient
 
@@ -39,11 +42,20 @@ class CreatorClient:
         ```
     """
 
-    def __init__(self, *, request: CreatorRequestCallable) -> None:
+    def __init__(
+        self,
+        *,
+        request: CreatorRequestCallable,
+        discovery_cache: DiscoveryDiskCache | None = None,
+        discovery_cache_scope: str = "default:US:production",
+    ) -> None:
         self._request_fn = request
+        self._discovery_cache = discovery_cache
+        self._discovery_cache_scope = discovery_cache_scope
         self._meta: CreatorMetaClient | None = None
         self._data: CreatorDataClient | None = None
         self._publish: CreatorPublishClient | None = None
+        self._dynamic: CreatorDynamicNamespace | None = None
 
     @property
     def meta(self) -> CreatorMetaClient:
@@ -68,6 +80,20 @@ class CreatorClient:
 
             self._publish = CreatorPublishClient(self)
         return self._publish
+
+    @property
+    def dynamic(self) -> CreatorDynamicNamespace:
+        """Access runtime Creator application discovery and bound app clients."""
+
+        if self._dynamic is None:
+            from zoho.creator.discovery import CreatorDynamicNamespace
+
+            self._dynamic = CreatorDynamicNamespace(
+                self,
+                discovery_cache=self._discovery_cache,
+                discovery_cache_scope=self._discovery_cache_scope,
+            )
+        return self._dynamic
 
     async def request(
         self,

@@ -17,6 +17,8 @@ from zoho.settings import (
     TokenStoreBackend,
     TransportSettings,
     ZohoSettings,
+    _default_discovery_cache_dir,
+    _default_token_store_path,
 )
 
 if TYPE_CHECKING:
@@ -48,9 +50,7 @@ class ZohoConnectionProfile(BaseModel):
     workdrive_base_url: str | None = None
 
     token_store_backend: TokenStoreBackend = "sqlite"
-    token_store_path: Path = Field(
-        default_factory=lambda: Path("~/.cache/zoho/cache.sqlite3").expanduser()
-    )
+    token_store_path: Path = Field(default_factory=_default_token_store_path)
     redis_url: str | None = None
 
     log_format: LogFormat = "pretty"
@@ -68,6 +68,9 @@ class ZohoConnectionProfile(BaseModel):
 
     enable_metadata_cache: bool = True
     metadata_cache_ttl_seconds: int = 24 * 60 * 60
+    enable_discovery_cache: bool = True
+    discovery_cache_ttl_seconds: int = 24 * 60 * 60
+    discovery_cache_dir: Path = Field(default_factory=_default_discovery_cache_dir)
 
     def to_settings(self) -> ZohoSettings:
         """Build typed runtime settings for this connection profile."""
@@ -108,6 +111,9 @@ class ZohoConnectionProfile(BaseModel):
             cache=CacheSettings(
                 enable_metadata_cache=self.enable_metadata_cache,
                 metadata_cache_ttl_seconds=self.metadata_cache_ttl_seconds,
+                enable_discovery_cache=self.enable_discovery_cache,
+                discovery_cache_ttl_seconds=self.discovery_cache_ttl_seconds,
+                discovery_cache_dir=self.discovery_cache_dir.expanduser(),
             ),
         )
 

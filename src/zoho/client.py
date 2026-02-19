@@ -9,6 +9,7 @@ from typing import TYPE_CHECKING, Any, cast
 from zoho.connections import ZohoConnectionProfile, ZohoConnectionsManager
 from zoho.core.auth import OAuth2RefreshAuthProvider
 from zoho.core.cache import AsyncTTLCache
+from zoho.core.discovery_cache import DiscoveryDiskCache
 from zoho.core.logging import configure_logging, get_logger
 from zoho.core.token_store import TokenStore, build_token_store
 from zoho.core.transport import HttpxTransport
@@ -22,6 +23,8 @@ from zoho.settings import (
     TokenStoreBackend,
     TransportSettings,
     ZohoSettings,
+    _default_discovery_cache_dir,
+    _default_token_store_path,
 )
 
 if TYPE_CHECKING:
@@ -75,6 +78,9 @@ _WORKDRIVE_API_DOMAIN_BY_DC: dict[str, str] = {
     "SA": "https://www.zohoapis.sa",
     "CN": "https://www.zohoapis.com.cn",
 }
+
+_DEFAULT_TOKEN_STORE_PATH = _default_token_store_path()
+_DEFAULT_DISCOVERY_CACHE_DIR = _default_discovery_cache_dir()
 
 
 class Zoho:
@@ -143,6 +149,15 @@ class Zoho:
         self._metadata_cache: AsyncTTLCache[dict[str, Any]] | None = None
         if settings.cache.enable_metadata_cache:
             self._metadata_cache = AsyncTTLCache()
+        self._discovery_cache: DiscoveryDiskCache | None = None
+        if settings.cache.enable_discovery_cache:
+            self._discovery_cache = DiscoveryDiskCache(
+                base_dir=settings.cache.discovery_cache_dir,
+                ttl_seconds=settings.cache.discovery_cache_ttl_seconds,
+            )
+        self._discovery_cache_scope = (
+            f"{settings.connection_name}:{settings.dc}:{settings.environment}"
+        )
 
         self._crm: CRMClient | None = None
         self._creator: CreatorClient | None = None
@@ -184,7 +199,7 @@ class Zoho:
         sheet_base_url: str | None = None,
         workdrive_base_url: str | None = None,
         token_store_backend: TokenStoreBackend = "sqlite",
-        token_store_path: Path = Path("~/.cache/zoho/cache.sqlite3"),
+        token_store_path: Path = _DEFAULT_TOKEN_STORE_PATH,
         redis_url: str | None = None,
         log_format: LogFormat = "pretty",
         log_level: str = "INFO",
@@ -198,6 +213,9 @@ class Zoho:
         backoff_max_seconds: float = 5.0,
         enable_metadata_cache: bool = True,
         metadata_cache_ttl_seconds: int = 24 * 60 * 60,
+        enable_discovery_cache: bool = True,
+        discovery_cache_ttl_seconds: int = 24 * 60 * 60,
+        discovery_cache_dir: Path = _DEFAULT_DISCOVERY_CACHE_DIR,
     ) -> Zoho:
         """Create a client with explicit configuration.
 
@@ -240,6 +258,9 @@ class Zoho:
             cache=CacheSettings(
                 enable_metadata_cache=enable_metadata_cache,
                 metadata_cache_ttl_seconds=metadata_cache_ttl_seconds,
+                enable_discovery_cache=enable_discovery_cache,
+                discovery_cache_ttl_seconds=discovery_cache_ttl_seconds,
+                discovery_cache_dir=discovery_cache_dir.expanduser(),
             ),
         )
         return cls(settings)
@@ -255,6 +276,8 @@ class Zoho:
                 request=self._request_crm,
                 metadata_cache=self._metadata_cache,
                 default_metadata_ttl_seconds=self.settings.cache.metadata_cache_ttl_seconds,
+                discovery_cache=self._discovery_cache,
+                discovery_cache_scope=self._discovery_cache_scope,
             )
         return self._crm
 
@@ -265,7 +288,11 @@ class Zoho:
         if self._creator is None:
             from zoho.creator.client import CreatorClient
 
-            self._creator = CreatorClient(request=self._request_creator)
+            self._creator = CreatorClient(
+                request=self._request_creator,
+                discovery_cache=self._discovery_cache,
+                discovery_cache_scope=self._discovery_cache_scope,
+            )
         return self._creator
 
     @property

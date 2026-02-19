@@ -6,6 +6,7 @@ from collections.abc import Mapping
 from typing import TYPE_CHECKING, Any, Protocol
 
 from zoho.core.cache import AsyncTTLCache
+from zoho.core.discovery_cache import DiscoveryDiskCache
 
 if TYPE_CHECKING:
     from zoho.crm.discovery import CRMDynamicNamespace
@@ -39,10 +40,14 @@ class CRMClient:
         request: CRMRequestCallable,
         metadata_cache: AsyncTTLCache[dict[str, Any]] | None,
         default_metadata_ttl_seconds: int,
+        discovery_cache: DiscoveryDiskCache | None = None,
+        discovery_cache_scope: str = "default:US:production",
     ) -> None:
         self._request_fn = request
         self._metadata_cache = metadata_cache
         self._default_metadata_ttl_seconds = default_metadata_ttl_seconds
+        self._discovery_cache = discovery_cache
+        self._discovery_cache_scope = discovery_cache_scope
 
         self._records: RecordsClient | None = None
         self._modules: ModulesClient | None = None
@@ -89,7 +94,11 @@ class CRMClient:
         if self._dynamic is None:
             from zoho.crm.discovery import CRMDynamicNamespace
 
-            self._dynamic = CRMDynamicNamespace(self)
+            self._dynamic = CRMDynamicNamespace(
+                self,
+                discovery_cache=self._discovery_cache,
+                discovery_cache_scope=self._discovery_cache_scope,
+            )
         return self._dynamic
 
     async def request(

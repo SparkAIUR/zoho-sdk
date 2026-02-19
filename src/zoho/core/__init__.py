@@ -2,6 +2,7 @@
 
 from zoho.core.auth import OAuth2RefreshAuthProvider
 from zoho.core.cache import AsyncTTLCache
+from zoho.core.discovery_cache import DiscoveryDiskCache
 from zoho.core.errors import (
     ZohoAPIError,
     ZohoAuthError,
@@ -26,6 +27,7 @@ from zoho.core.transport import HttpxTransport, Transport
 __all__ = [
     "AsyncPager",
     "AsyncTTLCache",
+    "DiscoveryDiskCache",
     "HttpxTransport",
     "MemoryTokenStore",
     "OAuth2RefreshAuthProvider",
