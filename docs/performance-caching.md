@@ -18,6 +18,16 @@
 - CRM metadata endpoints can be cached in-memory per client instance.
 - Toggle globally via settings or per call with `use_cache` and `cache_ttl_seconds`.
 
+### Discovery Disk Caching
+
+- Dynamic discovery (`client.crm.dynamic`, `client.creator.dynamic`) supports persistent disk cache.
+- Precompile explicitly:
+  - `await client.crm.dynamic.precompile_modules()`
+  - `await client.creator.dynamic.precompile_applications()`
+- Default cache roots:
+  - Unix/Linux/macOS: `~/.cache/zohosdk`
+  - Windows: `%LOCALAPPDATA%\\zohosdk` (fallback `%APPDATA%`)
+
 ### Connector Checkpointing
 
 - `zoho.ingestion` iterators expose checkpoint models (`offset`, `cursor`) for resumable crawls.

@@ -12,7 +12,7 @@ Async-first Python SDK for Zoho, designed for developer experience and performan
 - Multi-account connection manager (`client.connections`)
 - Product clients:
   - CRM (`records`, `modules`, `org`, `users`, `dynamic`)
-  - Creator (`meta`, `data`, `publish`)
+  - Creator (`meta`, `data`, `publish`, `dynamic`)
   - Projects V3 (`portals`, `projects`, `tasks`)
   - People (`forms`, `employees`, `files`)
   - Sheet (`workbooks`, `worksheets`, `tabular`)
@@ -149,6 +149,22 @@ if await client.crm.dynamic.has_module("Leads"):
     leads = client.crm.dynamic.Leads
     rows = await leads.list(page=1, per_page=200)
     print(rows.data)
+```
+
+### Creator Dynamic Discovery
+
+```python
+apps = await client.creator.dynamic.list_applications()
+inventory = await client.creator.dynamic.get_application_client("owner.inventory-app")
+forms = await inventory.meta.get_forms()
+print(forms.data)
+```
+
+Precompile dynamic metadata for faster cold starts:
+
+```python
+await client.crm.dynamic.precompile_modules()
+await client.creator.dynamic.precompile_applications()
 ```
 
 ## Ingestion Helpers (`pipeshub-ai`-friendly)

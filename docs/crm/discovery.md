@@ -31,3 +31,16 @@ if await client.crm.dynamic.has_module("Leads"):
 ```
 
 `get_module_client(...)` validates against metadata and raises `KeyError` for unknown modules.
+
+## Precompile + Persistent Cache
+
+Warm and persist module discovery metadata (for fast process restarts):
+
+```python
+await client.crm.dynamic.precompile_modules()
+```
+
+By default, dynamic discovery caches are stored under:
+
+- Unix/Linux/macOS: `~/.cache/zohosdk/crm/...`
+- Windows: `%LOCALAPPDATA%\\zohosdk\\crm\\...` (fallback to `%APPDATA%`)

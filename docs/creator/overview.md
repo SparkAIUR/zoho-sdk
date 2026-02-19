@@ -5,6 +5,7 @@
 - metadata (`meta`)
 - data APIs (`data`)
 - publish APIs (`publish`)
+- dynamic application discovery (`dynamic`)
 
 ## Initialize
 
@@ -25,6 +26,9 @@ client = Zoho.from_credentials(
 - `client.creator.meta`
 - `client.creator.data`
 - `client.creator.publish`
+- `client.creator.dynamic`
+
+See [Creator Dynamic Discovery](discovery.md) for runtime app discovery and precompiled cache usage.
 
 Most Creator methods return a typed `CreatorResponse` envelope:
 

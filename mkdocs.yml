@@ -42,6 +42,7 @@ nav:
     - Dynamic Discovery: crm/discovery.md
   - Creator:
     - Overview: creator/overview.md
+    - Dynamic Discovery: creator/discovery.md
     - Meta API: creator/meta.md
     - Data API: creator/data.md
     - Publish API: creator/publish.md
