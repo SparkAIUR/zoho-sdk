@@ -16,19 +16,15 @@ Optional product-specific settings:
 - `creator_base_url` (override Creator API host)
 - `projects_default_portal_id` (omit repeated `portal_id` args for Projects calls)
 - `projects_base_url` (override Projects API host)
+- `people_base_url` (override People API host)
+- `sheet_base_url` (override Sheet API host)
+- `workdrive_base_url` (override WorkDrive API host)
 
 ## Credential Setup Guide
 
-Use the dedicated step-by-step guide to obtain credentials correctly:
+Use the dedicated step-by-step guide:
 
 - [Credential Setup (Zoho OAuth)](auth-credentials.md)
-
-That guide covers:
-- creating a Zoho OAuth client in API Console
-- choosing scopes for CRM operations
-- generating and exchanging grant codes
-- data center domain mapping
-- SDK configuration examples
 
 ## SDK Initialization
 
@@ -53,6 +49,27 @@ Use either lifecycle style:
 
 See [Client Lifecycle](client-lifecycle.md) for patterns and shutdown examples.
 
+## Multi-Account Profiles
+
+```python
+from zoho import ZohoConnectionProfile
+
+client.register_connection(
+    ZohoConnectionProfile(
+        name="tenant_2",
+        client_id="...",
+        client_secret="...",
+        refresh_token="...",
+        dc="EU",
+        people_base_url="https://people.zoho.eu",
+    )
+)
+
+tenant_2 = client.for_connection("tenant_2")
+```
+
+Each connection profile has independent token caching namespace.
+
 ## Token Stores
 
 - `memory`: in-memory only (tests, short-lived scripts)
@@ -71,4 +88,5 @@ client = Zoho.from_credentials(
 
 ## Domain and Environment Correctness
 
-Token/domain cache keys include data center + environment to prevent cross-region or cross-environment token reuse bugs.
+Token cache keys include connection name + data center + environment.
+This prevents cross-tenant and cross-region token reuse bugs.

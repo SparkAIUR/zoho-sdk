@@ -8,7 +8,7 @@ uv add zoho
 
 ## Recommended Initialization
 
-Use explicit credentials for clarity and portability:
+Use explicit credentials for clarity and portability.
 
 Need help obtaining credentials? See [Credential Setup (Zoho OAuth)](auth-credentials.md).
 
@@ -53,19 +53,48 @@ await client.close()
 
 See [Client Lifecycle](client-lifecycle.md) for FastAPI and singleton patterns.
 
-## Creator and Projects Quick Calls
+## Multi-Account Setup
+
+```python
+from zoho import ZohoConnectionProfile
+
+client.register_connection(
+    ZohoConnectionProfile(
+        name="tenant_2",
+        client_id="...",
+        client_secret="...",
+        refresh_token="...",
+        dc="EU",
+    )
+)
+
+tenant_2 = client.for_connection("tenant_2")
+forms = await tenant_2.people.forms.list_forms()
+```
+
+## Product Quick Calls
 
 ```python
 async with client:
-    forms = await client.creator.meta.get_forms(
-        account_owner_name="owner",
-        app_link_name="inventory_app",
+    people_forms = await client.people.forms.list_forms()
+    sheet_rows = await client.sheet.tabular.fetch_worksheet_records(
+        workbook_id="workbook_123",
+        worksheet_name="Data",
     )
-    print(forms.code, len(forms.data))
+    workdrive_changes = await client.workdrive.changes.list_recent(folder_id="folder_123")
 
-    projects = await client.projects.projects.list()
-    if projects:
-        print(projects[0].id, projects[0].name)
+    print(people_forms.result_rows)
+    print(sheet_rows.records)
+    print(workdrive_changes.resources)
+```
+
+## Ingestion Quick Call
+
+```python
+from zoho.ingestion import iter_workdrive_recent_documents
+
+async for batch in iter_workdrive_recent_documents(client, folder_id="folder_123"):
+    print(batch.checkpoint, len(batch.documents))
 ```
 
 ## Local Development

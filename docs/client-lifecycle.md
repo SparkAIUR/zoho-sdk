@@ -73,3 +73,11 @@ app = FastAPI(lifespan=lifespan)
 - Do not create a new client per request.
 - Reuse a single client per process/event loop when possible.
 - After `close()`, the client is terminal (`client.closed` is `True`) and should be replaced with a new instance.
+
+## Multi-Account Lifecycles
+
+When you register additional connection profiles, those child clients are managed by the root client:
+
+- register via `client.register_connection(...)`
+- use via `client.for_connection(\"tenant_name\")`
+- closing the root client closes all registered child clients

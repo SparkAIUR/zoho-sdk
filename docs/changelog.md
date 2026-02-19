@@ -1,5 +1,17 @@
 # Changelog
 
+## v0.1.1
+
+- Added `zoho.people` module with `forms`, `employees`, and `files` clients
+- Added `zoho.sheet` module with `workbooks`, `worksheets`, and `tabular` clients
+- Added `zoho.workdrive` module with `files`, `folders`, `search`, `changes`, and `admin` clients
+- Added multi-account connection management (`ZohoConnectionProfile`, `client.connections`, `client.for_connection(...)`)
+- Added `zoho.ingestion` iterators with checkpoint models for connector workflows
+- Added API research notes in `refs/apis/` for People/Sheet/WorkDrive integration requirements
+- Added curated spec snapshots and codegen summary tooling for People/Sheet/WorkDrive
+- Extended CI codegen drift checks to include curated product snapshots
+- Expanded docs and examples for new products, multi-account usage, and ingestion patterns
+
 ## v0.1.0
 
 - Added `zoho.creator` module with `meta`, `data`, and `publish` clients

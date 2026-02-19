@@ -18,6 +18,12 @@
 - CRM metadata endpoints can be cached in-memory per client instance.
 - Toggle globally via settings or per call with `use_cache` and `cache_ttl_seconds`.
 
+### Connector Checkpointing
+
+- `zoho.ingestion` iterators expose checkpoint models (`offset`, `cursor`) for resumable crawls.
+- Store checkpoints externally (DB/queue state) to recover from worker restarts.
+- Keep page sizes conservative for APIs with lock-window behavior.
+
 ## Logging for Ops
 
 Use JSON logs in containerized environments:

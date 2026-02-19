@@ -34,6 +34,13 @@ uv run python tools/codegen/projects_extract.py \
   --html tests/fixtures/projects/api_docs_sample.html \
   --output /tmp/projects_extracted_mvp.json
 diff -u tests/golden/projects_extracted_mvp.json /tmp/projects_extracted_mvp.json
+
+uv run python tools/codegen/curated_summary.py \
+  --spec tools/specs/people_v1_curated.json \
+  --spec tools/specs/sheet_v2_curated.json \
+  --spec tools/specs/workdrive_v1_curated.json \
+  --output /tmp/curated_summary.json
+diff -u tests/golden/curated_summary.json /tmp/curated_summary.json
 ```
 
 ## Commit Style

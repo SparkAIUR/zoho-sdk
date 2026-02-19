@@ -12,42 +12,55 @@ Use official Zoho OAuth flows. For most backend/internal integrations, **Self Cl
 ## 1. Create a Client in Zoho API Console
 
 1. Open [Zoho API Console](https://api-console.zoho.com/).
-2. Choose a client type:
-   - **Self Client**: best for backend jobs/internal use.
-   - **Server-based**: best for multi-user web apps with redirect flow.
-3. Create the client and copy values from the **Client Secret** tab:
+2. Choose client type:
+   - **Self Client** for backend jobs/internal integrations.
+   - **Server-based** for multi-user web redirect flows.
+3. Create the client and collect:
    - `Client ID` -> `client_id`
    - `Client Secret` -> `client_secret`
 
-Reference:
+References:
 - https://www.zoho.com/accounts/protocol/oauth-setup.html
 - https://www.zoho.com/accounts/protocol/oauth/self-client/overview.html
 
-## 2. Choose CRM Scopes
+## 2. Choose Product Scopes
 
-For CRM features in v0.1.0 (`records`, `modules`, `org`, `users`), a practical starting scope set is:
+Start with least privilege and only add scopes needed by your endpoints.
+
+### CRM (current core + existing modules)
 
 ```text
 ZohoCRM.modules.ALL,ZohoCRM.settings.ALL,ZohoCRM.users.ALL,ZohoCRM.org.ALL
 ```
 
-Adjust scopes down if your app needs less access.
+### People (examples from docs)
 
-For Creator and Projects features, add product scopes according to your exact endpoints.
-Start from the official scope docs and request least privilege:
+```text
+ZOHOPEOPLE.forms.ALL,ZOHOPEOPLE.form.READ
+```
 
-- Creator: https://www.zoho.com/creator/help/api/v2/oauth-overview.html
-- Projects: https://www.zoho.com/projects/help/rest-api/zohoprojectsapi.html
+### WorkDrive (examples from docs)
 
-Reference:
-- https://www.zoho.com/crm/developer/docs/api/v8/scopes.html
+```text
+WorkDrive.team.ALL,WorkDrive.files.READ,WorkDrive.files.UPDATE
+```
 
-## 3A. Self Client Flow (Recommended for Quick Setup)
+### Sheet
 
-1. In your Self Client, open **Generate Code**.
-2. Enter scopes (comma-separated), choose short expiry, click **Create**.
-3. Copy the generated authorization `code`.
-4. Exchange the code for tokens:
+Use the scopes shown in the Zoho Sheet API auth section for the exact endpoints you plan to call.
+
+References:
+- CRM: https://www.zoho.com/crm/developer/docs/api/v8/scopes.html
+- People: https://www.zoho.com/people/api/oauth.html
+- Sheet: https://sheet.zoho.com/help/api/v2/
+- WorkDrive: https://workdrive.zoho.com/apidocs/v1/overview
+
+## 3A. Self Client Flow (Recommended)
+
+1. In Self Client, open **Generate Code**.
+2. Enter scopes (comma-separated), short expiry, then create.
+3. Copy authorization `code`.
+4. Exchange code for tokens:
 
 ```bash
 curl --request POST \
@@ -59,25 +72,22 @@ curl --request POST \
 ```
 
 Save:
-- `refresh_token` (long-lived; used by this SDK)
+- `refresh_token` (long-lived, SDK uses this)
 - `api_domain`
 
-Reference:
-- https://www.zoho.com/accounts/protocol/oauth/self-client/authorization-code-flow.html
-
-## 3B. Server-based Flow (User Authorization)
+## 3B. Server-Based Flow
 
 1. Redirect users to Zoho auth URL with `access_type=offline`.
-2. Capture `code` from your callback URL.
+2. Capture `code` from callback URL.
 3. Exchange code for tokens with `redirect_uri` included.
 
-Reference:
+References:
 - https://www.zoho.com/crm/developer/docs/api/v8/auth-request.html
 - https://www.zoho.com/crm/developer/docs/api/v8/access-refresh.html
 
-## 4. Pick the Correct Data Center (`dc`)
+## 4. Pick Correct Data Center (`dc`)
 
-Use the accounts domain matching your Zoho region when generating tokens:
+Use matching accounts domain for token generation:
 
 - US: `https://accounts.zoho.com`
 - EU: `https://accounts.zoho.eu`
@@ -88,12 +98,9 @@ Use the accounts domain matching your Zoho region when generating tokens:
 - SA: `https://accounts.zoho.sa`
 - CN: `https://accounts.zoho.com.cn`
 
-Set SDK `dc` accordingly (`US`, `EU`, `IN`, `AU`, `JP`, `CA`, `SA`, `CN`).
+Set SDK `dc` accordingly.
 
-Reference:
-- https://www.zoho.com/crm/developer/docs/api/v8/access-refresh.html
-
-## 5. Configure the SDK
+## 5. Configure SDK
 
 ```python
 from zoho import Zoho
@@ -107,7 +114,7 @@ client = Zoho.from_credentials(
 )
 ```
 
-Or set env vars:
+Or via env vars:
 
 ```bash
 export ZOHO_CLIENT_ID="..."

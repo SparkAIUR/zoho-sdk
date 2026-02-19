@@ -23,6 +23,8 @@ nav:
   - Authentication:
     - Overview: authentication.md
     - Credential Setup: auth-credentials.md
+  - Ingestion:
+    - Overview: ingestion/overview.md
   - CRM:
     - Records: crm/records.md
     - Modules: crm/modules.md
@@ -36,6 +38,23 @@ nav:
     - Portals API: projects/portals.md
     - Projects API: projects/projects.md
     - Tasks API: projects/tasks.md
+  - People:
+    - Overview: people/overview.md
+    - Forms API: people/forms.md
+    - Employees API: people/employees.md
+    - Files API: people/files.md
+  - Sheet:
+    - Overview: sheet/overview.md
+    - Workbooks API: sheet/workbooks.md
+    - Worksheets API: sheet/worksheets.md
+    - Tabular API: sheet/tabular.md
+  - WorkDrive:
+    - Overview: workdrive/overview.md
+    - Files API: workdrive/files.md
+    - Folders API: workdrive/folders.md
+    - Search API: workdrive/search.md
+    - Recent Changes API: workdrive/changes.md
+    - Admin API: workdrive/admin.md
   - Errors: errors.md
   - Performance & Caching: performance-caching.md
   - Code Generation: codegen.md
