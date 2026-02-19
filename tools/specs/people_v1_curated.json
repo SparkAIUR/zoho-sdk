@@ -1,0 +1,15 @@
+{
+  "product": "people",
+  "source_url": "https://www.zoho.com/people/api/overview.html",
+  "version": "v1",
+  "endpoints": [
+    {"id": "people.forms.list_forms", "group": "forms", "method": "GET", "operation_id": "list_forms", "path": "/people/api/forms"},
+    {"id": "people.forms.get_fields", "group": "forms", "method": "GET", "operation_id": "get_fields", "path": "/people/api/forms/{form_link_name}/fields"},
+    {"id": "people.forms.list_records", "group": "forms", "method": "GET", "operation_id": "list_records", "path": "/people/api/forms/{form_link_name}/records"},
+    {"id": "people.forms.create_record", "group": "forms", "method": "POST", "operation_id": "create_record", "path": "/people/api/forms/{form_link_name}/records"},
+    {"id": "people.forms.update_record", "group": "forms", "method": "PUT", "operation_id": "update_record", "path": "/people/api/forms/{form_link_name}/records/{record_id}"},
+    {"id": "people.employees.list", "group": "employees", "method": "GET", "operation_id": "list_employees", "path": "/people/api/employees"},
+    {"id": "people.employees.get", "group": "employees", "method": "GET", "operation_id": "get_employee", "path": "/people/api/employees/{employee_id}"},
+    {"id": "people.files.list", "group": "files", "method": "GET", "operation_id": "list_files", "path": "/people/api/files"}
+  ]
+}

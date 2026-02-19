@@ -1,0 +1,26 @@
+{
+  "endpoint_count": 24,
+  "group_counts": {
+    "admin": 2,
+    "changes": 1,
+    "employees": 2,
+    "files": 3,
+    "folders": 2,
+    "forms": 5,
+    "search": 1,
+    "tabular": 3,
+    "workbooks": 3,
+    "worksheets": 2
+  },
+  "method_counts": {
+    "DELETE": 3,
+    "GET": 15,
+    "POST": 5,
+    "PUT": 1
+  },
+  "product_counts": {
+    "people": 8,
+    "sheet": 8,
+    "workdrive": 8
+  }
+}

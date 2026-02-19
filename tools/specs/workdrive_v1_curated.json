@@ -1,0 +1,15 @@
+{
+  "product": "workdrive",
+  "source_url": "https://workdrive.zoho.com/apidocs/v1/overview",
+  "version": "v1",
+  "endpoints": [
+    {"id": "workdrive.files.get", "group": "files", "method": "GET", "operation_id": "get_file", "path": "/workdrive/api/v1/files/{file_id}"},
+    {"id": "workdrive.files.delete", "group": "files", "method": "DELETE", "operation_id": "delete_file", "path": "/workdrive/api/v1/files/{file_id}"},
+    {"id": "workdrive.folders.list_children", "group": "folders", "method": "GET", "operation_id": "list_children", "path": "/workdrive/api/v1/files/{folder_id}/files"},
+    {"id": "workdrive.folders.create", "group": "folders", "method": "POST", "operation_id": "create_folder", "path": "/workdrive/api/v1/folders"},
+    {"id": "workdrive.search.query", "group": "search", "method": "GET", "operation_id": "query_search", "path": "/workdrive/api/v1/search"},
+    {"id": "workdrive.changes.list_recent", "group": "changes", "method": "GET", "operation_id": "list_recent_changes", "path": "/workdrive/api/v1/files/{folder_id}/recentchanges"},
+    {"id": "workdrive.admin.list_teams", "group": "admin", "method": "GET", "operation_id": "list_teams", "path": "/workdrive/api/v1/teams"},
+    {"id": "workdrive.admin.list_team_members", "group": "admin", "method": "GET", "operation_id": "list_team_members", "path": "/workdrive/api/v1/teams/{team_id}/members"}
+  ]
+}

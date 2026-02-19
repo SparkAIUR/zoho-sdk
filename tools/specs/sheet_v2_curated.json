@@ -1,0 +1,15 @@
+{
+  "product": "sheet",
+  "source_url": "https://sheet.zoho.com/help/api/v2/",
+  "version": "v2",
+  "endpoints": [
+    {"id": "sheet.workbooks.list", "group": "workbooks", "method": "GET", "operation_id": "list_workbooks", "path": "/api/v2/workbooks"},
+    {"id": "sheet.workbooks.create", "group": "workbooks", "method": "POST", "operation_id": "create_workbook", "path": "/api/v2/workbooks"},
+    {"id": "sheet.workbooks.delete", "group": "workbooks", "method": "DELETE", "operation_id": "delete_workbook", "path": "/api/v2/workbooks/{workbook_id}"},
+    {"id": "sheet.worksheets.list", "group": "worksheets", "method": "GET", "operation_id": "list_worksheets", "path": "/api/v2/workbooks/{workbook_id}/worksheets"},
+    {"id": "sheet.worksheets.create", "group": "worksheets", "method": "POST", "operation_id": "create_worksheet", "path": "/api/v2/workbooks/{workbook_id}/worksheets"},
+    {"id": "sheet.tabular.fetch_records", "group": "tabular", "method": "GET", "operation_id": "fetch_worksheet_records", "path": "/api/v2/workbooks/{workbook_id}/worksheets/{worksheet_name}/records"},
+    {"id": "sheet.tabular.add_records", "group": "tabular", "method": "POST", "operation_id": "add_worksheet_records", "path": "/api/v2/workbooks/{workbook_id}/worksheets/{worksheet_name}/records"},
+    {"id": "sheet.tabular.delete_records", "group": "tabular", "method": "DELETE", "operation_id": "delete_worksheet_records", "path": "/api/v2/workbooks/{workbook_id}/worksheets/{worksheet_name}/records"}
+  ]
+}
