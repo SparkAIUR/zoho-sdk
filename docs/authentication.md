@@ -25,6 +25,7 @@ Optional product-specific settings:
 Use the dedicated step-by-step guide:
 
 - [Credential Setup (Zoho OAuth)](auth-credentials.md)
+- [Auth Helper CLI](auth-cli.md)
 - [Live Credential Validation (Admin)](admin-live-validation.md)
 
 ## SDK Initialization

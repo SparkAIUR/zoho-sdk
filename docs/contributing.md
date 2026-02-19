@@ -43,6 +43,7 @@ uv run python tools/codegen/curated_summary.py \
 diff -u tests/golden/curated_summary.json /tmp/curated_summary.json
 
 uv run python tools/scopes_sync.py
+uv run zoho-auth --help
 ```
 
 ## Commit Style

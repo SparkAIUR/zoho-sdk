@@ -22,6 +22,7 @@ dependencies = [
   "httpx>=0.28.0",
   "pydantic>=2.12.0",
   "pydantic-settings>=2.11.0",
+  "python-dotenv>=1.2.1",
   "structlog>=25.0.0",
 ]
 
@@ -35,12 +36,14 @@ Documentation = "https://github.com/SparkAIUR/zoho-sdk"
 Repository = "https://github.com/SparkAIUR/zoho-sdk"
 Issues = "https://github.com/SparkAIUR/zoho-sdk/issues"
 
+[project.scripts]
+zoho-auth = "zoho.scripts.auth_cli:main"
+
 [dependency-groups]
 dev = [
   "mkdocs>=1.6.0",
   "mkdocs-material>=9.6.0",
   "mypy>=1.17.0",
-  "python-dotenv>=1.2.1",
   "pytest>=8.4.0",
   "pytest-asyncio>=1.1.0",
   "pytest-cov>=6.2.0",

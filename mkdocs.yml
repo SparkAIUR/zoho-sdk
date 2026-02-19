@@ -24,6 +24,7 @@ nav:
     - Overview: authentication.md
     - Credential Setup: auth-credentials.md
     - Scope Catalog: scopes.md
+    - Auth Helper CLI: auth-cli.md
     - Live Validation (Admin): admin-live-validation.md
   - Ingestion:
     - Overview: ingestion/overview.md

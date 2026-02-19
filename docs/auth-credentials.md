@@ -79,6 +79,12 @@ Save:
 - `refresh_token` (long-lived, SDK uses this)
 - `api_domain`
 
+Helper command:
+
+```bash
+uv run zoho-auth exchange-token --grant-code "<grant-code>"
+```
+
 ## 3B. Server-Based Flow
 
 1. Redirect users to Zoho auth URL with `access_type=offline`.

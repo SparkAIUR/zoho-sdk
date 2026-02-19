@@ -1032,6 +1032,7 @@ dependencies = [
     { name = "httpx" },
     { name = "pydantic" },
     { name = "pydantic-settings" },
+    { name = "python-dotenv" },
     { name = "structlog" },
 ]
 
@@ -1051,7 +1052,6 @@ dev = [
     { name = "pytest" },
     { name = "pytest-asyncio" },
     { name = "pytest-cov" },
-    { name = "python-dotenv" },
     { name = "respx" },
     { name = "ruff" },
 ]
@@ -1062,6 +1062,7 @@ requires-dist = [
     { name = "orjson", marker = "extra == 'orjson'", specifier = ">=3.11.0" },
     { name = "pydantic", specifier = ">=2.12.0" },
     { name = "pydantic-settings", specifier = ">=2.11.0" },
+    { name = "python-dotenv", specifier = ">=1.2.1" },
     { name = "redis", marker = "extra == 'redis'", specifier = ">=6.0.0" },
     { name = "structlog", specifier = ">=25.0.0" },
 ]
@@ -1075,7 +1076,6 @@ dev = [
     { name = "pytest", specifier = ">=8.4.0" },
     { name = "pytest-asyncio", specifier = ">=1.1.0" },
     { name = "pytest-cov", specifier = ">=6.2.0" },
-    { name = "python-dotenv", specifier = ">=1.2.1" },
     { name = "respx", specifier = ">=0.22.0" },
     { name = "ruff", specifier = ">=0.12.0" },
 ]

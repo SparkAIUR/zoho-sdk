@@ -185,6 +185,21 @@ At a high level:
 3. Exchange grant code for access/refresh tokens.
 4. Use matching `dc` and accounts domain.
 
+## Auth Helper CLI
+
+Use the helper command for token exchange and self-client payload generation:
+
+```bash
+export ZOHO_CREDENTIALS_FILE=refs/notes/zoho-live.env
+uv run zoho-auth exchange-token --grant-code "<grant-code>"
+
+uv run zoho-auth grant-code \
+  --self-client-id "1000..." \
+  --scopes "ZohoCRM.modules.ALL,ZohoCRM.settings.ALL,ZohoCRM.users.ALL,ZohoCRM.org.ALL"
+```
+
+See `docs/auth-cli.md` for execute mode and header/cookie options.
+
 ## Environment-Based Setup (Convenience)
 
 ```bash
