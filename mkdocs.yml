@@ -26,6 +26,7 @@ nav:
     - Live Validation (Admin): admin-live-validation.md
   - Ingestion:
     - Overview: ingestion/overview.md
+    - CRM: ingestion/crm.md
   - CRM:
     - Records: crm/records.md
     - Modules: crm/modules.md

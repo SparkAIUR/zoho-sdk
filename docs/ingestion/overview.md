@@ -47,3 +47,16 @@ async for batch in iter_workdrive_recent_documents(
 ):
     print(len(batch.documents), batch.checkpoint)
 ```
+
+## CRM Module Iterator
+
+```python
+from zoho.ingestion import iter_crm_module_documents
+
+async for batch in iter_crm_module_documents(
+    client,
+    module="Leads",
+    page_size=200,
+):
+    print(batch.checkpoint, len(batch.documents))
+```

@@ -159,6 +159,8 @@ async for batch in iter_people_form_documents(
 ```
 
 Additional iterators:
+- `iter_crm_module_documents(...)`
+- `iter_crm_documents(...)`
 - `iter_sheet_worksheet_documents(...)`
 - `iter_workdrive_recent_documents(...)`
 
