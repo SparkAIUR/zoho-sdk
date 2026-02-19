@@ -29,7 +29,6 @@ Common scope examples:
 |---|
 | `ZohoCRM.modules.READ` |
 | `ZohoCRM.modules.ALL` |
-| `ZohoCRM.modules.{module}.READ` |
 | `ZohoCRM.settings.READ` |
 | `ZohoCRM.settings.ALL` |
 | `ZohoCRM.users.READ` |

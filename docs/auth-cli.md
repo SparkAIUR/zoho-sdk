@@ -35,6 +35,12 @@ uv run zoho-auth scope-builder \
   --output-file /tmp/zoho_scopes.json
 ```
 
+Validation notes:
+
+- Scope tokens are validated for allowed characters (letters, numbers, `.`, `_`, spaces).
+- Template placeholders like `ZohoCRM.modules.{module}.READ` are rejected as invalid tokens.
+- Zoho API Console may still reject combinations when a service is not configured for your org.
+
 ## Exchange Grant Code For Tokens
 
 ```bash

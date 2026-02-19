@@ -163,6 +163,25 @@ def test_grant_code_execute_posts_when_cookie_provided(monkeypatch, tmp_path: Pa
     assert "***REDACTED***" in result.stdout
 
 
+def test_grant_code_rejects_invalid_scope_token(monkeypatch, tmp_path: Path) -> None:
+    env_file = _write_credentials(tmp_path, "ZOHO_CLIENT_ID=test_client_id")
+    monkeypatch.setenv("ZOHO_CREDENTIALS_FILE", str(env_file))
+
+    result = runner.invoke(
+        app,
+        [
+            "grant-code",
+            "--self-client-id",
+            "1000",
+            "--scope",
+            "ZohoCRM.modules.{module}.READ",
+        ],
+    )
+
+    assert result.exit_code == 2
+    assert "Invalid scope value(s)" in result.stderr
+
+
 def test_scope_builder_non_interactive_json_output() -> None:
     result = runner.invoke(
         app,
@@ -210,3 +229,22 @@ def test_scope_builder_requires_product_or_interactive() -> None:
 
     assert result.exit_code == 2
     assert "At least one --product is required" in result.stderr
+
+
+def test_scope_builder_rejects_invalid_scope_token() -> None:
+    result = runner.invoke(
+        app,
+        [
+            "scope-builder",
+            "--product",
+            "CRM",
+            "--access",
+            "read",
+            "--scope",
+            "Bad{Scope}",
+            "--no-interactive",
+        ],
+    )
+
+    assert result.exit_code == 2
+    assert "Invalid scope value(s)" in result.stderr

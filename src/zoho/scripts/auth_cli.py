@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import shlex
 import sys
 from dataclasses import dataclass
@@ -35,6 +36,7 @@ _ACCOUNTS_DOMAIN_BY_DC: dict[str, str] = {
 
 _REDACTED = "***REDACTED***"
 _SENSITIVE_KEY_MARKERS = ("token", "secret", "cookie", "authorization", "password")
+_SCOPE_TOKEN_PATTERN = re.compile(r"^[0-9a-zA-Z._ ]+$")
 _PRODUCT_NAME_BY_ALIAS: dict[str, str] = {
     "crm": "CRM",
     "creator": "Creator",
@@ -69,7 +71,6 @@ _SCOPE_CATALOG: dict[str, ScopeSpec] = {
         common=(
             "ZohoCRM.modules.READ",
             "ZohoCRM.modules.ALL",
-            "ZohoCRM.modules.{module}.READ",
             "ZohoCRM.settings.READ",
             "ZohoCRM.settings.ALL",
             "ZohoCRM.users.READ",
@@ -247,6 +248,20 @@ def _extract_scopes(*, scopes_csv: str | None, scope_items: list[str] | None) ->
     return _dedupe(scopes)
 
 
+def _validate_scope_tokens(scopes: list[str]) -> list[str]:
+    invalid = [
+        scope for scope in scopes if (not scope) or (_SCOPE_TOKEN_PATTERN.fullmatch(scope) is None)
+    ]
+    if invalid:
+        pretty = ", ".join(repr(scope) for scope in invalid)
+        raise typer.BadParameter(
+            "Invalid scope value(s): "
+            + pretty
+            + ". Allowed token characters: letters, numbers, dot, underscore, and spaces."
+        )
+    return scopes
+
+
 def _resolve_accounts_domain(explicit_domain: str | None) -> str:
     if explicit_domain:
         return explicit_domain.rstrip("/")
@@ -296,7 +311,7 @@ def _build_grant_payload(
     description: str,
     approved_orgs: str | None,
 ) -> dict[str, Any]:
-    scopes = _extract_scopes(scopes_csv=scopes_csv, scope_items=scope_items)
+    scopes = _validate_scope_tokens(_extract_scopes(scopes_csv=scopes_csv, scope_items=scope_items))
     if not scopes:
         raise typer.BadParameter("At least one scope is required (--scopes or --scope)")
 
@@ -383,7 +398,7 @@ def _resolve_additional_scopes(
     additional_scope: list[str] | None,
     interactive: bool,
 ) -> list[str]:
-    extras = _extract_scopes(scopes_csv=None, scope_items=additional_scope)
+    extras = _validate_scope_tokens(_extract_scopes(scopes_csv=None, scope_items=additional_scope))
     if extras:
         return extras
     if not interactive:
@@ -394,7 +409,7 @@ def _resolve_additional_scopes(
         default="",
         show_default=False,
     )
-    return _extract_scopes(scopes_csv=prompted, scope_items=None)
+    return _validate_scope_tokens(_extract_scopes(scopes_csv=prompted, scope_items=None))
 
 
 def _scopes_for_product(
@@ -656,7 +671,7 @@ def scope_builder(
         combined_scopes.extend(product_scopes)
 
     combined_scopes.extend(extra_scopes)
-    final_scopes = _dedupe(combined_scopes)
+    final_scopes = _validate_scope_tokens(_dedupe(combined_scopes))
 
     payload: dict[str, Any] = {
         "products": selected_products,
