@@ -1,0 +1,75 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v4
+      - name: Setup Python
+        run: uv python install 3.12
+      - name: Install deps
+        run: uv sync --group dev --all-extras
+      - name: Ruff format check
+        run: uv run ruff format --check .
+      - name: Ruff lint
+        run: uv run ruff check .
+
+  typecheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v4
+      - name: Setup Python
+        run: uv python install 3.12
+      - name: Install deps
+        run: uv sync --group dev --all-extras
+      - name: Mypy
+        run: uv run mypy
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v4
+      - name: Setup Python
+        run: uv python install 3.12
+      - name: Install deps
+        run: uv sync --group dev --all-extras
+      - name: Run tests
+        run: uv run pytest
+
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v4
+      - name: Setup Python
+        run: uv python install 3.12
+      - name: Install deps
+        run: uv sync --group dev
+      - name: Build docs
+        run: uv run mkdocs build --strict
+
+  codegen-drift:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v4
+      - name: Setup Python
+        run: uv python install 3.12
+      - name: Install deps
+        run: uv sync --group dev
+      - name: Generate IR summary
+        run: |
+          uv run python tools/codegen/main.py \
+            --json-details tests/fixtures/json_details_minimal.json \
+            --openapi tests/fixtures/openapi_minimal.json \
+            --output /tmp/ir_summary.json
+      - name: Diff against golden
+        run: diff -u tests/golden/ir_summary.json /tmp/ir_summary.json
