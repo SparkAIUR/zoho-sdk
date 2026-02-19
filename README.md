@@ -45,6 +45,38 @@ async def main() -> None:
         print(lead.id, lead.get("Last_Name"))
 ```
 
+## Client Lifecycle: Context Manager vs Singleton
+
+Both patterns are supported.
+
+Use `async with` for one-shot scripts/jobs:
+
+```python
+async with Zoho.from_credentials(
+    client_id="...",
+    client_secret="...",
+    refresh_token="...",
+) as client:
+    org = await client.crm.org.get()
+```
+
+Use a long-lived singleton for web apps/workers and close at shutdown:
+
+```python
+zoho_client = Zoho.from_credentials(
+    client_id="...",
+    client_secret="...",
+    refresh_token="...",
+)
+
+lead = await zoho_client.crm.records.get(module="Leads", record_id="123456789")
+
+# app shutdown hook
+await zoho_client.close()
+```
+
+After `close()`, `zoho_client.closed` becomes `True` and that instance should not be reused.
+
 ## Product Usage Examples
 
 ### CRM

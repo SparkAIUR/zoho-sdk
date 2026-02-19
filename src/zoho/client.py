@@ -47,6 +47,7 @@ class Zoho:
         ```python
         from zoho import Zoho
 
+        # one-shot scripts / jobs
         async with Zoho.from_credentials(
             client_id="...",
             client_secret="...",
@@ -54,6 +55,15 @@ class Zoho:
         ) as zoho:
             lead = await zoho.crm.records.get(module="Leads", record_id="123456789")
             print(lead.id)
+
+        # long-lived app singleton
+        zoho = Zoho.from_credentials(
+            client_id="...",
+            client_secret="...",
+            refresh_token="...",
+        )
+        lead = await zoho.crm.records.get(module="Leads", record_id="123456789")
+        await zoho.close()
         ```
     """
 
@@ -220,6 +230,19 @@ class Zoho:
             )
         return self._projects
 
+    @property
+    def closed(self) -> bool:
+        """Whether the client lifecycle has been closed."""
+
+        return self._closed
+
+    def _ensure_open(self) -> None:
+        if self._closed:
+            raise RuntimeError(
+                "Zoho client is closed. Create a new client instance or keep a long-lived "
+                "singleton open until app shutdown."
+            )
+
     async def _request_crm(
         self,
         method: str,
@@ -232,6 +255,7 @@ class Zoho:
         files: Any | None = None,
         timeout: float | None = None,
     ) -> dict[str, Any]:
+        self._ensure_open()
         clean_path = path if path.startswith("/") else f"/{path}"
 
         api_domain = await self._auth.get_api_domain()
@@ -269,6 +293,7 @@ class Zoho:
         files: Any | None = None,
         timeout: float | None = None,
     ) -> dict[str, Any]:
+        self._ensure_open()
         clean_path = path if path.startswith("/") else f"/{path}"
 
         base_domain = (self.settings.creator_base_url or await self._auth.get_api_domain()).rstrip(
@@ -313,6 +338,7 @@ class Zoho:
         files: Any | None = None,
         timeout: float | None = None,
     ) -> dict[str, Any]:
+        self._ensure_open()
         clean_path = path if path.startswith("/") else f"/{path}"
 
         base_domain = (
@@ -370,6 +396,7 @@ class Zoho:
         await self.close()
 
     async def __aenter__(self) -> Zoho:
+        self._ensure_open()
         return self
 
     async def __aexit__(self, exc_type: Any, exc: Any, tb: Any) -> None:

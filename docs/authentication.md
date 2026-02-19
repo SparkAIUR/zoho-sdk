@@ -46,6 +46,13 @@ client = Zoho.from_credentials(
 )
 ```
 
+Use either lifecycle style:
+
+- `async with client` for one-shot scripts
+- singleton + explicit `await client.close()` for long-lived services
+
+See [Client Lifecycle](client-lifecycle.md) for patterns and shutdown examples.
+
 ## Token Stores
 
 - `memory`: in-memory only (tests, short-lived scripts)

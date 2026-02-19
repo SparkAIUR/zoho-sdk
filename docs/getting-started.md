@@ -34,6 +34,25 @@ async with client:
     print(org)
 ```
 
+## Lifecycle Patterns
+
+For one-shot scripts, prefer context manager usage (`async with`).
+
+For long-lived web apps/workers, create one client and reuse it as a singleton. Close it at shutdown:
+
+```python
+client = Zoho.from_credentials(
+    client_id="...",
+    client_secret="...",
+    refresh_token="...",
+)
+
+org = await client.crm.org.get()
+await client.close()
+```
+
+See [Client Lifecycle](client-lifecycle.md) for FastAPI and singleton patterns.
+
 ## Creator and Projects Quick Calls
 
 ```python
