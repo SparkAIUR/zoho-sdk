@@ -63,6 +63,7 @@ class ZohoSettings(BaseSettings):
     refresh_token: str = Field(min_length=1)
     dc: DataCenter = "US"
     environment: EnvironmentName = "production"
+    connection_name: str = "default"
 
     accounts_domain: str | None = None
     api_domain: str | None = None
@@ -70,8 +71,11 @@ class ZohoSettings(BaseSettings):
     creator_environment_header: CreatorEnvironmentHeader | None = None
     projects_base_url: str | None = None
     projects_default_portal_id: str | None = None
+    people_base_url: str | None = None
+    sheet_base_url: str | None = None
+    workdrive_base_url: str | None = None
 
-    user_agent: str = "zoho-sdk/0.1.0"
+    user_agent: str = "zoho-sdk/0.1.1"
 
     token_store_backend: TokenStoreBackend = "sqlite"
     token_store_path: Path = Field(

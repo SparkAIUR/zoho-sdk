@@ -49,7 +49,8 @@ class OAuth2RefreshAuthProvider:
         token_store: TokenStore,
         accounts_domain: str | None = None,
         api_domain: str | None = None,
-        user_agent: str = "zoho-sdk/0.1.0",
+        cache_namespace: str = "default",
+        user_agent: str = "zoho-sdk/0.1.1",
         http_client: httpx.AsyncClient | None = None,
     ) -> None:
         self._client_id = client_id
@@ -66,7 +67,7 @@ class OAuth2RefreshAuthProvider:
         self._http_client = http_client or httpx.AsyncClient(timeout=20.0)
         self._owns_http_client = http_client is None
 
-        self._cache_key = f"{client_id}:{dc}:{environment}:default"
+        self._cache_key = f"{cache_namespace}:{client_id}:{dc}:{environment}:default"
 
     async def close(self) -> None:
         if self._owns_http_client:

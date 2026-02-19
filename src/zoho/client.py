@@ -6,6 +6,7 @@ from collections.abc import Mapping
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, cast
 
+from zoho.connections import ZohoConnectionProfile, ZohoConnectionsManager
 from zoho.core.auth import OAuth2RefreshAuthProvider
 from zoho.core.cache import AsyncTTLCache
 from zoho.core.logging import configure_logging, get_logger
@@ -26,7 +27,10 @@ from zoho.settings import (
 if TYPE_CHECKING:
     from zoho.creator.client import CreatorClient
     from zoho.crm.client import CRMClient
+    from zoho.people.client import PeopleClient
     from zoho.projects.client import ProjectsClient
+    from zoho.sheet.client import SheetClient
+    from zoho.workdrive.client import WorkDriveClient
 
 _PROJECTS_API_DOMAIN_BY_DC: dict[str, str] = {
     "US": "https://projectsapi.zoho.com",
@@ -37,6 +41,39 @@ _PROJECTS_API_DOMAIN_BY_DC: dict[str, str] = {
     "CA": "https://projectsapi.zohocloud.ca",
     "SA": "https://projectsapi.zoho.sa",
     "CN": "https://projectsapi.zoho.com.cn",
+}
+
+_PEOPLE_API_DOMAIN_BY_DC: dict[str, str] = {
+    "US": "https://people.zoho.com",
+    "EU": "https://people.zoho.eu",
+    "IN": "https://people.zoho.in",
+    "AU": "https://people.zoho.com.au",
+    "JP": "https://people.zoho.jp",
+    "CA": "https://people.zohocloud.ca",
+    "SA": "https://people.zoho.sa",
+    "CN": "https://people.zoho.com.cn",
+}
+
+_SHEET_API_DOMAIN_BY_DC: dict[str, str] = {
+    "US": "https://sheet.zoho.com",
+    "EU": "https://sheet.zoho.eu",
+    "IN": "https://sheet.zoho.in",
+    "AU": "https://sheet.zoho.com.au",
+    "JP": "https://sheet.zoho.jp",
+    "CA": "https://sheet.zohocloud.ca",
+    "SA": "https://sheet.zoho.sa",
+    "CN": "https://sheet.zoho.com.cn",
+}
+
+_WORKDRIVE_API_DOMAIN_BY_DC: dict[str, str] = {
+    "US": "https://www.zohoapis.com",
+    "EU": "https://www.zohoapis.eu",
+    "IN": "https://www.zohoapis.in",
+    "AU": "https://www.zohoapis.com.au",
+    "JP": "https://www.zohoapis.jp",
+    "CA": "https://www.zohoapis.ca",
+    "SA": "https://www.zohoapis.sa",
+    "CN": "https://www.zohoapis.com.cn",
 }
 
 
@@ -88,6 +125,7 @@ class Zoho:
             token_store=self._token_store,
             accounts_domain=settings.accounts_domain,
             api_domain=settings.api_domain,
+            cache_namespace=settings.connection_name,
             user_agent=settings.user_agent,
         )
 
@@ -109,6 +147,11 @@ class Zoho:
         self._crm: CRMClient | None = None
         self._creator: CreatorClient | None = None
         self._projects: ProjectsClient | None = None
+        self._people: PeopleClient | None = None
+        self._sheet: SheetClient | None = None
+        self._workdrive: WorkDriveClient | None = None
+
+        self._connections: ZohoConnectionsManager | None = None
         self._closed = False
 
     @classmethod
@@ -130,18 +173,22 @@ class Zoho:
         refresh_token: str,
         dc: DataCenter = "US",
         environment: EnvironmentName = "production",
+        connection_name: str = "default",
         accounts_domain: str | None = None,
         api_domain: str | None = None,
         creator_base_url: str | None = None,
         creator_environment_header: CreatorEnvironmentHeader | None = None,
         projects_base_url: str | None = None,
         projects_default_portal_id: str | None = None,
+        people_base_url: str | None = None,
+        sheet_base_url: str | None = None,
+        workdrive_base_url: str | None = None,
         token_store_backend: TokenStoreBackend = "sqlite",
         token_store_path: Path = Path("~/.cache/zoho/cache.sqlite3"),
         redis_url: str | None = None,
         log_format: LogFormat = "pretty",
         log_level: str = "INFO",
-        user_agent: str = "zoho-sdk/0.1.0",
+        user_agent: str = "zoho-sdk/0.1.1",
         timeout_seconds: float = 30.0,
         max_connections: int = 100,
         max_keepalive_connections: int = 20,
@@ -158,6 +205,7 @@ class Zoho:
         """
 
         settings = ZohoSettings(
+            connection_name=connection_name,
             client_id=client_id,
             client_secret=client_secret,
             refresh_token=refresh_token,
@@ -169,6 +217,9 @@ class Zoho:
             creator_environment_header=creator_environment_header,
             projects_base_url=projects_base_url,
             projects_default_portal_id=projects_default_portal_id,
+            people_base_url=people_base_url,
+            sheet_base_url=sheet_base_url,
+            workdrive_base_url=workdrive_base_url,
             token_store_backend=token_store_backend,
             token_store_path=token_store_path.expanduser(),
             redis_url=redis_url,
@@ -229,6 +280,56 @@ class Zoho:
                 default_portal_id=self.settings.projects_default_portal_id,
             )
         return self._projects
+
+    @property
+    def people(self) -> PeopleClient:
+        """Access Zoho People operations."""
+
+        if self._people is None:
+            from zoho.people.client import PeopleClient
+
+            self._people = PeopleClient(request=self._request_people)
+        return self._people
+
+    @property
+    def sheet(self) -> SheetClient:
+        """Access Zoho Sheet operations."""
+
+        if self._sheet is None:
+            from zoho.sheet.client import SheetClient
+
+            self._sheet = SheetClient(request=self._request_sheet)
+        return self._sheet
+
+    @property
+    def workdrive(self) -> WorkDriveClient:
+        """Access Zoho WorkDrive operations."""
+
+        if self._workdrive is None:
+            from zoho.workdrive.client import WorkDriveClient
+
+            self._workdrive = WorkDriveClient(request=self._request_workdrive)
+        return self._workdrive
+
+    @property
+    def connections(self) -> ZohoConnectionsManager:
+        """Access named connection profiles for multi-account usage."""
+
+        if self._connections is None:
+            self._connections = ZohoConnectionsManager(self)
+        return self._connections
+
+    def for_connection(self, name: str) -> Zoho:
+        """Get a client view bound to a named connection profile."""
+
+        if name == "default":
+            return self
+        return self.connections.get(name)
+
+    def register_connection(self, profile: ZohoConnectionProfile) -> None:
+        """Register an additional connection profile on this client."""
+
+        self.connections.register(profile)
 
     @property
     def closed(self) -> bool:
@@ -369,6 +470,137 @@ class Zoho:
         )
         return self._parse_response(response)
 
+    async def _request_people(
+        self,
+        method: str,
+        path: str,
+        *,
+        headers: Mapping[str, str] | None = None,
+        params: Mapping[str, Any] | None = None,
+        json: Any | None = None,
+        data: Any | None = None,
+        files: Any | None = None,
+        timeout: float | None = None,
+    ) -> dict[str, Any]:
+        self._ensure_open()
+        clean_path = path if path.startswith("/") else f"/{path}"
+
+        base_domain = (
+            self.settings.people_base_url or _PEOPLE_API_DOMAIN_BY_DC[self.settings.dc]
+        ).rstrip("/")
+        if clean_path.startswith("/people/") or clean_path.startswith("/api/"):
+            url = f"{base_domain}{clean_path}"
+        else:
+            url = f"{base_domain}/people/api{clean_path}"
+
+        auth_headers = await self._auth.get_auth_headers()
+        request_headers = {
+            "Accept": "application/json",
+            "User-Agent": self.settings.user_agent,
+            **auth_headers,
+            **dict(headers or {}),
+        }
+
+        response = await self._transport.request(
+            method,
+            url,
+            headers=request_headers,
+            params=params,
+            json=json,
+            data=data,
+            files=files,
+            timeout=timeout,
+        )
+        return self._parse_response(response)
+
+    async def _request_sheet(
+        self,
+        method: str,
+        path: str,
+        *,
+        headers: Mapping[str, str] | None = None,
+        params: Mapping[str, Any] | None = None,
+        json: Any | None = None,
+        data: Any | None = None,
+        files: Any | None = None,
+        timeout: float | None = None,
+    ) -> dict[str, Any]:
+        self._ensure_open()
+        clean_path = path if path.startswith("/") else f"/{path}"
+
+        base_domain = (
+            self.settings.sheet_base_url or _SHEET_API_DOMAIN_BY_DC[self.settings.dc]
+        ).rstrip("/")
+        if clean_path.startswith("/api/v2/"):
+            url = f"{base_domain}{clean_path}"
+        else:
+            url = f"{base_domain}/api/v2{clean_path}"
+
+        auth_headers = await self._auth.get_auth_headers()
+        request_headers = {
+            "Accept": "application/json",
+            "User-Agent": self.settings.user_agent,
+            **auth_headers,
+            **dict(headers or {}),
+        }
+
+        response = await self._transport.request(
+            method,
+            url,
+            headers=request_headers,
+            params=params,
+            json=json,
+            data=data,
+            files=files,
+            timeout=timeout,
+        )
+        return self._parse_response(response)
+
+    async def _request_workdrive(
+        self,
+        method: str,
+        path: str,
+        *,
+        headers: Mapping[str, str] | None = None,
+        params: Mapping[str, Any] | None = None,
+        json: Any | None = None,
+        data: Any | None = None,
+        files: Any | None = None,
+        timeout: float | None = None,
+    ) -> dict[str, Any]:
+        self._ensure_open()
+        clean_path = path if path.startswith("/") else f"/{path}"
+
+        base_domain = (
+            self.settings.workdrive_base_url or _WORKDRIVE_API_DOMAIN_BY_DC[self.settings.dc]
+        ).rstrip("/")
+        if clean_path.startswith("/workdrive/"):
+            url = f"{base_domain}{clean_path}"
+        elif clean_path.startswith("/api/v1/"):
+            url = f"{base_domain}/workdrive{clean_path}"
+        else:
+            url = f"{base_domain}/workdrive/api/v1{clean_path}"
+
+        auth_headers = await self._auth.get_auth_headers()
+        request_headers = {
+            "Accept": "application/json",
+            "User-Agent": self.settings.user_agent,
+            **auth_headers,
+            **dict(headers or {}),
+        }
+
+        response = await self._transport.request(
+            method,
+            url,
+            headers=request_headers,
+            params=params,
+            json=json,
+            data=data,
+            files=files,
+            timeout=timeout,
+        )
+        return self._parse_response(response)
+
     @staticmethod
     def _parse_response(response: Any) -> dict[str, Any]:
         if response.status_code == 204 or not response.content:
@@ -387,6 +619,9 @@ class Zoho:
         if self._closed:
             return
         self._closed = True
+
+        if self._connections is not None:
+            await self._connections.close_all()
 
         await self._auth.close()
         await self._transport.close()

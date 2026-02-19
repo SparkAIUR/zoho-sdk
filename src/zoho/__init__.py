@@ -10,14 +10,15 @@ from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
     from zoho.client import Zoho
+    from zoho.connections import ZohoConnectionProfile
     from zoho.settings import ZohoSettings
 
-__all__ = ["Zoho", "ZohoSettings", "__version__"]
+__all__ = ["Zoho", "ZohoConnectionProfile", "ZohoSettings", "__version__"]
 
 try:
     __version__ = version("zoho")
 except PackageNotFoundError:  # pragma: no cover - local editable installs before metadata exists
-    __version__ = "0.1.0"
+    __version__ = "0.1.1"
 
 
 def __getattr__(name: str) -> Any:
@@ -29,4 +30,8 @@ def __getattr__(name: str) -> Any:
         from zoho.settings import ZohoSettings
 
         return ZohoSettings
+    if name == "ZohoConnectionProfile":
+        from zoho.connections import ZohoConnectionProfile
+
+        return ZohoConnectionProfile
     raise AttributeError(f"module 'zoho' has no attribute {name!r}")
