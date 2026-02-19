@@ -288,6 +288,7 @@ uv run python tools/codegen/curated_summary.py \
 ## Repository Docs
 
 - Product docs: `docs/`
+- Use-case playbooks: `docs/use-cases/`
 - API research notes: `refs/apis/`
 - Design specs: `refs/docs/specs/`
 - Contributor guide: `AGENTS.md`

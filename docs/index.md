@@ -24,3 +24,13 @@
 - Ingestion iterators under `zoho.ingestion`
 - Codegen tooling with golden tests and curated spec snapshots
 - Strict CI gates and robust documentation
+
+## Scenario Guides
+
+Use-case playbooks are available under `Use Cases`:
+
+- FastAPI server-side CRM integration
+- Temporal on-demand and cron workflows
+- Ingestion workflow orchestration
+- Enterprise search adapters (Oynx and Pipeshub AI)
+- Full-stack tenant OAuth flow (FastAPI + Next.js)

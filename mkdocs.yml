@@ -20,6 +20,13 @@ nav:
   - Home: index.md
   - Getting Started: getting-started.md
   - Client Lifecycle: client-lifecycle.md
+  - Use Cases:
+    - Overview: use-cases/overview.md
+    - FastAPI + CRM: use-cases/fastapi-crm.md
+    - Temporal Workflows: use-cases/temporal.md
+    - Ingestion Workflow: use-cases/ingestion.md
+    - Enterprise Search: use-cases/enterprise-search.md
+    - Full Stack (FastAPI + Next.js): use-cases/fullstack-fastapi-nextjs.md
   - Authentication:
     - Overview: authentication.md
     - Credential Setup: auth-credentials.md
