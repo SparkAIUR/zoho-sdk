@@ -1,0 +1,113 @@
+/* Enterprise docs styling inspired by modern fintech documentation systems. */
+
+:root {
+  --md-primary-fg-color: #0a2540;
+  --md-primary-fg-color--light: #1b3d62;
+  --md-primary-fg-color--dark: #071a2e;
+  --md-accent-fg-color: #0d7df2;
+  --md-accent-fg-color--transparent: rgba(13, 125, 242, 0.12);
+  --zoho-surface: #ffffff;
+  --zoho-surface-alt: #f5f8fd;
+  --zoho-border: #dce6f4;
+  --zoho-text: #172b4d;
+  --zoho-muted: #4a607d;
+}
+
+body,
+input {
+  color: var(--zoho-text);
+}
+
+.md-header {
+  background: linear-gradient(120deg, #0a2540 0%, #123a62 52%, #0f4c81 100%);
+  box-shadow: 0 6px 20px rgba(10, 37, 64, 0.22);
+}
+
+.md-tabs {
+  background: rgba(7, 26, 46, 0.96);
+}
+
+.md-tabs__link--active,
+.md-tabs__link:hover {
+  color: #d4e8ff;
+}
+
+.md-main {
+  background:
+    radial-gradient(1000px 500px at 100% -20%, rgba(13, 125, 242, 0.09), transparent 65%),
+    linear-gradient(180deg, #f2f6fc 0%, #f8fbff 100%);
+}
+
+.md-content__inner {
+  background: var(--zoho-surface);
+  border: 1px solid var(--zoho-border);
+  border-radius: 16px;
+  box-shadow: 0 8px 28px rgba(10, 37, 64, 0.08);
+  padding: 1.2rem 1.4rem;
+}
+
+.md-typeset h1,
+.md-typeset h2,
+.md-typeset h3 {
+  color: #0a2540;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+}
+
+.md-typeset h1 {
+  border-bottom: 1px solid var(--zoho-border);
+  margin-bottom: 1rem;
+  padding-bottom: 0.45rem;
+}
+
+.md-typeset p,
+.md-typeset li {
+  color: var(--zoho-text);
+}
+
+.md-typeset a {
+  color: #0d5fcc;
+}
+
+.md-typeset a:hover {
+  color: #0a4da6;
+}
+
+.md-typeset code {
+  background: #edf3fb;
+  border: 1px solid #d7e5f8;
+  border-radius: 6px;
+  color: #0a305c;
+}
+
+.md-typeset pre > code {
+  border: 0;
+  border-radius: 10px;
+}
+
+.md-typeset .admonition,
+.md-typeset details {
+  border: 1px solid var(--zoho-border);
+  border-radius: 12px;
+  box-shadow: 0 3px 12px rgba(10, 37, 64, 0.05);
+}
+
+.md-sidebar__inner {
+  border-right: 1px solid var(--zoho-border);
+}
+
+.md-nav__link--active {
+  color: #0c63d4;
+  font-weight: 600;
+}
+
+.md-footer {
+  background: #081b30;
+}
+
+@media screen and (max-width: 76.1875em) {
+  .md-content__inner {
+    border-radius: 12px;
+    padding: 1rem;
+  }
+}

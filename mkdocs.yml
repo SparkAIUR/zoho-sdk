@@ -3,13 +3,23 @@ site_description: Async-first Zoho Python SDK
 repo_url: https://github.com/SparkAIUR/zoho-sdk
 theme:
   name: material
+  font:
+    text: IBM Plex Sans
+    code: IBM Plex Mono
+  palette:
+    - scheme: default
+      primary: custom
+      accent: custom
   features:
+    - navigation.tabs
     - navigation.sections
     - navigation.top
+    - navigation.instant
     - content.code.copy
 nav:
   - Home: index.md
   - Getting Started: getting-started.md
+  - Client Lifecycle: client-lifecycle.md
   - Authentication:
     - Overview: authentication.md
     - Credential Setup: auth-credentials.md
@@ -31,6 +41,8 @@ nav:
   - Code Generation: codegen.md
   - Changelog: changelog.md
   - Contributing: contributing.md
+extra_css:
+  - stylesheets/enterprise.css
 markdown_extensions:
   - admonition
   - codehilite
