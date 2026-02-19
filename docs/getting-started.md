@@ -10,6 +10,8 @@ uv add zoho
 
 Use explicit credentials for clarity and portability:
 
+Need help obtaining credentials? See [Credential Setup (Zoho OAuth)](auth-credentials.md).
+
 ```python
 from zoho import Zoho
 

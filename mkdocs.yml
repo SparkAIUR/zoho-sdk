@@ -10,7 +10,9 @@ theme:
 nav:
   - Home: index.md
   - Getting Started: getting-started.md
-  - Authentication: authentication.md
+  - Authentication:
+    - Overview: authentication.md
+    - Credential Setup: auth-credentials.md
   - CRM:
     - Records: crm/records.md
     - Modules: crm/modules.md

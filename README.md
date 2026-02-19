@@ -43,6 +43,18 @@ async def main() -> None:
         print(lead.id, lead.get("Last_Name"))
 ```
 
+## Getting Zoho Credentials (client_id/client_secret/refresh_token)
+
+If you still need OAuth credentials, follow:
+
+- `docs/auth-credentials.md` (full step-by-step)
+
+At a high level:
+1. Create a client in Zoho API Console (Self Client for quick backend setup).
+2. Generate a grant code with CRM scopes.
+3. Exchange the grant code for tokens and keep `refresh_token`.
+4. Use matching data center (`dc`) and accounts domain.
+
 ## Environment-Based Setup (Convenience)
 
 ```bash
