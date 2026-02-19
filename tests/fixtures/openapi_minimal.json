@@ -1,0 +1,21 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/Leads": {
+      "get": {
+        "operationId": "listLeads",
+        "tags": ["records"]
+      },
+      "post": {
+        "operationId": "createLeads",
+        "tags": ["records"]
+      }
+    },
+    "/settings/modules": {
+      "get": {
+        "operationId": "listModules",
+        "tags": ["modules"]
+      }
+    }
+  }
+}

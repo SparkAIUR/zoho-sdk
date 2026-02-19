@@ -1,0 +1,21 @@
+{
+  "zohocrmsdk.src.com.zoho.crm.api.record.Record": {
+    "id": {
+      "name": "id",
+      "type": "Long",
+      "spec_type": "com.zoho.api.spec.template.type.TLongString"
+    },
+    "name": {
+      "name": "Name",
+      "type": "String",
+      "spec_type": "com.zoho.api.spec.template.type.TString"
+    }
+  },
+  "zohocrmsdk.src.com.zoho.crm.api.record.ActionResponse": {
+    "interface": true,
+    "classes": [
+      "zohocrmsdk.src.com.zoho.crm.api.record.SuccessResponse",
+      "zohocrmsdk.src.com.zoho.crm.api.record.APIException"
+    ]
+  }
+}

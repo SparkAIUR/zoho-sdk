@@ -1,0 +1,10 @@
+{
+  "endpoint_count": 3,
+  "field_count": 2,
+  "interface_count": 1,
+  "model_count": 2,
+  "spec_type_counts": {
+    "com.zoho.api.spec.template.type.TLongString": 1,
+    "com.zoho.api.spec.template.type.TString": 1
+  }
+}
