@@ -1,0 +1,95 @@
+[project]
+name = "zoho"
+version = "0.0.1"
+description = "Async-first Zoho Python SDK focused on DX and performance"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.12"
+authors = [
+  { name = "Tri Nguyen", email = "tnguyen@nu-devco.com" },
+  { name = "AIUR", email = "aiur@sparkenergy.com" },
+]
+keywords = ["zoho", "crm", "sdk", "async", "api"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.12",
+  "Typing :: Typed",
+  "Topic :: Software Development :: Libraries",
+]
+dependencies = [
+  "httpx>=0.28.0",
+  "pydantic>=2.12.0",
+  "pydantic-settings>=2.11.0",
+  "structlog>=25.0.0",
+]
+
+[project.optional-dependencies]
+redis = ["redis>=6.0.0"]
+orjson = ["orjson>=3.11.0"]
+
+[project.urls]
+Homepage = "https://github.com/SparkAIUR/zoho-sdk"
+Documentation = "https://github.com/SparkAIUR/zoho-sdk"
+Repository = "https://github.com/SparkAIUR/zoho-sdk"
+Issues = "https://github.com/SparkAIUR/zoho-sdk/issues"
+
+[dependency-groups]
+dev = [
+  "mkdocs>=1.6.0",
+  "mkdocs-material>=9.6.0",
+  "mypy>=1.17.0",
+  "pytest>=8.4.0",
+  "pytest-asyncio>=1.1.0",
+  "pytest-cov>=6.2.0",
+  "respx>=0.22.0",
+  "ruff>=0.12.0",
+]
+
+[build-system]
+requires = ["setuptools>=80", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q --cov=zoho --cov-report=term-missing"
+asyncio_mode = "auto"
+markers = [
+  "integration: integration tests that require external Zoho credentials",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM", "ASYNC", "RUF"]
+ignore = ["E501", "ASYNC109", "UP046"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+warn_unused_configs = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_return_any = true
+check_untyped_defs = true
+show_error_codes = true
+mypy_path = "src"
+packages = ["zoho"]
+
+[tool.coverage.run]
+branch = true
+source = ["zoho"]
+
+[tool.coverage.report]
+skip_empty = true
+show_missing = true
