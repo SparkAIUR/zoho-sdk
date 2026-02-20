@@ -96,6 +96,10 @@ class ZohoSettings(BaseSettings):
     people_base_url: str | None = None
     sheet_base_url: str | None = None
     workdrive_base_url: str | None = None
+    cliq_base_url: str | None = None
+    analytics_base_url: str | None = None
+    writer_base_url: str | None = None
+    mail_base_url: str | None = None
 
     user_agent: str = "zoho-sdk/0.1.1"
 

@@ -223,6 +223,36 @@ async def run_read_only_validation(client: Zoho) -> list[ValidationResult]:
             summarize=lambda response: f"teams={_count_workdrive_resources(response)}",
         )
     )
+    results.append(
+        await _run_check(
+            check="cliq.users.list",
+            call=lambda: client.cliq.users.list(limit=5),
+            summarize=lambda response: f"users_sample={len(getattr(response, 'result_rows', []))}",
+        )
+    )
+    results.append(
+        await _run_check(
+            check="analytics.metadata.list_organizations",
+            call=lambda: client.analytics.metadata.list_organizations(),
+            summarize=lambda response: f"orgs={len(getattr(response, 'result_rows', []))}",
+        )
+    )
+    results.append(
+        await _run_check(
+            check="writer.documents.list",
+            call=lambda: client.writer.documents.list(limit=5),
+            summarize=lambda response: (
+                f"documents_sample={len(getattr(response, 'result_rows', []))}"
+            ),
+        )
+    )
+    results.append(
+        await _run_check(
+            check="mail.accounts.list",
+            call=lambda: client.mail.accounts.list(),
+            summarize=lambda response: f"accounts={len(getattr(response, 'result_rows', []))}",
+        )
+    )
 
     return results
 

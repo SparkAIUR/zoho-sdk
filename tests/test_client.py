@@ -16,6 +16,10 @@ def test_client_from_credentials_builds_settings() -> None:
         people_base_url="https://people.example.com",
         sheet_base_url="https://sheet.example.com",
         workdrive_base_url="https://workdrive.example.com",
+        cliq_base_url="https://cliq.example.com",
+        analytics_base_url="https://analytics.example.com",
+        writer_base_url="https://writer.example.com",
+        mail_base_url="https://mail.example.com",
         token_store_backend="memory",
     )
 
@@ -26,6 +30,10 @@ def test_client_from_credentials_builds_settings() -> None:
     assert client.settings.people_base_url == "https://people.example.com"
     assert client.settings.sheet_base_url == "https://sheet.example.com"
     assert client.settings.workdrive_base_url == "https://workdrive.example.com"
+    assert client.settings.cliq_base_url == "https://cliq.example.com"
+    assert client.settings.analytics_base_url == "https://analytics.example.com"
+    assert client.settings.writer_base_url == "https://writer.example.com"
+    assert client.settings.mail_base_url == "https://mail.example.com"
 
 
 def test_client_lazy_products_are_available() -> None:
@@ -42,6 +50,10 @@ def test_client_lazy_products_are_available() -> None:
     assert client.people is not None
     assert client.sheet is not None
     assert client.workdrive is not None
+    assert client.cliq is not None
+    assert client.analytics is not None
+    assert client.writer is not None
+    assert client.mail is not None
 
 
 async def test_client_supports_manual_lifecycle_without_context_manager() -> None:

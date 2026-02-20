@@ -28,12 +28,16 @@ from zoho.settings import (
 )
 
 if TYPE_CHECKING:
+    from zoho.analytics.client import AnalyticsClient
+    from zoho.cliq.client import CliqClient
     from zoho.creator.client import CreatorClient
     from zoho.crm.client import CRMClient
+    from zoho.mail.client import MailClient
     from zoho.people.client import PeopleClient
     from zoho.projects.client import ProjectsClient
     from zoho.sheet.client import SheetClient
     from zoho.workdrive.client import WorkDriveClient
+    from zoho.writer.client import WriterClient
 
 _PROJECTS_API_DOMAIN_BY_DC: dict[str, str] = {
     "US": "https://projectsapi.zoho.com",
@@ -77,6 +81,50 @@ _WORKDRIVE_API_DOMAIN_BY_DC: dict[str, str] = {
     "CA": "https://www.zohoapis.ca",
     "SA": "https://www.zohoapis.sa",
     "CN": "https://www.zohoapis.com.cn",
+}
+
+_CLIQ_API_DOMAIN_BY_DC: dict[str, str] = {
+    "US": "https://cliq.zoho.com",
+    "EU": "https://cliq.zoho.eu",
+    "IN": "https://cliq.zoho.in",
+    "AU": "https://cliq.zoho.com.au",
+    "JP": "https://cliq.zoho.jp",
+    "CA": "https://cliq.zohocloud.ca",
+    "SA": "https://cliq.zoho.sa",
+    "CN": "https://cliq.zoho.com.cn",
+}
+
+_ANALYTICS_API_DOMAIN_BY_DC: dict[str, str] = {
+    "US": "https://analyticsapi.zoho.com",
+    "EU": "https://analyticsapi.zoho.eu",
+    "IN": "https://analyticsapi.zoho.in",
+    "AU": "https://analyticsapi.zoho.com.au",
+    "JP": "https://analyticsapi.zoho.jp",
+    "CA": "https://analyticsapi.zohocloud.ca",
+    "SA": "https://analyticsapi.zoho.sa",
+    "CN": "https://analyticsapi.zoho.com.cn",
+}
+
+_WRITER_API_DOMAIN_BY_DC: dict[str, str] = {
+    "US": "https://www.zohoapis.com",
+    "EU": "https://www.zohoapis.eu",
+    "IN": "https://www.zohoapis.in",
+    "AU": "https://www.zohoapis.com.au",
+    "JP": "https://www.zohoapis.jp",
+    "CA": "https://www.zohoapis.ca",
+    "SA": "https://www.zohoapis.sa",
+    "CN": "https://www.zohoapis.com.cn",
+}
+
+_MAIL_API_DOMAIN_BY_DC: dict[str, str] = {
+    "US": "https://mail.zoho.com",
+    "EU": "https://mail.zoho.eu",
+    "IN": "https://mail.zoho.in",
+    "AU": "https://mail.zoho.com.au",
+    "JP": "https://mail.zoho.jp",
+    "CA": "https://mail.zohocloud.ca",
+    "SA": "https://mail.zoho.sa",
+    "CN": "https://mail.zoho.com.cn",
 }
 
 _DEFAULT_TOKEN_STORE_PATH = _default_token_store_path()
@@ -165,6 +213,10 @@ class Zoho:
         self._people: PeopleClient | None = None
         self._sheet: SheetClient | None = None
         self._workdrive: WorkDriveClient | None = None
+        self._cliq: CliqClient | None = None
+        self._analytics: AnalyticsClient | None = None
+        self._writer: WriterClient | None = None
+        self._mail: MailClient | None = None
 
         self._connections: ZohoConnectionsManager | None = None
         self._closed = False
@@ -198,6 +250,10 @@ class Zoho:
         people_base_url: str | None = None,
         sheet_base_url: str | None = None,
         workdrive_base_url: str | None = None,
+        cliq_base_url: str | None = None,
+        analytics_base_url: str | None = None,
+        writer_base_url: str | None = None,
+        mail_base_url: str | None = None,
         token_store_backend: TokenStoreBackend = "sqlite",
         token_store_path: Path = _DEFAULT_TOKEN_STORE_PATH,
         redis_url: str | None = None,
@@ -238,6 +294,10 @@ class Zoho:
             people_base_url=people_base_url,
             sheet_base_url=sheet_base_url,
             workdrive_base_url=workdrive_base_url,
+            cliq_base_url=cliq_base_url,
+            analytics_base_url=analytics_base_url,
+            writer_base_url=writer_base_url,
+            mail_base_url=mail_base_url,
             token_store_backend=token_store_backend,
             token_store_path=token_store_path.expanduser(),
             redis_url=redis_url,
@@ -337,6 +397,46 @@ class Zoho:
 
             self._workdrive = WorkDriveClient(request=self._request_workdrive)
         return self._workdrive
+
+    @property
+    def cliq(self) -> CliqClient:
+        """Access Zoho Cliq operations."""
+
+        if self._cliq is None:
+            from zoho.cliq.client import CliqClient
+
+            self._cliq = CliqClient(request=self._request_cliq)
+        return self._cliq
+
+    @property
+    def analytics(self) -> AnalyticsClient:
+        """Access Zoho Analytics operations."""
+
+        if self._analytics is None:
+            from zoho.analytics.client import AnalyticsClient
+
+            self._analytics = AnalyticsClient(request=self._request_analytics)
+        return self._analytics
+
+    @property
+    def writer(self) -> WriterClient:
+        """Access Zoho Writer operations."""
+
+        if self._writer is None:
+            from zoho.writer.client import WriterClient
+
+            self._writer = WriterClient(request=self._request_writer)
+        return self._writer
+
+    @property
+    def mail(self) -> MailClient:
+        """Access Zoho Mail operations."""
+
+        if self._mail is None:
+            from zoho.mail.client import MailClient
+
+            self._mail = MailClient(request=self._request_mail)
+        return self._mail
 
     @property
     def connections(self) -> ZohoConnectionsManager:
@@ -607,6 +707,178 @@ class Zoho:
             url = f"{base_domain}/workdrive{clean_path}"
         else:
             url = f"{base_domain}/workdrive/api/v1{clean_path}"
+
+        auth_headers = await self._auth.get_auth_headers()
+        request_headers = {
+            "Accept": "application/json",
+            "User-Agent": self.settings.user_agent,
+            **auth_headers,
+            **dict(headers or {}),
+        }
+
+        response = await self._transport.request(
+            method,
+            url,
+            headers=request_headers,
+            params=params,
+            json=json,
+            data=data,
+            files=files,
+            timeout=timeout,
+        )
+        return self._parse_response(response)
+
+    async def _request_cliq(
+        self,
+        method: str,
+        path: str,
+        *,
+        headers: Mapping[str, str] | None = None,
+        params: Mapping[str, Any] | None = None,
+        json: Any | None = None,
+        data: Any | None = None,
+        files: Any | None = None,
+        timeout: float | None = None,
+    ) -> dict[str, Any]:
+        self._ensure_open()
+        clean_path = path if path.startswith("/") else f"/{path}"
+
+        base_domain = (
+            self.settings.cliq_base_url or _CLIQ_API_DOMAIN_BY_DC[self.settings.dc]
+        ).rstrip("/")
+        if clean_path.startswith("/api/v2/") or clean_path.startswith("/network/"):
+            url = f"{base_domain}{clean_path}"
+        else:
+            url = f"{base_domain}/api/v2{clean_path}"
+
+        auth_headers = await self._auth.get_auth_headers()
+        request_headers = {
+            "Accept": "application/json",
+            "User-Agent": self.settings.user_agent,
+            **auth_headers,
+            **dict(headers or {}),
+        }
+
+        response = await self._transport.request(
+            method,
+            url,
+            headers=request_headers,
+            params=params,
+            json=json,
+            data=data,
+            files=files,
+            timeout=timeout,
+        )
+        return self._parse_response(response)
+
+    async def _request_analytics(
+        self,
+        method: str,
+        path: str,
+        *,
+        headers: Mapping[str, str] | None = None,
+        params: Mapping[str, Any] | None = None,
+        json: Any | None = None,
+        data: Any | None = None,
+        files: Any | None = None,
+        timeout: float | None = None,
+    ) -> dict[str, Any]:
+        self._ensure_open()
+        clean_path = path if path.startswith("/") else f"/{path}"
+
+        base_domain = (
+            self.settings.analytics_base_url or _ANALYTICS_API_DOMAIN_BY_DC[self.settings.dc]
+        ).rstrip("/")
+        if clean_path.startswith("/restapi/v2/"):
+            url = f"{base_domain}{clean_path}"
+        else:
+            url = f"{base_domain}/restapi/v2{clean_path}"
+
+        auth_headers = await self._auth.get_auth_headers()
+        request_headers = {
+            "Accept": "application/json",
+            "User-Agent": self.settings.user_agent,
+            **auth_headers,
+            **dict(headers or {}),
+        }
+
+        response = await self._transport.request(
+            method,
+            url,
+            headers=request_headers,
+            params=params,
+            json=json,
+            data=data,
+            files=files,
+            timeout=timeout,
+        )
+        return self._parse_response(response)
+
+    async def _request_writer(
+        self,
+        method: str,
+        path: str,
+        *,
+        headers: Mapping[str, str] | None = None,
+        params: Mapping[str, Any] | None = None,
+        json: Any | None = None,
+        data: Any | None = None,
+        files: Any | None = None,
+        timeout: float | None = None,
+    ) -> dict[str, Any]:
+        self._ensure_open()
+        clean_path = path if path.startswith("/") else f"/{path}"
+
+        base_domain = (
+            self.settings.writer_base_url or _WRITER_API_DOMAIN_BY_DC[self.settings.dc]
+        ).rstrip("/")
+        if clean_path.startswith("/writer/"):
+            url = f"{base_domain}{clean_path}"
+        else:
+            url = f"{base_domain}/writer/api/v1{clean_path}"
+
+        auth_headers = await self._auth.get_auth_headers()
+        request_headers = {
+            "Accept": "application/json",
+            "User-Agent": self.settings.user_agent,
+            **auth_headers,
+            **dict(headers or {}),
+        }
+
+        response = await self._transport.request(
+            method,
+            url,
+            headers=request_headers,
+            params=params,
+            json=json,
+            data=data,
+            files=files,
+            timeout=timeout,
+        )
+        return self._parse_response(response)
+
+    async def _request_mail(
+        self,
+        method: str,
+        path: str,
+        *,
+        headers: Mapping[str, str] | None = None,
+        params: Mapping[str, Any] | None = None,
+        json: Any | None = None,
+        data: Any | None = None,
+        files: Any | None = None,
+        timeout: float | None = None,
+    ) -> dict[str, Any]:
+        self._ensure_open()
+        clean_path = path if path.startswith("/") else f"/{path}"
+
+        base_domain = (
+            self.settings.mail_base_url or _MAIL_API_DOMAIN_BY_DC[self.settings.dc]
+        ).rstrip("/")
+        if clean_path.startswith("/api/"):
+            url = f"{base_domain}{clean_path}"
+        else:
+            url = f"{base_domain}/api{clean_path}"
 
         auth_headers = await self._auth.get_auth_headers()
         request_headers = {
