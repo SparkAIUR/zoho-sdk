@@ -36,6 +36,8 @@ nav:
   - Ingestion:
     - Overview: ingestion/overview.md
     - CRM: ingestion/crm.md
+    - Cliq: ingestion/cliq.md
+    - Analytics: ingestion/analytics.md
     - Mail: ingestion/mail.md
     - Writer: ingestion/writer.md
   - CRM:

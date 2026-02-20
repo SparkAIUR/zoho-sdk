@@ -8,7 +8,7 @@ These guides are scenario-driven references built from canonical source files in
 |---|---|---|
 | FastAPI server-side app + CRM submodules | [FastAPI + CRM](fastapi-crm.md) | `examples/fastapi_crm/main.py` |
 | Temporal workflows (on-demand + cron) | [Temporal Workflows](temporal.md) | `examples/temporal/on_demand_worker.py`, `examples/temporal/cron_worker.py` |
-| Ingestion workflow orchestration | [Ingestion Workflow](ingestion.md) | `examples/ingestion/pipeline.py` |
+| Ingestion workflow orchestration | [Ingestion Workflow](ingestion.md) | `examples/ingestion/pipeline.py`, `examples/ingestion/cliq_pipeline.py`, `examples/ingestion/analytics_pipeline.py` |
 | Enterprise search ingestion integration | [Enterprise Search](enterprise-search.md) | `examples/enterprise_search/` |
 | Full stack tenant OAuth grants | [FastAPI + Next.js](fullstack-fastapi-nextjs.md) | `examples/fullstack_fastapi_nextjs/` |
 

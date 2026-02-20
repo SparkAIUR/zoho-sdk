@@ -1,5 +1,21 @@
 # Changelog
 
+## v0.1.3
+
+- Added Cliq ingestion iterators:
+  - `iter_cliq_channel_documents(...)`
+  - `iter_cliq_chat_documents(...)`
+  - `iter_cliq_thread_documents(...)`
+- Added Analytics ingestion iterators:
+  - `iter_analytics_workspace_documents(...)`
+  - `iter_analytics_view_documents(..., strategy=\"bulk\" | \"direct\")`
+- Added `AnalyticsDataClient.list_rows(...)` for direct row retrieval workflows
+- Expanded enterprise-search examples to include Cliq and Analytics ingestion
+- Added snippet-backed ingestion playbooks:
+  - `docs/ingestion/cliq.md`
+  - `docs/ingestion/analytics.md`
+  - Canonical sources in `examples/ingestion/cliq_pipeline.py` and `examples/ingestion/analytics_pipeline.py`
+
 ## v0.1.2
 
 - Added `zoho.cliq` module with `users`, `chats`, `channels`, `messages`, and `threads` clients

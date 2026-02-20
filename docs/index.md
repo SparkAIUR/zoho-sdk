@@ -10,7 +10,7 @@
 - Keep upstream compatibility sustainable through code generation.
 - Enable ingestion-first workflows for enterprise search connectors.
 
-## v0.1.1 Scope
+## v0.1.2+ Scope
 
 - Core runtime: auth, token store, transport, errors, pagination, logging
 - Multi-account connection manager (`connections`, `for_connection`)
@@ -25,7 +25,7 @@
   - Analytics (`metadata`, `data`, `bulk`)
   - Writer (`documents`, `folders`, `merge`)
   - Mail (`accounts`, `folders`, `messages`, `threads`)
-- Ingestion iterators under `zoho.ingestion`
+- Ingestion iterators under `zoho.ingestion` including CRM/People/Sheet/WorkDrive/Mail/Writer/Cliq/Analytics
 - Codegen tooling with golden tests and curated spec snapshots
 - Strict CI gates and robust documentation
 

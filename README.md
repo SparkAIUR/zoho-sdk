@@ -215,9 +215,39 @@ async for batch in iter_people_form_documents(
     print(batch.checkpoint)
 ```
 
+```python
+from zoho.ingestion import iter_cliq_chat_documents
+
+async for batch in iter_cliq_chat_documents(
+    client,
+    include_messages=True,
+    page_size=200,
+):
+    for doc in batch.documents:
+        print(doc.source, doc.id)
+```
+
+```python
+from zoho.ingestion import iter_analytics_view_documents
+
+async for batch in iter_analytics_view_documents(
+    client,
+    workspace_id="workspace_123",
+    view_id="view_123",
+    strategy="bulk",  # or "direct"
+    headers={"ZANALYTICS-ORGID": "123456789"},
+):
+    print(batch.checkpoint, len(batch.documents))
+```
+
 Additional iterators:
 - `iter_crm_module_documents(...)`
 - `iter_crm_documents(...)`
+- `iter_cliq_channel_documents(...)`
+- `iter_cliq_chat_documents(...)`
+- `iter_cliq_thread_documents(...)`
+- `iter_analytics_workspace_documents(...)`
+- `iter_analytics_view_documents(...)`
 - `iter_sheet_worksheet_documents(...)`
 - `iter_workdrive_recent_documents(...)`
 - `iter_mail_message_documents(...)`

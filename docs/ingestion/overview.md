@@ -7,6 +7,7 @@
 - stable document shape for indexing pipelines
 - resumable checkpoints (`offset` and `cursor`)
 - tenant routing via `connection_name`
+- metadata-safe defaults (no raw/content unless explicitly enabled)
 
 ## People Form Iterator
 
@@ -86,4 +87,24 @@ async for batch in iter_writer_document_documents(
     page_size=200,
 ):
     print(batch.checkpoint, len(batch.documents))
+```
+
+## Cliq Ingestion Workflow
+
+```python
+--8<-- "examples/ingestion/cliq_pipeline.py:channel_chat_job"
+```
+
+```python
+--8<-- "examples/ingestion/cliq_pipeline.py:thread_job"
+```
+
+## Analytics Ingestion Workflow
+
+```python
+--8<-- "examples/ingestion/analytics_pipeline.py:workspace_graph_job"
+```
+
+```python
+--8<-- "examples/ingestion/analytics_pipeline.py:view_rows_job"
 ```
