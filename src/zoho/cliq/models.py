@@ -33,6 +33,7 @@ class CliqResponse(BaseModel):
                 "messages",
                 "threads",
                 "members",
+                "followers",
             ):
                 value = self.data.get(key)
                 if isinstance(value, list):

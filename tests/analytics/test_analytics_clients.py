@@ -20,6 +20,11 @@ async def test_analytics_metadata_data_bulk_paths() -> None:
     analytics = AnalyticsClient(request=request)
 
     orgs = await analytics.metadata.list_organizations()
+    await analytics.data.list_rows(
+        workspace_id="workspace_1",
+        view_id="view_1",
+        config={"limit": 200, "offset": 0},
+    )
     await analytics.data.create_rows(
         workspace_id="workspace_1",
         view_id="view_1",
@@ -35,9 +40,16 @@ async def test_analytics_metadata_data_bulk_paths() -> None:
     assert "/workspaces/workspace_1/views/view_1/rows" in paths
     assert "/bulk/workspaces/workspace_1/importjobs/job_1" in paths
 
+    list_call = next(
+        call
+        for call in request.calls
+        if call["path"] == "/workspaces/workspace_1/views/view_1/rows" and call["method"] == "GET"
+    )
+    assert "CONFIG" in list_call["params"]
+
     create_call = next(
         call
         for call in request.calls
-        if call["path"] == "/workspaces/workspace_1/views/view_1/rows"
+        if call["path"] == "/workspaces/workspace_1/views/view_1/rows" and call["method"] == "POST"
     )
     assert "CONFIG" in create_call["params"]

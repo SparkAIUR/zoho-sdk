@@ -4,7 +4,18 @@ from typing import Any
 
 import pytest
 
+from zoho.analytics.models import AnalyticsResponse
+from zoho.cliq.models import CliqResponse
 from zoho.crm.models import PageInfo, RecordListResponse
+from zoho.ingestion.analytics import (
+    iter_analytics_view_documents,
+    iter_analytics_workspace_documents,
+)
+from zoho.ingestion.cliq import (
+    iter_cliq_channel_documents,
+    iter_cliq_chat_documents,
+    iter_cliq_thread_documents,
+)
 from zoho.ingestion.crm import iter_crm_documents, iter_crm_module_documents
 from zoho.ingestion.mail import iter_mail_message_documents
 from zoho.ingestion.models import IngestionCheckpoint
@@ -142,6 +153,127 @@ class _FakeCRM:
     records = _FakeCRMRecords()
 
 
+class _FakeCliqChannels:
+    async def list(self, **kwargs: Any) -> CliqResponse:
+        token = kwargs.get("next_token")
+        if token is None:
+            return CliqResponse(
+                data=[{"id": "channel_1", "name": "Engineering", "modified_time": 1700000100000}],
+                next_token="channel_next",
+            )
+        return CliqResponse(data=[{"id": "channel_2", "name": "Product"}], next_token=None)
+
+
+class _FakeCliqChats:
+    async def list(self, **_: Any) -> CliqResponse:
+        return CliqResponse(
+            data=[{"id": "chat_1", "title": "Incident Room", "modified_time": 1700000200000}],
+            next_token=None,
+        )
+
+
+class _FakeCliqMessages:
+    async def list(self, *, chat_id: str, **_: Any) -> CliqResponse:
+        if chat_id == "chat_1":
+            return CliqResponse(
+                data=[
+                    {
+                        "id": "msg_1",
+                        "text": "Service recovered",
+                        "time": 1700000201000,
+                        "thread_id": "thread_1",
+                    }
+                ]
+            )
+        return CliqResponse(data=[])
+
+
+class _FakeCliqThreads:
+    async def get_parent_message(self, *, thread_id: str, **_: Any) -> CliqResponse:
+        return CliqResponse(
+            data={
+                "messages": [
+                    {
+                        "id": f"{thread_id}_parent",
+                        "text": "Parent thread message",
+                        "time": 1700000202000,
+                    }
+                ]
+            }
+        )
+
+    async def list_followers(self, *, thread_id: str, **_: Any) -> CliqResponse:
+        return CliqResponse(data={"followers": [{"id": "user_1", "name": "Alex"}]})
+
+
+class _FakeCliq:
+    channels = _FakeCliqChannels()
+    chats = _FakeCliqChats()
+    messages = _FakeCliqMessages()
+    threads = _FakeCliqThreads()
+
+
+class _FakeAnalyticsMetadata:
+    async def list_organizations(self, **_: Any) -> AnalyticsResponse:
+        return AnalyticsResponse(data={"orgs": [{"orgId": "org_1", "orgName": "Acme"}]})
+
+    async def list_workspaces(self, **_: Any) -> AnalyticsResponse:
+        return AnalyticsResponse(
+            data={"workspaces": [{"workspaceId": "ws_1", "workspaceName": "Ops"}]}
+        )
+
+    async def list_views(self, *, workspace_id: str, **_: Any) -> AnalyticsResponse:
+        assert workspace_id == "ws_1"
+        return AnalyticsResponse(data={"views": [{"viewId": "view_1", "viewName": "Tickets"}]})
+
+
+class _FakeAnalyticsData:
+    async def list_rows(
+        self,
+        *,
+        workspace_id: str,
+        view_id: str,
+        config: dict[str, Any] | None = None,
+        **_: Any,
+    ) -> AnalyticsResponse:
+        assert workspace_id == "ws_1"
+        assert view_id == "view_1"
+        offset = int((config or {}).get("offset", 0))
+        limit = int((config or {}).get("limit", 200))
+        if offset >= 2:
+            return AnalyticsResponse(data={"rows": []})
+        if limit == 1 and offset == 1:
+            return AnalyticsResponse(
+                data={"rows": [{"id": "row_2", "name": "Ticket B", "modified_time": 2}]}
+            )
+        return AnalyticsResponse(
+            data={"rows": [{"id": "row_1", "name": "Ticket A", "modified_time": 1}]}
+        )
+
+
+class _FakeAnalyticsBulk:
+    def __init__(self) -> None:
+        self._poll_calls = 0
+
+    async def export_data(self, **_: Any) -> AnalyticsResponse:
+        return AnalyticsResponse(data={"job_id": "job_1"})
+
+    async def get_export_job(self, **_: Any) -> AnalyticsResponse:
+        self._poll_calls += 1
+        if self._poll_calls == 1:
+            return AnalyticsResponse(data={"status": "processing"})
+        return AnalyticsResponse(data={"status": "success"})
+
+    async def download_export_job(self, **_: Any) -> AnalyticsResponse:
+        return AnalyticsResponse(data={"rows": [{"id": "bulk_1", "name": "Bulk Row"}]})
+
+
+class _FakeAnalytics:
+    metadata = _FakeAnalyticsMetadata()
+    data = _FakeAnalyticsData()
+    bulk = _FakeAnalyticsBulk()
+
+
 class _FakeZoho:
     people = _FakePeople()
     sheet = _FakeSheet()
@@ -149,6 +281,8 @@ class _FakeZoho:
     mail = _FakeMail()
     writer = _FakeWriter()
     crm = _FakeCRM()
+    cliq = _FakeCliq()
+    analytics = _FakeAnalytics()
 
     def for_connection(self, name: str) -> _FakeZoho:
         assert name == "tenant"
@@ -294,3 +428,149 @@ async def test_writer_ingestion_iterator_yields_documents() -> None:
     assert len(batches) == 1
     assert batches[0].documents[0].source == "zoho.writer"
     assert batches[0].documents[0].id == "doc_1"
+
+
+async def test_cliq_channel_ingestion_iterator_yields_checkpoint() -> None:
+    client = _FakeZoho()
+
+    batches = [
+        batch
+        async for batch in iter_cliq_channel_documents(
+            client,
+            page_size=100,
+            max_pages=1,
+        )
+    ]
+
+    assert len(batches) == 1
+    assert batches[0].documents[0].source == "zoho.cliq.channel"
+    assert batches[0].documents[0].content is None
+    assert batches[0].documents[0].raw == {}
+    assert batches[0].checkpoint is not None
+    assert batches[0].checkpoint.cursor == "channel_next"
+
+
+async def test_cliq_chat_ingestion_iterator_yields_messages() -> None:
+    client = _FakeZoho()
+
+    batches = [
+        batch
+        async for batch in iter_cliq_chat_documents(
+            client,
+            include_messages=True,
+            max_pages=1,
+        )
+    ]
+
+    assert len(batches) == 1
+    sources = {doc.source for doc in batches[0].documents}
+    assert "zoho.cliq.chat" in sources
+    assert "zoho.cliq.message" in sources
+    assert batches[0].checkpoint is not None
+    assert batches[0].checkpoint.updated_at is not None
+
+
+async def test_cliq_thread_ingestion_iterator_uses_chat_messages() -> None:
+    client = _FakeZoho()
+
+    batches = [
+        batch
+        async for batch in iter_cliq_thread_documents(
+            client,
+            chat_id="chat_1",
+            max_threads=1,
+        )
+    ]
+
+    assert len(batches) == 1
+    sources = {doc.source for doc in batches[0].documents}
+    assert "zoho.cliq.thread" in sources
+    assert "zoho.cliq.thread_follower" in sources
+
+
+async def test_analytics_workspace_ingestion_iterator_yields_metadata() -> None:
+    client = _FakeZoho()
+
+    batches = [
+        batch
+        async for batch in iter_analytics_workspace_documents(
+            client,
+            include_views=True,
+            max_workspaces=1,
+        )
+    ]
+
+    assert len(batches) == 2
+    assert batches[0].documents[0].source == "zoho.analytics.org"
+    assert batches[1].documents[0].source == "zoho.analytics.workspace"
+    assert any(doc.source == "zoho.analytics.view" for doc in batches[1].documents)
+
+
+async def test_analytics_view_ingestion_direct_strategy_paginates() -> None:
+    client = _FakeZoho()
+
+    batches = [
+        batch
+        async for batch in iter_analytics_view_documents(
+            client,
+            workspace_id="ws_1",
+            view_id="view_1",
+            strategy="direct",
+            page_size=1,
+            max_pages=2,
+        )
+    ]
+
+    assert len(batches) == 2
+    assert batches[0].documents[0].source == "zoho.analytics.row"
+    assert batches[0].checkpoint is not None
+    assert batches[0].checkpoint.offset == 1
+
+
+async def test_analytics_view_ingestion_bulk_strategy_polls_and_downloads() -> None:
+    client = _FakeZoho()
+
+    batches = [
+        batch
+        async for batch in iter_analytics_view_documents(
+            client,
+            workspace_id="ws_1",
+            view_id="view_1",
+            strategy="bulk",
+            max_poll_attempts=3,
+            poll_interval_seconds=0,
+        )
+    ]
+
+    assert len(batches) == 1
+    assert batches[0].documents[0].source == "zoho.analytics.row"
+    assert batches[0].checkpoint is None
+
+
+async def test_analytics_view_ingestion_bulk_strategy_returns_job_checkpoint_when_pending() -> None:
+    client = _FakeZoho()
+    checkpoint = IngestionCheckpoint(cursor="job_pending")
+
+    class _PendingBulk(_FakeAnalyticsBulk):
+        async def get_export_job(self, **_: Any) -> AnalyticsResponse:
+            return AnalyticsResponse(data={"status": "processing"})
+
+    client.analytics.bulk = _PendingBulk()
+
+    batches = [
+        batch
+        async for batch in iter_analytics_view_documents(
+            client,
+            workspace_id="ws_1",
+            view_id="view_1",
+            strategy="bulk",
+            checkpoint=checkpoint,
+            max_poll_attempts=1,
+            poll_interval_seconds=0,
+        )
+    ]
+
+    assert len(batches) == 1
+    assert batches[0].documents == []
+    assert batches[0].checkpoint is not None
+    assert batches[0].checkpoint.cursor == "job_pending"

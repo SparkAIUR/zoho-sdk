@@ -40,6 +40,22 @@ class AnalyticsDataClient:
         )
         return parse_analytics_response(payload)
 
+    async def list_rows(
+        self,
+        *,
+        workspace_id: str,
+        view_id: str,
+        config: Mapping[str, Any] | None = None,
+        headers: Mapping[str, str] | None = None,
+    ) -> AnalyticsResponse:
+        payload = await self._analytics.request(
+            "GET",
+            f"/workspaces/{workspace_id}/views/{view_id}/rows",
+            params=_config_params(config),
+            headers=headers,
+        )
+        return parse_analytics_response(payload)
+
     async def update_rows(
         self,
         *,

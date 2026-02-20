@@ -1,5 +1,14 @@
 """Ingestion-oriented iterators and checkpoint helpers."""
 
+from zoho.ingestion.analytics import (
+    iter_analytics_view_documents,
+    iter_analytics_workspace_documents,
+)
+from zoho.ingestion.cliq import (
+    iter_cliq_channel_documents,
+    iter_cliq_chat_documents,
+    iter_cliq_thread_documents,
+)
 from zoho.ingestion.crm import iter_crm_documents, iter_crm_module_documents
 from zoho.ingestion.mail import iter_mail_message_documents
 from zoho.ingestion.models import IngestionBatch, IngestionCheckpoint, IngestionDocument
@@ -12,6 +21,11 @@ __all__ = [
     "IngestionBatch",
     "IngestionCheckpoint",
     "IngestionDocument",
+    "iter_analytics_view_documents",
+    "iter_analytics_workspace_documents",
+    "iter_cliq_channel_documents",
+    "iter_cliq_chat_documents",
+    "iter_cliq_thread_documents",
     "iter_crm_documents",
     "iter_crm_module_documents",
     "iter_mail_message_documents",

@@ -21,6 +21,7 @@ class CliqChatsClient:
         self,
         *,
         limit: int | None = None,
+        next_token: str | None = None,
         modified_before: int | None = None,
         modified_after: int | None = None,
         drafts: bool | None = None,
@@ -29,6 +30,8 @@ class CliqChatsClient:
         params: dict[str, Any] = {}
         if limit is not None:
             params["limit"] = limit
+        if next_token:
+            params["next_token"] = next_token
         if modified_before is not None:
             params["modified_before"] = modified_before
         if modified_after is not None:
