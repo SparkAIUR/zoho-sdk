@@ -44,6 +44,10 @@ _PRODUCT_NAME_BY_ALIAS: dict[str, str] = {
     "people": "People",
     "sheet": "Sheet",
     "workdrive": "WorkDrive",
+    "cliq": "Cliq",
+    "analytics": "Analytics",
+    "writer": "Writer",
+    "mail": "Mail",
 }
 
 
@@ -168,6 +172,90 @@ _SCOPE_CATALOG: dict[str, ScopeSpec] = {
             "WorkDrive.files.CREATE",
             "WorkDrive.files.UPDATE",
             "WorkDrive.files.DELETE",
+        ),
+    ),
+    "Cliq": ScopeSpec(
+        read=(
+            "ZohoCliq.Users.READ",
+            "ZohoCliq.Chats.READ",
+            "ZohoCliq.Channels.READ",
+            "ZohoCliq.Messages.READ",
+        ),
+        write=(
+            "ZohoCliq.Users.UPDATE",
+            "ZohoCliq.Channels.UPDATE",
+            "ZohoCliq.Messages.UPDATE",
+            "ZohoCliq.Webhooks.CREATE",
+        ),
+        common=(
+            "ZohoCliq.Users.READ",
+            "ZohoCliq.Users.UPDATE",
+            "ZohoCliq.Chats.READ",
+            "ZohoCliq.Channels.READ",
+            "ZohoCliq.Channels.UPDATE",
+            "ZohoCliq.Messages.READ",
+            "ZohoCliq.Messages.UPDATE",
+            "ZohoCliq.Webhooks.CREATE",
+        ),
+    ),
+    "Analytics": ScopeSpec(
+        read=(
+            "ZohoAnalytics.metadata.read",
+            "ZohoAnalytics.data.read",
+        ),
+        write=(
+            "ZohoAnalytics.metadata.read",
+            "ZohoAnalytics.data.create",
+            "ZohoAnalytics.data.update",
+        ),
+        common=(
+            "ZohoAnalytics.metadata.read",
+            "ZohoAnalytics.data.read",
+            "ZohoAnalytics.data.create",
+            "ZohoAnalytics.data.update",
+            "ZohoAnalytics.data.delete",
+            "ZohoAnalytics.usermanagement.read",
+        ),
+    ),
+    "Writer": ScopeSpec(
+        read=("ZohoWriter.documentEditor.ALL",),
+        write=(
+            "ZohoWriter.documentEditor.ALL",
+            "ZohoWriter.merge.ALL",
+            "ZohoPC.files.ALL",
+            "WorkDrive.files.ALL",
+        ),
+        common=(
+            "ZohoWriter.documentEditor.ALL",
+            "ZohoWriter.merge.ALL",
+            "ZohoPC.files.ALL",
+            "WorkDrive.files.ALL",
+            "WorkDrive.organization.ALL",
+            "WorkDrive.workspace.ALL",
+            "ZohoSign.documents.ALL",
+        ),
+    ),
+    "Mail": ScopeSpec(
+        read=(
+            "ZohoMail.accounts.READ",
+            "ZohoMail.folders.READ",
+            "ZohoMail.messages.READ",
+            "ZohoMail.threads.READ",
+        ),
+        write=(
+            "ZohoMail.accounts.READ",
+            "ZohoMail.folders.ALL",
+            "ZohoMail.messages.ALL",
+            "ZohoMail.threads.ALL",
+        ),
+        common=(
+            "ZohoMail.accounts.READ",
+            "ZohoMail.folders.READ",
+            "ZohoMail.folders.ALL",
+            "ZohoMail.messages.READ",
+            "ZohoMail.messages.ALL",
+            "ZohoMail.threads.READ",
+            "ZohoMail.threads.ALL",
         ),
     ),
 }

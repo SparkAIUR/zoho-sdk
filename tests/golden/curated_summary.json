@@ -1,26 +1,41 @@
 {
-  "endpoint_count": 24,
+  "endpoint_count": 57,
   "group_counts": {
+    "accounts": 1,
     "admin": 2,
+    "bulk": 3,
     "changes": 1,
+    "channels": 3,
+    "chats": 1,
+    "data": 3,
+    "documents": 4,
     "employees": 2,
     "files": 3,
-    "folders": 2,
+    "folders": 6,
     "forms": 5,
+    "merge": 2,
+    "messages": 5,
+    "metadata": 2,
     "search": 1,
     "tabular": 3,
+    "threads": 3,
+    "users": 2,
     "workbooks": 3,
     "worksheets": 2
   },
   "method_counts": {
-    "DELETE": 3,
-    "GET": 15,
-    "POST": 5,
-    "PUT": 1
+    "DELETE": 7,
+    "GET": 31,
+    "POST": 14,
+    "PUT": 5
   },
   "product_counts": {
+    "analytics": 8,
+    "cliq": 9,
+    "mail": 8,
     "people": 8,
     "sheet": 8,
-    "workdrive": 8
+    "workdrive": 8,
+    "writer": 8
   }
 }

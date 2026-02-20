@@ -208,6 +208,146 @@
         "WorkDrive.files.ALL"
       ],
       "notes": "WorkDrive scopes are endpoint-specific; admin/team APIs usually require team scopes."
+    },
+    {
+      "product": "Cliq",
+      "service_name": "ZohoCliq",
+      "scope_syntax": "ZohoCliq.<scope_name>.<operation>",
+      "operations": [
+        "READ",
+        "CREATE",
+        "UPDATE",
+        "DELETE",
+        "ALL"
+      ],
+      "official_docs": [
+        "https://www.zoho.com/cliq/help/restapi/v2/"
+      ],
+      "common_scopes": [
+        "ZohoCliq.Users.READ",
+        "ZohoCliq.Chats.READ",
+        "ZohoCliq.Channels.READ",
+        "ZohoCliq.Messages.READ",
+        "ZohoCliq.Channels.UPDATE",
+        "ZohoCliq.Webhooks.CREATE"
+      ],
+      "recommended_read_bundle": [
+        "ZohoCliq.Users.READ",
+        "ZohoCliq.Chats.READ",
+        "ZohoCliq.Channels.READ",
+        "ZohoCliq.Messages.READ"
+      ],
+      "recommended_write_bundle": [
+        "ZohoCliq.Users.UPDATE",
+        "ZohoCliq.Channels.UPDATE",
+        "ZohoCliq.Messages.UPDATE",
+        "ZohoCliq.Webhooks.CREATE"
+      ],
+      "notes": "Cliq scopes are resource-specific and case-sensitive in many examples (for example messageactions scopes)."
+    },
+    {
+      "product": "Analytics",
+      "service_name": "ZohoAnalytics",
+      "scope_syntax": "ZohoAnalytics.<scope_name>.<operation>",
+      "operations": [
+        "read",
+        "create",
+        "update",
+        "delete",
+        "all"
+      ],
+      "official_docs": [
+        "https://www.zoho.com/analytics/api/v2/prerequisites.html",
+        "https://github.com/zoho/analytics-oas"
+      ],
+      "common_scopes": [
+        "ZohoAnalytics.metadata.read",
+        "ZohoAnalytics.data.read",
+        "ZohoAnalytics.data.create",
+        "ZohoAnalytics.data.update",
+        "ZohoAnalytics.data.delete",
+        "ZohoAnalytics.usermanagement.read"
+      ],
+      "recommended_read_bundle": [
+        "ZohoAnalytics.metadata.read",
+        "ZohoAnalytics.data.read"
+      ],
+      "recommended_write_bundle": [
+        "ZohoAnalytics.metadata.read",
+        "ZohoAnalytics.data.create",
+        "ZohoAnalytics.data.update"
+      ],
+      "notes": "Many endpoints also require ZANALYTICS-ORGID and CONFIG query payloads."
+    },
+    {
+      "product": "Writer",
+      "service_name": "ZohoWriter",
+      "scope_syntax": "ZohoWriter.<scope_name>.<operation>",
+      "operations": [
+        "READ",
+        "CREATE",
+        "UPDATE",
+        "DELETE",
+        "ALL"
+      ],
+      "official_docs": [
+        "https://www.zoho.com/writer/help/api/v1/oauth-2.html",
+        "https://www.zoho.com/writer/help/api/v1/getting-started.html"
+      ],
+      "common_scopes": [
+        "ZohoWriter.documentEditor.ALL",
+        "ZohoWriter.merge.ALL",
+        "ZohoPC.files.ALL",
+        "WorkDrive.files.ALL",
+        "WorkDrive.organization.ALL",
+        "WorkDrive.workspace.ALL"
+      ],
+      "recommended_read_bundle": [
+        "ZohoWriter.documentEditor.ALL"
+      ],
+      "recommended_write_bundle": [
+        "ZohoWriter.documentEditor.ALL",
+        "ZohoWriter.merge.ALL",
+        "ZohoPC.files.ALL",
+        "WorkDrive.files.ALL"
+      ],
+      "notes": "Some Writer workflows require adjacent product scopes (WorkDrive, ZohoPC, ZohoSign)."
+    },
+    {
+      "product": "Mail",
+      "service_name": "ZohoMail",
+      "scope_syntax": "ZohoMail.<scope_name>.<operation>",
+      "operations": [
+        "READ",
+        "CREATE",
+        "UPDATE",
+        "DELETE",
+        "ALL"
+      ],
+      "official_docs": [
+        "https://www.zoho.com/mail/help/api/",
+        "https://www.zoho.com/mail/help/api/using-oauth-2.html"
+      ],
+      "common_scopes": [
+        "ZohoMail.accounts.READ",
+        "ZohoMail.folders.READ",
+        "ZohoMail.messages.READ",
+        "ZohoMail.messages.ALL",
+        "ZohoMail.threads.READ"
+      ],
+      "recommended_read_bundle": [
+        "ZohoMail.accounts.READ",
+        "ZohoMail.folders.READ",
+        "ZohoMail.messages.READ",
+        "ZohoMail.threads.READ"
+      ],
+      "recommended_write_bundle": [
+        "ZohoMail.accounts.READ",
+        "ZohoMail.folders.ALL",
+        "ZohoMail.messages.ALL",
+        "ZohoMail.threads.ALL"
+      ],
+      "notes": "Mail uses many granular scopes by module; start with least privilege and expand endpoint-by-endpoint."
     }
   ]
 }

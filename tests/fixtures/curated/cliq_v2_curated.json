@@ -1,0 +1,16 @@
+{
+  "product": "cliq",
+  "source_url": "https://www.zoho.com/cliq/help/restapi/v2/",
+  "version": "v2",
+  "endpoints": [
+    {"id": "cliq.users.list", "group": "users", "method": "GET", "operation_id": "list_users", "path": "/api/v2/users"},
+    {"id": "cliq.users.create", "group": "users", "method": "POST", "operation_id": "create_user", "path": "/api/v2/users"},
+    {"id": "cliq.chats.list", "group": "chats", "method": "GET", "operation_id": "list_chats", "path": "/api/v2/chats"},
+    {"id": "cliq.channels.list", "group": "channels", "method": "GET", "operation_id": "list_channels", "path": "/api/v2/channels"},
+    {"id": "cliq.channels.create", "group": "channels", "method": "POST", "operation_id": "create_channel", "path": "/api/v2/channels"},
+    {"id": "cliq.channels.delete", "group": "channels", "method": "DELETE", "operation_id": "delete_channel", "path": "/api/v2/channels/{channel_id}"},
+    {"id": "cliq.messages.list", "group": "messages", "method": "GET", "operation_id": "list_messages", "path": "/api/v2/chats/{chat_id}/messages"},
+    {"id": "cliq.messages.update", "group": "messages", "method": "PUT", "operation_id": "update_message", "path": "/api/v2/chats/{chat_id}/messages/{message_id}"},
+    {"id": "cliq.threads.list_followers", "group": "threads", "method": "GET", "operation_id": "list_thread_followers", "path": "/api/v2/threads/{thread_id}/followers"}
+  ]
+}

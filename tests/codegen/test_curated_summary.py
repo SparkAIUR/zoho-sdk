@@ -12,6 +12,10 @@ def test_curated_summary_matches_golden() -> None:
             Path("tests/fixtures/curated/people_v1_curated.json"),
             Path("tests/fixtures/curated/sheet_v2_curated.json"),
             Path("tests/fixtures/curated/workdrive_v1_curated.json"),
+            Path("tests/fixtures/curated/cliq_v2_curated.json"),
+            Path("tests/fixtures/curated/analytics_v2_curated.json"),
+            Path("tests/fixtures/curated/writer_v1_curated.json"),
+            Path("tests/fixtures/curated/mail_v1_curated.json"),
         ]
     )
 

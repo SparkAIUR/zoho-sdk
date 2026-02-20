@@ -1,0 +1,15 @@
+{
+  "product": "mail",
+  "source_url": "https://www.zoho.com/mail/help/api/",
+  "version": "v1",
+  "endpoints": [
+    {"id": "mail.accounts.list", "group": "accounts", "method": "GET", "operation_id": "list_accounts", "path": "/api/accounts"},
+    {"id": "mail.folders.list", "group": "folders", "method": "GET", "operation_id": "list_folders", "path": "/api/accounts/{account_id}/folders"},
+    {"id": "mail.folders.create", "group": "folders", "method": "POST", "operation_id": "create_folder", "path": "/api/accounts/{account_id}/folders"},
+    {"id": "mail.messages.list", "group": "messages", "method": "GET", "operation_id": "list_messages", "path": "/api/accounts/{account_id}/messages/view"},
+    {"id": "mail.messages.send", "group": "messages", "method": "POST", "operation_id": "send_message", "path": "/api/accounts/{account_id}/messages"},
+    {"id": "mail.messages.delete", "group": "messages", "method": "DELETE", "operation_id": "delete_message", "path": "/api/accounts/{account_id}/messages/{message_id}"},
+    {"id": "mail.threads.list", "group": "threads", "method": "GET", "operation_id": "list_threads", "path": "/api/accounts/{account_id}/threads"},
+    {"id": "mail.threads.mark_read", "group": "threads", "method": "PUT", "operation_id": "mark_thread_read", "path": "/api/accounts/{account_id}/threads/{thread_id}"}
+  ]
+}

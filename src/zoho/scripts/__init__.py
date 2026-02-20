@@ -1,2 +1,1 @@
 """SDK helper CLI scripts."""
-

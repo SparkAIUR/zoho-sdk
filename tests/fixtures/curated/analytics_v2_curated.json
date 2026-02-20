@@ -1,0 +1,15 @@
+{
+  "product": "analytics",
+  "source_url": "https://www.zoho.com/analytics/api/v2/open-api-specification.html",
+  "version": "v2",
+  "endpoints": [
+    {"id": "analytics.metadata.list_orgs", "group": "metadata", "method": "GET", "operation_id": "list_orgs", "path": "/restapi/v2/orgs"},
+    {"id": "analytics.metadata.list_workspaces", "group": "metadata", "method": "GET", "operation_id": "list_workspaces", "path": "/restapi/v2/workspaces"},
+    {"id": "analytics.data.create_rows", "group": "data", "method": "POST", "operation_id": "create_rows", "path": "/restapi/v2/workspaces/{workspace_id}/views/{view_id}/rows"},
+    {"id": "analytics.data.update_rows", "group": "data", "method": "PUT", "operation_id": "update_rows", "path": "/restapi/v2/workspaces/{workspace_id}/views/{view_id}/rows"},
+    {"id": "analytics.data.delete_rows", "group": "data", "method": "DELETE", "operation_id": "delete_rows", "path": "/restapi/v2/workspaces/{workspace_id}/views/{view_id}/rows"},
+    {"id": "analytics.bulk.import_data", "group": "bulk", "method": "POST", "operation_id": "import_data", "path": "/restapi/v2/bulk/workspaces/{workspace_id}/data"},
+    {"id": "analytics.bulk.export_data", "group": "bulk", "method": "GET", "operation_id": "export_data", "path": "/restapi/v2/bulk/workspaces/{workspace_id}/views/{view_id}/data"},
+    {"id": "analytics.bulk.get_import_job", "group": "bulk", "method": "GET", "operation_id": "get_import_job", "path": "/restapi/v2/bulk/workspaces/{workspace_id}/importjobs/{job_id}"}
+  ]
+}

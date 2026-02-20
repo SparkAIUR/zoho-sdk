@@ -1,0 +1,15 @@
+{
+  "product": "writer",
+  "source_url": "https://www.zoho.com/writer/help/api/v1/getting-started.html",
+  "version": "v1",
+  "endpoints": [
+    {"id": "writer.documents.list", "group": "documents", "method": "GET", "operation_id": "list_documents", "path": "/writer/api/v1/documents"},
+    {"id": "writer.documents.create", "group": "documents", "method": "POST", "operation_id": "create_document", "path": "/writer/api/v1/documents"},
+    {"id": "writer.documents.update", "group": "documents", "method": "PUT", "operation_id": "update_document", "path": "/writer/api/v1/documents/{document_id}"},
+    {"id": "writer.documents.delete", "group": "documents", "method": "DELETE", "operation_id": "delete_document", "path": "/writer/api/v1/documents/{document_id}"},
+    {"id": "writer.folders.list", "group": "folders", "method": "GET", "operation_id": "list_folders", "path": "/writer/api/v1/folders"},
+    {"id": "writer.folders.create", "group": "folders", "method": "POST", "operation_id": "create_folder", "path": "/writer/api/v1/folders"},
+    {"id": "writer.merge.get_fields", "group": "merge", "method": "GET", "operation_id": "get_merge_fields", "path": "/writer/api/v1/documents/{document_id}/fields"},
+    {"id": "writer.merge.merge_and_download", "group": "merge", "method": "POST", "operation_id": "merge_and_download", "path": "/writer/api/v1/documents/{document_id}/merge/download"}
+  ]
+}
