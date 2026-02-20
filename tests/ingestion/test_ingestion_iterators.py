@@ -6,13 +6,17 @@ import pytest
 
 from zoho.crm.models import PageInfo, RecordListResponse
 from zoho.ingestion.crm import iter_crm_documents, iter_crm_module_documents
+from zoho.ingestion.mail import iter_mail_message_documents
 from zoho.ingestion.models import IngestionCheckpoint
 from zoho.ingestion.people import iter_people_form_documents
 from zoho.ingestion.sheet import iter_sheet_worksheet_documents
 from zoho.ingestion.workdrive import iter_workdrive_recent_documents
+from zoho.ingestion.writer import iter_writer_document_documents
+from zoho.mail.models import MailResponse
 from zoho.people.models import PeopleResponse
 from zoho.sheet.models import SheetResponse
 from zoho.workdrive.models import WorkDriveResponse
+from zoho.writer.models import WriterResponse
 
 
 class _FakePeopleForms:
@@ -56,6 +60,42 @@ class _FakeChanges:
 
 class _FakeWorkDrive:
     changes = _FakeChanges()
+
+
+class _FakeMailMessages:
+    async def list(self, **_: Any) -> MailResponse:
+        return MailResponse(
+            data=[
+                {
+                    "messageId": "mail_1",
+                    "subject": "New Contract",
+                    "summary": "Please review the attached contract.",
+                    "receivedTime": "2026-02-19T00:20:00Z",
+                }
+            ]
+        )
+
+
+class _FakeMail:
+    messages = _FakeMailMessages()
+
+
+class _FakeWriterDocuments:
+    async def list(self, **_: Any) -> WriterResponse:
+        return WriterResponse(
+            data=[
+                {
+                    "id": "doc_1",
+                    "title": "SOW Draft",
+                    "description": "Statement of Work draft for legal review.",
+                    "modified_time": "2026-02-19T00:21:00Z",
+                }
+            ]
+        )
+
+
+class _FakeWriter:
+    documents = _FakeWriterDocuments()
 
 
 class _FakeCRMRecords:
@@ -106,6 +146,8 @@ class _FakeZoho:
     people = _FakePeople()
     sheet = _FakeSheet()
     workdrive = _FakeWorkDrive()
+    mail = _FakeMail()
+    writer = _FakeWriter()
     crm = _FakeCRM()
 
     def for_connection(self, name: str) -> _FakeZoho:
@@ -215,3 +257,40 @@ async def test_crm_multi_module_ingestion_requires_modules() -> None:
     with pytest.raises(ValueError, match="at least one"):
         async for _ in iter_crm_documents(client, modules=[]):
             pass
+
+
+async def test_mail_ingestion_iterator_yields_checkpoint() -> None:
+    client = _FakeZoho()
+
+    batches = [
+        batch
+        async for batch in iter_mail_message_documents(
+            client,
+            account_id="account_1",
+            folder_id="folder_1",
+            page_size=50,
+            max_pages=1,
+        )
+    ]
+
+    assert len(batches) == 1
+    assert batches[0].documents[0].source == "zoho.mail"
+    assert batches[0].checkpoint is not None
+    assert batches[0].checkpoint.offset == 2
+
+
+async def test_writer_ingestion_iterator_yields_documents() -> None:
+    client = _FakeZoho()
+
+    batches = [
+        batch
+        async for batch in iter_writer_document_documents(
+            client,
+            page_size=100,
+            max_pages=1,
+        )
+    ]
+
+    assert len(batches) == 1
+    assert batches[0].documents[0].source == "zoho.writer"
+    assert batches[0].documents[0].id == "doc_1"

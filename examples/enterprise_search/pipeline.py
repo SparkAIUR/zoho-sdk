@@ -5,7 +5,12 @@ from __future__ import annotations
 from collections.abc import Awaitable, Callable, Sequence
 
 from zoho import Zoho
-from zoho.ingestion import iter_crm_documents, iter_workdrive_recent_documents
+from zoho.ingestion import (
+    iter_crm_documents,
+    iter_mail_message_documents,
+    iter_workdrive_recent_documents,
+    iter_writer_document_documents,
+)
 from zoho.ingestion.models import IngestionDocument
 
 PushOynxBatch = Callable[[Sequence[IngestionDocument], str, str, str], Awaitable[None]]
@@ -33,6 +38,8 @@ async def run_oynx_sync(
             api_key,
             tenant_id,
         )
+
+
 # --8<-- [end:oynx_runner]
 
 
@@ -57,4 +64,33 @@ async def run_pipeshub_sync(
             api_key,
             dataset,
         )
+
+    async for batch in iter_writer_document_documents(
+        client,
+        folder_id="writer_folder_123",
+        page_size=200,
+        max_pages=25,
+    ):
+        await upsert_batch(
+            batch.documents,
+            endpoint,
+            api_key,
+            dataset,
+        )
+
+    async for batch in iter_mail_message_documents(
+        client,
+        account_id="mail_account_123",
+        folder_id="mail_folder_123",
+        page_size=200,
+        max_pages=25,
+    ):
+        await upsert_batch(
+            batch.documents,
+            endpoint,
+            api_key,
+            dataset,
+        )
+
+
 # --8<-- [end:pipeshub_runner]
