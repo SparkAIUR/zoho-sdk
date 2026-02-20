@@ -40,7 +40,10 @@ def test_discovery_cache_expiry(tmp_path: Path) -> None:
     payload["expires_at"] = time.time() - 1
     cache_files[0].write_text(json.dumps(payload), encoding="utf-8")
 
-    assert cache.load(product="creator", resource="applications", scope="tenant_a:US:production") is None
+    assert (
+        cache.load(product="creator", resource="applications", scope="tenant_a:US:production")
+        is None
+    )
 
 
 def test_discovery_cache_uses_safe_file_components(tmp_path: Path) -> None:

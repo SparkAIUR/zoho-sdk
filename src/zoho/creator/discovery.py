@@ -320,7 +320,9 @@ class CreatorDynamicNamespace:
                 scope=scope,
             )
             if cached:
-                self._ingest_applications(cached, account_owner_hint=account_owner_name, scope=scope)
+                self._ingest_applications(
+                    cached, account_owner_hint=account_owner_name, scope=scope
+                )
                 return list(self._application_list)
 
         applications = (
@@ -405,9 +407,7 @@ class CreatorDynamicNamespace:
         account_owner_hint: str | None,
     ) -> tuple[str | None, str | None]:
         app_link_name_raw = (
-            app.get("link_name")
-            or app.get("app_link_name")
-            or app.get("application_link_name")
+            app.get("link_name") or app.get("app_link_name") or app.get("application_link_name")
         )
         account_owner_raw = (
             app.get("workspace_name")

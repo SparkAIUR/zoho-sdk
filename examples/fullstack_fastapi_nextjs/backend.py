@@ -63,6 +63,8 @@ async def oauth_start(tenant_id: str) -> dict[str, str]:
     }
     authorize_url = f"{settings.accounts_domain}/oauth/v2/auth?{urlencode(params)}"
     return {"authorize_url": authorize_url}
+
+
 # --8<-- [end:oauth_start]
 
 
@@ -109,6 +111,8 @@ async def oauth_callback(
         "status": "connected",
         "api_domain": tenant_token.api_domain,
     }
+
+
 # --8<-- [end:oauth_callback]
 
 
@@ -123,4 +127,6 @@ async def oauth_token_status(tenant_id: str) -> dict[str, Any]:
         "connected": token is not None,
         "api_domain": token.api_domain if token is not None else None,
     }
+
+
 # --8<-- [end:tenant_token_lookup]

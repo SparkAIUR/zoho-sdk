@@ -20,6 +20,8 @@ class PipeshubRecord(BaseModel):
     url: str | None = None
     updated_at: str | None = None
     metadata: dict[str, Any] = Field(default_factory=dict)
+
+
 # --8<-- [end:pipeshub_contract]
 
 
@@ -38,6 +40,8 @@ def to_pipeshub_record(document: IngestionDocument) -> PipeshubRecord:
             "raw": document.raw,
         },
     )
+
+
 # --8<-- [end:pipeshub_mapper]
 
 
@@ -51,7 +55,9 @@ async def upsert_pipeshub_batch(
 ) -> None:
     payload = {
         "dataset": dataset,
-        "records": [to_pipeshub_record(document).model_dump(mode="python") for document in documents],
+        "records": [
+            to_pipeshub_record(document).model_dump(mode="python") for document in documents
+        ],
     }
 
     async with httpx.AsyncClient(timeout=30.0) as http:
@@ -61,4 +67,6 @@ async def upsert_pipeshub_batch(
             json=payload,
         )
         response.raise_for_status()
+
+
 # --8<-- [end:pipeshub_push]

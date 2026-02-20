@@ -20,6 +20,8 @@ class CronRequest:
     folder_id: str
     connection_name: str = "default"
     checkpoint: dict[str, Any] | None = None
+
+
 # --8<-- [end:cron_request]
 
 
@@ -58,6 +60,8 @@ async def ingest_workdrive_recent_activity(request: CronRequest) -> dict[str, An
         }
     finally:
         await client.close()
+
+
 # --8<-- [end:cron_activity]
 
 
@@ -71,6 +75,8 @@ class CronWorkDriveWorkflow:
             request,
             start_to_close_timeout=600,
         )
+
+
 # --8<-- [end:cron_workflow]
 
 
@@ -84,6 +90,8 @@ async def run_worker() -> None:
         activities=[ingest_workdrive_recent_activity],
     )
     await worker.run()
+
+
 # --8<-- [end:cron_worker_bootstrap]
 
 
@@ -98,4 +106,6 @@ async def ensure_hourly_schedule(folder_id: str) -> str:
         cron_schedule="0 * * * *",
     )
     return handle.id
+
+
 # --8<-- [end:cron_schedule]

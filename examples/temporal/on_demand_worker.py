@@ -22,6 +22,8 @@ class OnDemandRequest:
     connection_name: str = "default"
     page_size: int = 200
     checkpoint: dict[str, Any] | None = None
+
+
 # --8<-- [end:on_demand_request]
 
 
@@ -64,6 +66,8 @@ async def ingest_crm_module_activity(request: OnDemandRequest) -> dict[str, Any]
         }
     finally:
         await client.close()
+
+
 # --8<-- [end:on_demand_activity]
 
 
@@ -78,6 +82,8 @@ class OnDemandCRMIngestionWorkflow:
             start_to_close_timeout=300,
             retry_policy=RetryPolicy(maximum_attempts=3),
         )
+
+
 # --8<-- [end:on_demand_workflow]
 
 
@@ -93,6 +99,8 @@ async def run_worker() -> None:
     )
 
     await worker.run()
+
+
 # --8<-- [end:on_demand_worker_bootstrap]
 
 
@@ -106,4 +114,6 @@ async def trigger_ingestion(module: str, checkpoint: dict[str, Any] | None = Non
         task_queue="zoho-on-demand",
     )
     return handle.id
+
+
 # --8<-- [end:on_demand_start]

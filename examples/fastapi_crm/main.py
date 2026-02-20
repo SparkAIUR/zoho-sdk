@@ -115,4 +115,6 @@ async def list_crm_module_records(
         count=len(result.data),
         records=result.data,
     )
+
+
 # --8<-- [end:crm_dynamic_endpoint]

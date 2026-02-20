@@ -20,6 +20,8 @@ class OynxDocument(BaseModel):
     url: str | None = None
     updated_at: str | None = None
     metadata: dict[str, Any] = Field(default_factory=dict)
+
+
 # --8<-- [end:oynx_contract]
 
 
@@ -37,6 +39,8 @@ def to_oynx_document(document: IngestionDocument) -> OynxDocument:
             "mime_type": document.mime_type,
         },
     )
+
+
 # --8<-- [end:oynx_mapper]
 
 
@@ -50,7 +54,9 @@ async def push_oynx_batch(
 ) -> None:
     payload = {
         "tenant": tenant_id,
-        "documents": [to_oynx_document(document).model_dump(mode="python") for document in documents],
+        "documents": [
+            to_oynx_document(document).model_dump(mode="python") for document in documents
+        ],
     }
 
     async with httpx.AsyncClient(timeout=30.0) as http:
@@ -60,4 +66,6 @@ async def push_oynx_batch(
             json=payload,
         )
         response.raise_for_status()
+
+
 # --8<-- [end:oynx_push]

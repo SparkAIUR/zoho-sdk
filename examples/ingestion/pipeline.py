@@ -38,6 +38,8 @@ class JsonCheckpointStore:
             state = json.loads(self._path.read_text(encoding="utf-8"))
         state[job_name] = checkpoint.model_dump(mode="python") if checkpoint else None
         self._path.write_text(json.dumps(state, indent=2), encoding="utf-8")
+
+
 # --8<-- [end:checkpoint_store]
 
 
@@ -47,6 +49,8 @@ async def index_documents(documents: list[IngestionDocument]) -> None:
 
     for document in documents:
         print("INDEX", document.source, document.id, document.updated_at)
+
+
 # --8<-- [end:index_documents]
 
 
@@ -70,6 +74,8 @@ async def run_crm_job(client: Zoho, checkpoint_store: JsonCheckpointStore) -> No
         await index_documents(batch.documents)
         last_checkpoint = batch.checkpoint
         checkpoint_store.save("crm", last_checkpoint)
+
+
 # --8<-- [end:crm_job]
 
 
@@ -108,6 +114,8 @@ async def run_multi_source_job(client: Zoho, checkpoint_store: JsonCheckpointSto
     ):
         await index_documents(batch.documents)
         checkpoint_store.save("workdrive", batch.checkpoint)
+
+
 # --8<-- [end:multi_source_job]
 
 
@@ -127,4 +135,6 @@ async def run_connector() -> None:
         await run_multi_source_job(client, checkpoint_store)
     finally:
         await client.close()
+
+
 # --8<-- [end:runner]
