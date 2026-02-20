@@ -10,6 +10,8 @@ All adapters consume `IngestionDocument` records emitted by:
 - `iter_people_form_documents(...)`
 - `iter_sheet_worksheet_documents(...)`
 - `iter_workdrive_recent_documents(...)`
+- `iter_mail_message_documents(...)`
+- `iter_writer_document_documents(...)`
 
 ## Oynx Integration
 

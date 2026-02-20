@@ -40,6 +40,10 @@ uv run python tools/codegen/curated_summary.py \
   --spec tools/specs/people_v1_curated.json \
   --spec tools/specs/sheet_v2_curated.json \
   --spec tools/specs/workdrive_v1_curated.json \
+  --spec tools/specs/cliq_v2_curated.json \
+  --spec tools/specs/analytics_v2_curated.json \
+  --spec tools/specs/writer_v1_curated.json \
+  --spec tools/specs/mail_v1_curated.json \
   --output /tmp/curated_summary.json
 diff -u tests/golden/curated_summary.json /tmp/curated_summary.json
 

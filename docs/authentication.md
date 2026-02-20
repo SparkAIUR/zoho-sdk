@@ -19,6 +19,10 @@ Optional product-specific settings:
 - `people_base_url` (override People API host)
 - `sheet_base_url` (override Sheet API host)
 - `workdrive_base_url` (override WorkDrive API host)
+- `cliq_base_url` (override Cliq API host)
+- `analytics_base_url` (override Analytics API host)
+- `writer_base_url` (override Writer API host)
+- `mail_base_url` (override Mail API host)
 
 ## Credential Setup Guide
 

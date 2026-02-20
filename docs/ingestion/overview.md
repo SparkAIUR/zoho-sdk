@@ -60,3 +60,30 @@ async for batch in iter_crm_module_documents(
 ):
     print(batch.checkpoint, len(batch.documents))
 ```
+
+## Mail Messages Iterator
+
+```python
+from zoho.ingestion import iter_mail_message_documents
+
+async for batch in iter_mail_message_documents(
+    client,
+    account_id="123456789",
+    folder_id="100",
+    page_size=200,
+):
+    print(batch.checkpoint, len(batch.documents))
+```
+
+## Writer Documents Iterator
+
+```python
+from zoho.ingestion import iter_writer_document_documents
+
+async for batch in iter_writer_document_documents(
+    client,
+    folder_id="folder_123",
+    page_size=200,
+):
+    print(batch.checkpoint, len(batch.documents))
+```

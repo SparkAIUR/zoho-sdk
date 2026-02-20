@@ -21,6 +21,10 @@
   - People (`forms`, `employees`, `files`)
   - Sheet (`workbooks`, `worksheets`, `tabular`)
   - WorkDrive (`files`, `folders`, `search`, `changes`, `admin`)
+  - Cliq (`users`, `chats`, `channels`, `messages`, `threads`)
+  - Analytics (`metadata`, `data`, `bulk`)
+  - Writer (`documents`, `folders`, `merge`)
+  - Mail (`accounts`, `folders`, `messages`, `threads`)
 - Ingestion iterators under `zoho.ingestion`
 - Codegen tooling with golden tests and curated spec snapshots
 - Strict CI gates and robust documentation

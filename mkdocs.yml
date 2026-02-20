@@ -36,6 +36,8 @@ nav:
   - Ingestion:
     - Overview: ingestion/overview.md
     - CRM: ingestion/crm.md
+    - Mail: ingestion/mail.md
+    - Writer: ingestion/writer.md
   - CRM:
     - Records: crm/records.md
     - Modules: crm/modules.md
@@ -68,6 +70,29 @@ nav:
     - Search API: workdrive/search.md
     - Recent Changes API: workdrive/changes.md
     - Admin API: workdrive/admin.md
+  - Cliq:
+    - Overview: cliq/overview.md
+    - Users API: cliq/users.md
+    - Chats API: cliq/chats.md
+    - Channels API: cliq/channels.md
+    - Messages API: cliq/messages.md
+    - Threads API: cliq/threads.md
+  - Analytics:
+    - Overview: analytics/overview.md
+    - Metadata API: analytics/metadata.md
+    - Data API: analytics/data.md
+    - Bulk API: analytics/bulk.md
+  - Writer:
+    - Overview: writer/overview.md
+    - Documents API: writer/documents.md
+    - Folders API: writer/folders.md
+    - Merge API: writer/merge.md
+  - Mail:
+    - Overview: mail/overview.md
+    - Accounts API: mail/accounts.md
+    - Folders API: mail/folders.md
+    - Messages API: mail/messages.md
+    - Threads API: mail/threads.md
   - Errors: errors.md
   - Performance & Caching: performance-caching.md
   - Code Generation: codegen.md

@@ -8,7 +8,7 @@ Codegen tooling keeps the SDK aligned with upstream Zoho changes while keeping d
 - OpenAPI spec files (endpoint metadata)
 - Creator OpenAPI documents
 - Projects V3 API docs HTML (extracted into internal JSON spec)
-- Curated People/Sheet/WorkDrive spec snapshots
+- Curated product spec snapshots (People/Sheet/WorkDrive/Cliq/Analytics/Writer/Mail)
 
 ## CRM Summary Generator
 
@@ -48,6 +48,10 @@ uv run python tools/codegen/curated_summary.py \
   --spec tools/specs/people_v1_curated.json \
   --spec tools/specs/sheet_v2_curated.json \
   --spec tools/specs/workdrive_v1_curated.json \
+  --spec tools/specs/cliq_v2_curated.json \
+  --spec tools/specs/analytics_v2_curated.json \
+  --spec tools/specs/writer_v1_curated.json \
+  --spec tools/specs/mail_v1_curated.json \
   --output /tmp/curated_summary.json
 ```
 

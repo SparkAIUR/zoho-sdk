@@ -18,6 +18,8 @@ Pre-set options with flags (prompts fill the rest):
 uv run zoho-auth scope-builder \
   --product CRM \
   --product WorkDrive \
+  --product Mail \
+  --product Writer \
   --access read \
   --include-common \
   --format env
@@ -29,6 +31,8 @@ For fully scripted usage:
 uv run zoho-auth scope-builder \
   --product CRM \
   --product People \
+  --product Cliq \
+  --product Analytics \
   --access write \
   --no-interactive \
   --format json \

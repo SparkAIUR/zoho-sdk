@@ -1,5 +1,18 @@
 # Changelog
 
+## v0.1.2
+
+- Added `zoho.cliq` module with `users`, `chats`, `channels`, `messages`, and `threads` clients
+- Added `zoho.analytics` module with `metadata`, `data`, and `bulk` clients
+- Added `zoho.writer` module with `documents`, `folders`, and `merge` clients
+- Added `zoho.mail` module with `accounts`, `folders`, `messages`, and `threads` clients
+- Added new ingestion iterators:
+  - `iter_mail_message_documents(...)`
+  - `iter_writer_document_documents(...)`
+- Added API research notes under `refs/apis/` for Cliq/Analytics/Writer/Mail
+- Extended curated codegen snapshots and golden tests for new products
+- Expanded docs and README examples for all newly added products and ingestion workflows
+
 ## v0.1.1
 
 - Added `zoho.people` module with `forms`, `employees`, and `files` clients

@@ -43,6 +43,10 @@ uv run python tools/admin_validate_live.py
 - `people.forms.list_forms`
 - `sheet.workbooks.list`
 - `workdrive.admin.list_teams`
+- `cliq.users.list`
+- `analytics.metadata.list_organizations`
+- `writer.documents.list`
+- `mail.accounts.list`
 
 ## Safety and Output
 

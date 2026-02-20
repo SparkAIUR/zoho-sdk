@@ -17,6 +17,10 @@ Async-first Python SDK for Zoho, designed for developer experience and performan
   - People (`forms`, `employees`, `files`)
   - Sheet (`workbooks`, `worksheets`, `tabular`)
   - WorkDrive (`files`, `folders`, `search`, `changes`, `admin`)
+  - Cliq (`users`, `chats`, `channels`, `messages`, `threads`)
+  - Analytics (`metadata`, `data`, `bulk`)
+  - Writer (`documents`, `folders`, `merge`)
+  - Mail (`accounts`, `folders`, `messages`, `threads`)
 - Ingestion iterators for connector workloads (`zoho.ingestion`)
 - Codegen tooling + golden tests for spec drift
 
@@ -142,6 +146,34 @@ changes = await client.workdrive.changes.list_recent(
 print(changes.resources)
 ```
 
+### Cliq
+
+```python
+channels = await client.cliq.channels.list(limit=50)
+print(channels.result_rows)
+```
+
+### Analytics
+
+```python
+orgs = await client.analytics.metadata.list_organizations()
+print(orgs.result_rows)
+```
+
+### Writer
+
+```python
+documents = await client.writer.documents.list(limit=20)
+print(documents.result_rows)
+```
+
+### Mail
+
+```python
+accounts = await client.mail.accounts.list()
+print(accounts.result_rows)
+```
+
 ### CRM Dynamic Discovery
 
 ```python
@@ -188,6 +220,8 @@ Additional iterators:
 - `iter_crm_documents(...)`
 - `iter_sheet_worksheet_documents(...)`
 - `iter_workdrive_recent_documents(...)`
+- `iter_mail_message_documents(...)`
+- `iter_writer_document_documents(...)`
 
 ## Getting OAuth Credentials
 
@@ -216,6 +250,8 @@ uv run zoho-auth grant-code \
 uv run zoho-auth scope-builder \
   --product CRM \
   --product WorkDrive \
+  --product Mail \
+  --product Writer \
   --access read \
   --format env
 ```
