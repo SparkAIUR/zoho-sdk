@@ -319,6 +319,17 @@ uv run python tools/admin_validate_live.py
 The script only runs read-oriented product checks and prints non-sensitive summaries
 (counts/status only). See `docs/admin-live-validation.md` for required/optional vars.
 
+## Security Scan (Pre-Public / Pre-Release)
+
+Run the high-confidence scanner against tracked files and full git history:
+
+```bash
+uv run python tools/security_scan.py --mode all --report .security/secrets-report.json
+```
+
+If findings are detected, rotate/revoke affected credentials and clean files/history
+before publishing. See `SECURITY.md` for the response process.
+
 ## Development
 
 ```bash

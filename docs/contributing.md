@@ -15,6 +15,7 @@ uv run mypy
 uv run pytest
 uv run pytest tests/docs/test_snippet_references.py
 uv run mkdocs build --strict
+uv run python tools/security_scan.py --mode all --report .security/secrets-report.json
 ```
 
 ## Codegen Drift Checks
@@ -74,3 +75,17 @@ Use the live validator before sharing credential onboarding changes:
 export ZOHO_CREDENTIALS_FILE=refs/notes/zoho-live.env
 uv run python tools/admin_validate_live.py
 ```
+
+## Security Before Public Release
+
+- Run the scanner against working tree and history:
+
+```bash
+uv run python tools/security_scan.py --mode all --report .security/secrets-report.json
+```
+
+- If findings are reported:
+  - rotate/revoke credentials immediately
+  - remove secrets from files and history
+  - re-run scanner until clean
+- See `SECURITY.md` for incident response expectations.
