@@ -16,6 +16,7 @@ Use `uv` exclusively for environment, dependency, and build workflows.
 - `uv run pytest tests/docs/test_snippet_references.py`: validate snippet includes/markers.
 - `uv run mkdocs build --strict`: docs build gate.
 - `uv run zoho-auth --help`: auth/scope CLI entrypoint.
+- `uv run python tools/sync_wiki.py --repo SparkAIUR/zoho-sdk --push`: sync `docs/` into GitHub Wiki (requires wiki to be initialized with a first page).
 
 ## Coding Style & Naming Conventions
 - Python 3.12+, 4-space indentation, and explicit type hints on public APIs.
