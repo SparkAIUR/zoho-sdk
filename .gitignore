@@ -183,3 +183,4 @@ cython_debug/
 .cursorindexingignore
 
 refs/notes/
+.security/secrets-report.json

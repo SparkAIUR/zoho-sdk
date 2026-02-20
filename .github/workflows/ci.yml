@@ -6,6 +6,24 @@ on:
     branches: [main]
 
 jobs:
+  secret-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: astral-sh/setup-uv@v4
+      - name: Setup Python
+        run: uv python install 3.12
+      - name: Run security scan
+        run: uv run --python 3.12 python tools/security_scan.py --mode all --report /tmp/secrets-report.json
+      - name: Upload security report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: secrets-report
+          path: /tmp/secrets-report.json
+
   lint:
     runs-on: ubuntu-latest
     steps:
