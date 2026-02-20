@@ -259,7 +259,7 @@ class Zoho:
         redis_url: str | None = None,
         log_format: LogFormat = "pretty",
         log_level: str = "INFO",
-        user_agent: str = "zoho-sdk/0.1.1",
+        user_agent: str = "zoho-sdk/0.1.3",
         timeout_seconds: float = 30.0,
         max_connections: int = 100,
         max_keepalive_connections: int = 20,

@@ -15,6 +15,10 @@
   - `docs/ingestion/cliq.md`
   - `docs/ingestion/analytics.md`
   - Canonical sources in `examples/ingestion/cliq_pipeline.py` and `examples/ingestion/analytics_pipeline.py`
+- Release engineering:
+  - Hardened CI auth-cli error assertions against Typer rich/ANSI output
+  - Switched codegen drift commands to `python -m tools.codegen.*` module execution
+  - Aligned curated spec drift input set with golden fixtures
 
 ## v0.1.2
 

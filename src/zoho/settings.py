@@ -101,7 +101,7 @@ class ZohoSettings(BaseSettings):
     writer_base_url: str | None = None
     mail_base_url: str | None = None
 
-    user_agent: str = "zoho-sdk/0.1.1"
+    user_agent: str = "zoho-sdk/0.1.3"
 
     token_store_backend: TokenStoreBackend = "sqlite"
     token_store_path: Path = Field(default_factory=_default_token_store_path)

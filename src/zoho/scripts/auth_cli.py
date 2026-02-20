@@ -589,7 +589,7 @@ def exchange_token(
         response = http.post(
             token_url,
             data=payload,
-            headers={"User-Agent": "zoho-auth-cli/0.1.1"},
+            headers={"User-Agent": "zoho-auth-cli/0.1.3"},
         )
 
     body = _http_response_to_json(response)
@@ -679,7 +679,7 @@ def grant_code(
         "Accept": "*/*",
         "Content-Type": "application/json",
         "Cookie": session_cookie,
-        "User-Agent": "zoho-auth-cli/0.1.1",
+        "User-Agent": "zoho-auth-cli/0.1.3",
     }
     if x_zcsrf_token:
         headers["x-zcsrf-token"] = x_zcsrf_token

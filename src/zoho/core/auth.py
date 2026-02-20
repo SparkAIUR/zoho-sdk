@@ -50,7 +50,7 @@ class OAuth2RefreshAuthProvider:
         accounts_domain: str | None = None,
         api_domain: str | None = None,
         cache_namespace: str = "default",
-        user_agent: str = "zoho-sdk/0.1.1",
+        user_agent: str = "zoho-sdk/0.1.3",
         http_client: httpx.AsyncClient | None = None,
     ) -> None:
         self._client_id = client_id
