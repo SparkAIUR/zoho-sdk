@@ -25,6 +25,20 @@ class RecordListResponse(BaseModel):
     info: PageInfo | None = None
 
 
+class CoqlInfo(BaseModel):
+    """COQL response metadata."""
+
+    count: int | None = None
+    more_records: bool = False
+
+
+class CoqlQueryResponse(BaseModel):
+    """Structured COQL response envelope."""
+
+    data: list[dict[str, Any]] = Field(default_factory=list)
+    info: CoqlInfo | None = None
+
+
 class ActionResponse(BaseModel):
     """Action response envelope used by create/update/delete operations."""
 

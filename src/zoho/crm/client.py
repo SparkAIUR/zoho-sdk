@@ -9,6 +9,7 @@ from zoho.core.cache import AsyncTTLCache
 from zoho.core.discovery_cache import DiscoveryDiskCache
 
 if TYPE_CHECKING:
+    from zoho.crm.coql import CoqlClient
     from zoho.crm.discovery import CRMDynamicNamespace
     from zoho.crm.modules import ModulesClient
     from zoho.crm.org import OrgClient
@@ -53,6 +54,7 @@ class CRMClient:
         self._modules: ModulesClient | None = None
         self._org: OrgClient | None = None
         self._users: UsersClient | None = None
+        self._coql: CoqlClient | None = None
         self._dynamic: CRMDynamicNamespace | None = None
 
     @property
@@ -86,6 +88,14 @@ class CRMClient:
 
             self._users = UsersClient(self)
         return self._users
+
+    @property
+    def coql(self) -> CoqlClient:
+        if self._coql is None:
+            from zoho.crm.coql import CoqlClient
+
+            self._coql = CoqlClient(self)
+        return self._coql
 
     @property
     def dynamic(self) -> CRMDynamicNamespace:

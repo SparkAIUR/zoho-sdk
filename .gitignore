@@ -147,6 +147,9 @@ venv.bak/
 
 # mkdocs documentation
 /site
+.astro/
+.sparkify/
+.sparkify-tool/
 
 # mypy
 .mypy_cache/

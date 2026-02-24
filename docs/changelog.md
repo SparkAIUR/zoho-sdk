@@ -1,5 +1,18 @@
 # Changelog
 
+## Unreleased
+
+- Added first-class CRM COQL support via `client.crm.coql`:
+  - Raw COQL execution with named parameter binding (`execute(query=..., params=...)`)
+  - Immutable fluent query builder (`select(...).from_(...).where(...).order_by(...).limit(...)`)
+  - Explicit multi-page retrieval (`execute_all(...)`)
+- Added typed COQL response models:
+  - `CoqlInfo`
+  - `CoqlQueryResponse`
+- Added docs and snippet-backed examples for CRM COQL:
+  - `docs/crm/coql.md`
+  - `examples/crm/coql.py`
+
 ## v0.1.3
 
 - Added Cliq ingestion iterators:

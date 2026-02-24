@@ -4,6 +4,9 @@
 
 ```bash
 uv sync --group dev
+git clone https://github.com/SparkAIUR/sparkify.git .sparkify-tool
+(cd .sparkify-tool && npm ci && npm run build)
+export DOCS_SITE_URL="https://docs.example.com"
 ```
 
 ## Local Quality Gates
@@ -14,7 +17,17 @@ uv run ruff check .
 uv run mypy
 uv run pytest
 uv run pytest tests/docs/test_snippet_references.py
-uv run mkdocs build --strict
+uv run pytest tests/tools/test_render_sparkify_docs.py
+uv run python tools/render_sparkify_docs.py \
+  --source docs \
+  --output .sparkify/docs \
+  --mkdocs-config mkdocs.yml
+(cd .sparkify-tool && node packages/cli/dist/bin.js build \
+  --docs-dir ../.sparkify/docs \
+  --out ../.sparkify/site \
+  --site "${DOCS_SITE_URL}" \
+  --base "" \
+  --strict)
 uv run python tools/security_scan.py --mode all --report .security/secrets-report.json
 ```
 
@@ -89,3 +102,13 @@ uv run python tools/security_scan.py --mode all --report .security/secrets-repor
   - remove secrets from files and history
   - re-run scanner until clean
 - See `SECURITY.md` for incident response expectations.
+
+## Docs Deployment Variables
+
+Configure these repository-level GitHub variables:
+
+- `DOCS_SITE_URL` (required): canonical docs origin, for example `https://docs.example.com`.
+- `DOCS_CUSTOM_DOMAIN` (optional): hostname written to `site/CNAME`.
+- `SPARKIFY_REF` (required): pinned branch or commit SHA for `SparkAIUR/sparkify`.
+
+Upgrade flow: update `SPARKIFY_REF` in repository variables, then run `Deploy Docs` once to verify the new Sparkify revision.

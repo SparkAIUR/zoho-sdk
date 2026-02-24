@@ -6,9 +6,10 @@ from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
     from zoho.crm.client import CRMClient
+    from zoho.crm.coql import CoqlClient
     from zoho.crm.models import Record
 
-__all__ = ["CRMClient", "Record"]
+__all__ = ["CRMClient", "CoqlClient", "Record"]
 
 
 def __getattr__(name: str) -> Any:
@@ -16,6 +17,10 @@ def __getattr__(name: str) -> Any:
         from zoho.crm.client import CRMClient
 
         return CRMClient
+    if name == "CoqlClient":
+        from zoho.crm.coql import CoqlClient
+
+        return CoqlClient
     if name == "Record":
         from zoho.crm.models import Record
 

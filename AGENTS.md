@@ -2,7 +2,8 @@
 
 ## Project Structure & Module Organization
 - `src/zoho/`: SDK source. Current product modules: `crm`, `creator`, `projects`, `people`, `sheet`, `workdrive`, plus `ingestion` and shared `core`.
-- `docs/`: MkDocs docs. Scenario playbooks live in `docs/use-cases/`.
+- `docs/`: canonical markdown docs source. Scenario playbooks live in `docs/use-cases/`.
+- `.sparkify/docs/`: generated Sparkify-ready MDX output (build artifact; do not commit).
 - `examples/`: canonical, snippet-backed reference sources used by docs (`--8<--` markers).
 - `tools/`: operational/codegen scripts (for example `admin_validate_live.py`, `scopes_sync.py`).
 - `refs/docs/`: inception/spec references. `refs/notes/` is private and should not be committed.
@@ -14,7 +15,9 @@ Use `uv` exclusively for environment, dependency, and build workflows.
 - `uv run mypy`: strict type checks.
 - `uv run pytest`: full test suite.
 - `uv run pytest tests/docs/test_snippet_references.py`: validate snippet includes/markers.
-- `uv run mkdocs build --strict`: docs build gate.
+- `uv run pytest tests/tools/test_render_sparkify_docs.py`: validate Sparkify docs renderer.
+- `uv run python tools/render_sparkify_docs.py --source docs --output .sparkify/docs --mkdocs-config mkdocs.yml`: generate Sparkify-ready docs.
+- `(cd .sparkify-tool && node packages/cli/dist/bin.js build --docs-dir ../.sparkify/docs --out ../.sparkify/site --site "$DOCS_SITE_URL" --base "" --strict)`: docs build gate (requires a local `.sparkify-tool` checkout of `SparkAIUR/sparkify`).
 - `uv run zoho-auth --help`: auth/scope CLI entrypoint.
 - `uv run python tools/sync_wiki.py --repo SparkAIUR/zoho-sdk --push`: sync `docs/` into GitHub Wiki (requires wiki to be initialized with a first page).
 

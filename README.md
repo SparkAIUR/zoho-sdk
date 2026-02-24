@@ -11,7 +11,7 @@ Async-first Python SDK for Zoho, designed for developer experience and performan
 - Structlog-powered logging (`pretty` or `json`)
 - Multi-account connection manager (`client.connections`)
 - Product clients:
-  - CRM (`records`, `modules`, `org`, `users`, `dynamic`)
+  - CRM (`records`, `coql`, `modules`, `org`, `users`, `dynamic`)
   - Creator (`meta`, `data`, `publish`, `dynamic`)
   - Projects V3 (`portals`, `projects`, `tasks`)
   - People (`forms`, `employees`, `files`)
@@ -174,6 +174,19 @@ accounts = await client.mail.accounts.list()
 print(accounts.result_rows)
 ```
 
+### CRM COQL
+
+```python
+result = await client.crm.coql.execute(
+    query=(
+        "select Signers.Email, Signers.Phone "
+        "from Deals_X_Contacts where Signer_Deals.Loan_ID = :loan_id"
+    ),
+    params={"loan_id": "xxx"},
+)
+print(result.data)
+```
+
 ### CRM Dynamic Discovery
 
 ```python
@@ -334,11 +347,24 @@ before publishing. See `SECURITY.md` for the response process.
 
 ```bash
 uv sync --group dev
+git clone https://github.com/SparkAIUR/sparkify.git .sparkify-tool
+(cd .sparkify-tool && npm ci && npm run build)
+export DOCS_SITE_URL="https://docs.example.com"
 uv run ruff format .
 uv run ruff check .
 uv run mypy
 uv run pytest
-uv run mkdocs build --strict
+uv run pytest tests/tools/test_render_sparkify_docs.py
+uv run python tools/render_sparkify_docs.py \
+  --source docs \
+  --output .sparkify/docs \
+  --mkdocs-config mkdocs.yml
+(cd .sparkify-tool && node packages/cli/dist/bin.js build \
+  --docs-dir ../.sparkify/docs \
+  --out ../.sparkify/site \
+  --site "${DOCS_SITE_URL}" \
+  --base "" \
+  --strict)
 ```
 
 ## Codegen Workflows
@@ -385,3 +411,13 @@ uv run python tools/codegen/curated_summary.py \
 - API research notes: `refs/apis/`
 - Design specs: `refs/docs/specs/`
 - Contributor guide: `AGENTS.md`
+
+## Docs Deployment Variables
+
+Set these repository variables for CI/docs deployment:
+
+- `DOCS_SITE_URL` (required): canonical docs origin, for example `https://docs.example.com`
+- `DOCS_CUSTOM_DOMAIN` (optional): hostname written to `site/CNAME` for Pages custom domains
+- `SPARKIFY_REF` (required): pinned branch or commit SHA used to checkout `SparkAIUR/sparkify`
+
+When upgrading Sparkify in CI, update `SPARKIFY_REF` first in repository variables, then re-run the docs workflow.

@@ -42,10 +42,8 @@ zoho-auth = "zoho.scripts.auth_cli:main"
 
 [dependency-groups]
 dev = [
-  "mkdocs>=1.6.0",
-  "mkdocs-material>=9.6.0",
   "mypy>=1.17.0",
-  "pymdown-extensions>=10.21",
+  "pyyaml>=6.0.2",
   "pytest>=8.4.0",
   "pytest-asyncio>=1.1.0",
   "pytest-cov>=6.2.0",
