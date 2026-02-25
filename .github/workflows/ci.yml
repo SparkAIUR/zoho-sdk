@@ -68,12 +68,6 @@ jobs:
       DOCS_SITE_URL: ${{ vars.DOCS_SITE_URL }}
     steps:
       - uses: actions/checkout@v4
-      - name: Validate required docs variables
-        run: |
-          if [ -z "${DOCS_SITE_URL}" ]; then
-            echo "Repository variable DOCS_SITE_URL is required."
-            exit 1
-          fi
       - uses: astral-sh/setup-uv@v4
       - name: Setup Python
         run: uv python install 3.12
